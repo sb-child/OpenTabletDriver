@@ -251,7 +251,7 @@
               Grid.IsSharedSizeScope="False">
             <Grid
                 ColumnDefinitions="*,*"
-                RowDefinitions="Auto,Auto"
+                RowDefinitions="Auto,Auto,Auto"
                 Margin="-2">
               <Grid.Styles>
                 <Style Selector="c|BindingSetting, tc|RangedInput">
@@ -282,6 +282,14 @@
                   Description="{StaticResource bindings_pen_eraser_activation_threshold_desc}"
                   Grid.Column="1"
                   Grid.Row="1" />
+              <c:BindingSetting
+                  DataContext="{Binding WheelCwBinding}"
+                  Grid.Column="0"
+                  Grid.Row="2" />
+              <c:BindingSetting
+                  DataContext="{Binding WheelCcwBinding}"
+                  Grid.Column="1"
+                  Grid.Row="2" />
             </Grid>
             <ItemsControl ItemsSource="{Binding PenButtonBindings}">
               <ItemsControl.ItemsPanel>
