@@ -37,6 +37,9 @@ namespace OpenTabletDriver.Daemon.Library.Binding
 
             MouseScrollDown = CreateBindingState<BindingState>(settings.MouseScrollDown, device, mouseButtonHandler);
             MouseScrollUp = CreateBindingState<BindingState>(settings.MouseScrollUp, device, mouseButtonHandler);
+
+            WheelCw = CreateBindingState<BindingState>(settings.WheelCw, device, mouseButtonHandler);
+            WheelCcw = CreateBindingState<BindingState>(settings.WheelCcw, device, mouseButtonHandler);
         }
 
         private ThresholdBindingState? Tip { get; }
@@ -48,6 +51,9 @@ namespace OpenTabletDriver.Daemon.Library.Binding
 
         private BindingState? MouseScrollDown { get; }
         private BindingState? MouseScrollUp { get; }
+
+        private BindingState? WheelCw { get; }
+        private BindingState? WheelCcw { get; }
 
         public PipelinePosition Position => PipelinePosition.PostTransform;
 
@@ -74,6 +80,8 @@ namespace OpenTabletDriver.Daemon.Library.Binding
                 HandleAuxiliaryReport(auxReport);
             if (report is IMouseReport mouseReport)
                 HandleMouseReport(mouseReport);
+            if (report is IWheelReport wheelReport)
+                HandleWheelReport(wheelReport);
         }
 
         private void ResetPenBindings(OutOfRangeReport oor)
@@ -113,6 +121,22 @@ namespace OpenTabletDriver.Daemon.Library.Binding
 
             MouseScrollDown?.Invoke(report, report.Scroll.Y < 0);
             MouseScrollUp?.Invoke(report, report.Scroll.Y > 0);
+        }
+
+        private void HandleWheelReport(IWheelReport report)
+        {
+            if (report.Wheel)
+            {
+                // CW
+                WheelCw?.Invoke(report, true);
+                WheelCw?.Invoke(report, false);
+            }
+            else
+            {
+                // CCW
+                WheelCcw?.Invoke(report, true);
+                WheelCcw?.Invoke(report, false);
+            }
         }
 
         private static void HandleBindingCollection(IDeviceReport report, IDictionary<int, BindingState?>? bindings, IList<bool> newStates)
