@@ -73,6 +73,12 @@ public partial class TabletViewModel : ActivatableViewModelBase
     [ObservableProperty]
     private BindingSettingViewModel _penEraserTipBinding = null!;
 
+    [ObservableProperty]
+    private BindingSettingViewModel _wheelCwBinding = null!;
+
+    [ObservableProperty]
+    private BindingSettingViewModel _wheelCcwBinding = null!;
+
     public int TabletId => _tabletService.TabletId;
     public string Name => _tabletService.Name;
     public ObservableCollection<PluginDto> OutputModes { get; } = new();
@@ -360,6 +366,24 @@ public partial class TabletViewModel : ActivatableViewModelBase
         PenTipBinding.SettingsChanged += HandleSettingsChanged;
         PenEraserTipBinding.SettingsChanged += HandleSettingsChanged;
 
+        WheelCwBinding = new BindingSettingViewModel(
+            profile,
+            "Wheel CW",
+            "The action performed when wheel rotates clockwise.",
+            _bindings,
+            p => p.Bindings.WheelCw,
+            (p, v) => p.Bindings.WheelCw = v);
+        WheelCcwBinding = new BindingSettingViewModel(
+            profile,
+            "Wheel CCW",
+            "The action performed when wheel rotates counter-clockwise.",
+            _bindings,
+            p => p.Bindings.WheelCcw,
+            (p, v) => p.Bindings.WheelCcw = v);
+
+        WheelCwBinding.SettingsChanged += HandleSettingsChanged;
+        WheelCcwBinding.SettingsChanged += HandleSettingsChanged;
+
         PenButtonBindings.Clear();
         var penButtonCount = _tabletService.Configuration.Specifications.Pen?.ButtonCount ?? 0;
         for (int i = 0; i < penButtonCount; i++)
@@ -474,6 +498,8 @@ public partial class TabletViewModel : ActivatableViewModelBase
         TabletButtonBindings.ForEach(b => b.Write(profile));
         PenTipBinding.Write(profile);
         PenEraserTipBinding.Write(profile);
+        WheelCwBinding.Write(profile);
+        WheelCcwBinding.Write(profile);
 
         // record the time of apply to ignore profile updates most likely caused
         // by us for a short period of time

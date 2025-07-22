@@ -13,5 +13,7 @@ namespace OpenTabletDriver.Daemon.Contracts.Persistence
         public Collection<PluginSettings?> MouseButtons { set; get; } = new();
         public PluginSettings? MouseScrollUp { set; get; }
         public PluginSettings? MouseScrollDown { set; get; }
+        public PluginSettings? WheelCw { set; get; }
+        public PluginSettings? WheelCcw { set; get; }
     }
 }
