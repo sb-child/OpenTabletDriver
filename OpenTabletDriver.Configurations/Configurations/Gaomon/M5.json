@@ -1,28 +1,28 @@
 {
-  "Name": "Gaomon S630",
+  "Name": "Gaomon M5",
   "Specifications": {
     "Digitizer": {
-      "Width": 129.3,
-      "Height": 80.8,
-      "MaxX": 25860,
-      "MaxY": 16160
+      "Width": 179.15,
+      "Height": 118.5,
+      "MaxX": 35830,
+      "MaxY": 23700
     },
     "Pen": {
       "MaxPressure": 8191,
       "ButtonCount": 2
     },
     "AuxiliaryButtons": {
-      "ButtonCount": 4
+      "ButtonCount": 1
     }
   },
   "DigitizerIdentifiers": [
     {
       "VendorID": 9580,
-      "ProductID": 109,
+      "ProductID": 100,
       "InputReportLength": 12,
       "ReportParser": "OpenTabletDriver.Configurations.Parsers.UCLogic.UCLogicReportParser",
       "DeviceStrings": {
-        "201": "GM001_T203_\\d{6}$"
+        "201": "OEM02_T195_\\d{6}$"
       },
       "InitializationStrings": [
         200
@@ -30,7 +30,6 @@
     }
   ],
   "Attributes": {
-    "libinputoverride": "1",
-    "Interface": "0"
+    "libinputoverride": "1"
   }
 }
