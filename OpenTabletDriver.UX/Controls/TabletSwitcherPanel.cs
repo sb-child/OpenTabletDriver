@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Eto.Drawing;
 using Eto.Forms;
 using OpenTabletDriver.Desktop.Profiles;
@@ -91,16 +92,17 @@ namespace OpenTabletDriver.UX.Controls
                 set
                 {
                     this.profiles = value;
-                    this.OnProfilesChanged();
+                    // ReSharper disable once AsyncVoidMethod
+                    Application.Instance.AsyncInvoke(async void () => await this.OnProfilesChanged());
                 }
                 get => this.profiles;
             }
 
             public event EventHandler<EventArgs> ProfilesChanged;
 
-            protected virtual async void OnProfilesChanged()
+            protected virtual async Task OnProfilesChanged()
             {
-                ProfilesChanged?.Invoke(this, new EventArgs());
+                ProfilesChanged?.Invoke(this, EventArgs.Empty);
                 var tablets = await App.Driver.Instance.GetTablets();
                 HandleTabletsChanged(this, tablets.ToImmutableArray());
             }
