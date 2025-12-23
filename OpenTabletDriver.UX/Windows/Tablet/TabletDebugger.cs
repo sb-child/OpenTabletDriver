@@ -29,56 +29,63 @@ namespace OpenTabletDriver.UX.Windows.Tablet
         {
             Title = "Tablet Debugger";
 
-            var debugger = new StackLayout
+            var visualizerGroup = new StackLayout
             {
-                HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                Height = 320,
                 Padding = SPACING,
                 Spacing = SPACING,
                 Items =
                 {
                     new StackLayoutItem
                     {
-                        Control = new StackLayout
+                        Expand = true,
+                        HorizontalAlignment = HorizontalAlignment.Stretch,
+                        Control = new DebuggerGroup
                         {
-                            Orientation = Orientation.Horizontal,
-                            VerticalContentAlignment = VerticalAlignment.Bottom,
-                            Items =
+                            Text = "Visualizer",
+                            Content = tabletVisualizer = new TabletVisualizer(),
+                        },
+                    },
+                    new StackLayout
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Items =
+                        {
+                            new DebuggerGroup
                             {
-                                new StackLayoutItem
+                                Text = "Device",
+                                Content = deviceName = new Label
                                 {
-                                    Expand = true,
-                                    Control = new DebuggerGroup
-                                    {
-                                        Text = "Device",
-                                        Content = deviceName = new Label
-                                        {
-                                            Font = Fonts.Monospace(LARGE_FONTSIZE)
-                                        }
-                                    }
-                                },
-                                new DebuggerGroup
+                                    Font = Fonts.Monospace(LARGE_FONTSIZE)
+                                }
+                            },
+                            new DebuggerGroup
+                            {
+                                Text = "Report Rate",
+                                Width = LARGE_FONTSIZE * 6,
+                                Content = reportRate = new Label
                                 {
-                                    Text = "Report Rate",
-                                    Width = LARGE_FONTSIZE * 6,
-                                    Content = reportRate = new Label
-                                    {
-                                        Font = Fonts.Monospace(LARGE_FONTSIZE)
-                                    }
-                                },
-                                new StackLayoutItem
-                                {
-                                    Control = reportsRecordedGroup = new DebuggerGroup
-                                    {
-                                        Text = "Reports Recorded",
-                                        Width = LARGE_FONTSIZE * 10,
-                                        Content = reportsRecorded = new Label
-                                        {
-                                            Font = Fonts.Monospace(LARGE_FONTSIZE)
-                                        }
-                                    }
-                                },
-                                new Group
+                                    Font = Fonts.Monospace(LARGE_FONTSIZE)
+                                }
+                            },
+                        }
+                    }
+                },
+            };
+
+            var debugger = new StackLayout
+            {
+                Padding = SPACING,
+                Spacing = SPACING,
+                Items =
+                {
+                    new StackLayout
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Items =
+                        {
+                            new StackLayoutItem
+                            {
+                                Control = new DebuggerGroup
                                 {
                                     Text = "Options",
                                     Content = enableDataRecording = new CheckBox
@@ -86,87 +93,76 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                                         Text = "Enable Data Recording"
                                     }
                                 }
-                            }
+                            },
+                            new StackLayoutItem
+                            {
+                                Control = reportsRecordedGroup = new DebuggerGroup
+                                {
+                                    Text = "Reports Recorded",
+                                    Content = reportsRecorded = new Label
+                                    {
+                                        Font = Fonts.Monospace(FONTSIZE)
+                                    }
+                                }
+                            },
                         }
                     },
                     new StackLayoutItem
                     {
-                        Expand = true,
-                        Control = new StackLayout
+                        Control = new DebuggerGroup
                         {
-                            Orientation = Orientation.Horizontal,
-                            VerticalContentAlignment = VerticalAlignment.Stretch,
-                            Height = 240,
-                            Items =
+                            Text = "Raw Tablet Data",
+                            Width = FONTSIZE * 33,
+                            Content = rawTablet = new Label
                             {
-                                new StackLayoutItem
-                                {
-                                    Expand = true,
-                                    Control = new DebuggerGroup
-                                    {
-                                        Text = "Raw Tablet Data",
-                                        Width = FONTSIZE * 33,
-                                        Content = rawTablet = new Label
-                                        {
-                                            Font = Fonts.Monospace(FONTSIZE)
-                                        }
-                                    }
-                                },
-                                new StackLayoutItem
-                                {
-                                    Control = new StackLayout
-                                    {
-                                        Orientation = Orientation.Vertical,
-                                        VerticalContentAlignment = VerticalAlignment.Top,
-                                        Items =
-                                        {
-                                            new StackLayoutItem
-                                            {
-                                                Control = new DebuggerGroup
-                                                {
-                                                    Text = "Maximum Position",
-                                                    Width = FONTSIZE * 33,
-                                                    Content = maxReportedPosition = new Label
-                                                    {
-                                                        Font = Fonts.Monospace(FONTSIZE)
-                                                    }
-                                                }
-                                            },
-
-                                            new StackLayoutItem
-                                            {
-                                                Expand = true,
-                                                Control = new DebuggerGroup
-                                                {
-                                                    Text = "Tablet Report",
-                                                    Width = FONTSIZE * 33,
-                                                    Content = tablet = new Label
-                                                    {
-                                                        Font = Fonts.Monospace(FONTSIZE)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+                                Font = Fonts.Monospace(FONTSIZE)
                             }
                         }
+                    },
+                    new PaddingSpacerItem(),
+                    new StackLayout
+                    {
+                        Items =
+                        {
+                            new StackLayoutItem
+                            {
+                                Control = new DebuggerGroup
+                                {
+                                    Text = "Tablet Report",
+                                    Width = FONTSIZE * 33,
+                                    Height = FONTSIZE * 25,
+                                    Content = tablet = new Label
+                                    {
+                                        Font = Fonts.Monospace(FONTSIZE)
+                                    }
+                                }
+                            },
+                            new StackLayoutItem
+                            {
+                                Control = new DebuggerGroup
+                                {
+                                    Text = "Maximum Position",
+                                    Width = FONTSIZE * 33,
+                                    Content = maxReportedPosition = new Label
+                                    {
+                                        Font = Fonts.Monospace(FONTSIZE)
+                                    }
+                                }
+                            },
+                        }
                     }
-                }
+                },
             };
 
             var splitter = new Splitter
             {
-                Orientation = Orientation.Vertical,
-                Width = 660,
-                Height = 800,
+                Orientation = Orientation.Horizontal,
+                Width = 610 + 340 + SPACING,
+                Panel1MinimumSize = 610,
+                Panel2MinimumSize = 340,
+                Height = 550,
                 FixedPanel = SplitterFixedPanel.Panel2,
-                Panel1 = new DebuggerGroup
-                {
-                    Height = 200,
-                    Text = "Visualizer",
-                    Content = tabletVisualizer = new TabletVisualizer()
-                },
+                Panel1 = visualizerGroup,
                 Panel2 = debugger
             };
 
