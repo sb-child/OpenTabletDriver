@@ -184,27 +184,26 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
     private readonly HashSet<string> _seenTablets = new();
     private readonly HashSet<string> _ignoredTablets = new();
 
-    public IEnumerable<CheckMenuItem> ActiveTabletsMenuItems
+    public IEnumerable<CheckMenuItem> ActiveTabletsMenuItems => GenerateMenuItem(_seenTablets, _ignoredTablets);
+
+    private static IEnumerable<CheckMenuItem> GenerateMenuItem(HashSet<string> seenIDs, HashSet<string> ignoredIDs)
     {
-        get
+        foreach (string id in seenIDs)
         {
-            foreach (string tablet in _seenTablets)
+            bool isIgnored = ignoredIDs.Contains(id);
+
+            var command = new CheckCommand(HandleCheckCommand)
             {
-                bool isIgnored = _ignoredTablets.Contains(tablet);
+                Checked = !isIgnored,
+                Tag = (id, seenIDs, ignoredIDs),
+            };
 
-                var command = new CheckCommand(HandleCheckCommand)
-                {
-                    Checked = !isIgnored,
-                    Tag = (tablet, _seenTablets, _ignoredTablets),
-                };
+            var menuItem = new CheckMenuItem(command)
+            {
+                Text = id,
+            };
 
-                var menuItem = new CheckMenuItem(command)
-                {
-                    Text = tablet,
-                };
-
-                yield return menuItem;
-            }
+            yield return menuItem;
         }
     }
 
