@@ -37,13 +37,13 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
         set
         {
             // early exit if ignored
-            if (value != null && _ignoredTablets.Contains(value.Tablet.Properties.Name)) return;
+            if (value != null && _ignoredTablets.Contains(GetNameKeyForFilter(value.Tablet, value.Path))) return;
 
             RaiseAndSetIfChanged(ref _reportData, value);
             if (value == null) return;
 
-            if (_seenTablets.Add(value.Tablet.Properties.Name))
-                RaiseChanged(nameof(ActiveTabletsMenuItems));
+            if (_seenTablets.Add(GetNameKeyForFilter(value.Tablet, value.Path)))
+                RaiseChanged(nameof(ActiveTabletReportMenuItems));
 
             var timeDelta = _stopwatch.Restart();
             ReportRate += (timeDelta.TotalMilliseconds - ReportRate) * 0.01f;
@@ -63,6 +63,9 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
             }
         }
     }
+
+    private static string GetNameKeyForFilter(TabletReference tabletReference, string path) =>
+        $"{tabletReference.Properties.Name}: {path}";
 
     private void HandleDataRecording(DebugReportData reportData, IDeviceReport report, TimeSpan timeDelta)
     {
@@ -184,7 +187,7 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
     private readonly HashSet<string> _seenTablets = new();
     private readonly HashSet<string> _ignoredTablets = new();
 
-    public IEnumerable<CheckMenuItem> ActiveTabletsMenuItems => GenerateMenuItem(_seenTablets, _ignoredTablets);
+    public IEnumerable<CheckMenuItem> ActiveTabletReportMenuItems => GenerateMenuItem(_seenTablets, _ignoredTablets);
 
     private static IEnumerable<CheckMenuItem> GenerateMenuItem(HashSet<string> seenIDs, HashSet<string> ignoredIDs)
     {

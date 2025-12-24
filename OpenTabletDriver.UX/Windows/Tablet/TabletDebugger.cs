@@ -211,7 +211,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
             {
                 switch (args.PropertyName)
                 {
-                    case nameof(TDVM.ActiveTabletsMenuItems):
+                    case nameof(TDVM.ActiveTabletReportMenuItems):
                         RefreshActiveTabletsMenu();
                         break;
                     default:
@@ -229,7 +229,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
             if (DataContext is not TDVM viewmodel) return;
 
             _activeTablets.Items.Clear();
-            _activeTablets.Items.AddRange(viewmodel.ActiveTabletsMenuItems);
+            _activeTablets.Items.AddRange(viewmodel.ActiveTabletReportMenuItems);
 
             // hide if only 1 tablet active
             _activeTablets.Visible = _activeTablets.Items.Count > 1;
