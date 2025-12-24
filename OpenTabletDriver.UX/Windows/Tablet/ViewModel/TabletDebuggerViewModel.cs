@@ -181,8 +181,6 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
     private Vector2 _maxPosition = Vector2.Zero;
     public string MaxPosition => $"Max Position: {_maxPosition}";
 
-    private const string _ACTIVE_TABLET_MENU_ITEM_PREFIX = "activeTabletMenuItem-";
-
     private readonly HashSet<string> _seenTablets = new();
     private readonly HashSet<string> _ignoredTablets = new();
 
@@ -194,10 +192,10 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
             {
                 bool isIgnored = _ignoredTablets.Contains(tablet);
 
-                var command = new CheckCommand(HandleActiveTabletPress)
+                var command = new CheckCommand(HandleCheckCommand)
                 {
-                    ID = $"{_ACTIVE_TABLET_MENU_ITEM_PREFIX}{tablet}",
                     Checked = !isIgnored,
+                    Tag = (tablet, _seenTablets, _ignoredTablets),
                 };
 
                 var menuItem = new CheckMenuItem(command)
@@ -210,16 +208,16 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
         }
     }
 
-    private void HandleActiveTabletPress(object? sender, EventArgs e)
+    private static void HandleCheckCommand(object? sender, EventArgs e)
     {
         if (sender is not CheckCommand checkCommand) return;
 
-        string tabletName = checkCommand.ID.Replace(_ACTIVE_TABLET_MENU_ITEM_PREFIX, "");
+        (string name, var seenIDs, var ignoredIDs) = (ValueTuple<string, HashSet<string>, HashSet<string>>)checkCommand.Tag;
 
         if (checkCommand.Checked)
-            _ignoredTablets.Remove(tabletName);
-        else if (_seenTablets.Count > _ignoredTablets.Count + 1) // don't allow removing last tablet
-            _ignoredTablets.Add(tabletName);
+            ignoredIDs.Remove(name);
+        else if (seenIDs.Count > ignoredIDs.Count + 1) // don't allow removing last entry
+            ignoredIDs.Add(name);
         else
             checkCommand.Checked = true;
     }

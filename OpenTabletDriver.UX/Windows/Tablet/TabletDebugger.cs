@@ -209,10 +209,14 @@ namespace OpenTabletDriver.UX.Windows.Tablet
             // handle ActiveTabletsMenuItems updates directly
             viewmodel.PropertyChanged += (_, args) =>
             {
-                if (args.PropertyName == null) return;
-                if (!args.PropertyName.Equals(nameof(TDVM.ActiveTabletsMenuItems))) return;
-
-                SetupItems();
+                switch (args.PropertyName)
+                {
+                    case nameof(TDVM.ActiveTabletsMenuItems):
+                        RefreshActiveTabletsMenu();
+                        break;
+                    default:
+                        return;
+                }
             };
 
             App.Driver.DeviceReport += viewmodel.HandleReport;
@@ -220,7 +224,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
             App.Driver.Instance.SetTabletDebug(true);
         }
 
-        private void SetupItems()
+        private void RefreshActiveTabletsMenu()
         {
             if (DataContext is not TDVM viewmodel) return;
 
