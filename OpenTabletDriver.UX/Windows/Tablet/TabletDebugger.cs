@@ -194,6 +194,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
             reportsRecorded.TextBinding.BindDataContext((TDVM vm) => vm.ReportsRecordedString, DualBindingMode.OneWay);
             tabletVisualizer.ReportDataBinding.BindDataContext((TDVM vm) => vm.ReportData, DualBindingMode.OneWay);
             enableDataRecording.CheckedBinding.BindDataContext((TDVM vm) => vm.DataRecordingEnabled);
+            reportsRecordedGroup.BindDataContext(x => x.Visible, (TDVM vm) => vm.HasReportsRecorded);
 
             App.Driver.DeviceReport += viewmodel.HandleReport;
             App.Driver.TabletsChanged += HandleTabletsChanged;

@@ -123,7 +123,17 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
         {
             RaiseAndSetIfChanged(ref _reportsRecorded, value);
             RaiseChanged(nameof(ReportsRecordedString));
+
+            if (value > 0 && !HasReportsRecorded)
+                HasReportsRecorded = true;
         }
+    }
+
+    private bool _hasReportsRecorded;
+    public bool HasReportsRecorded
+    {
+        get => _hasReportsRecorded;
+        set => RaiseAndSetIfChanged(ref _hasReportsRecorded, value);
     }
 
     public string ReportsRecordedString => $"{_reportsRecorded}";
