@@ -201,7 +201,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
             tablet.TextBinding.BindDataContext((TDVM vm) => vm.DecodedTabletData, DualBindingMode.OneWay);
             maxReportedPosition.TextBinding.BindDataContext((TDVM vm) => vm.MaxPosition, DualBindingMode.OneWay);
             reportRate.TextBinding.BindDataContext((TDVM vm) => vm.ReportRateString, DualBindingMode.OneWay);
-            reportsRecorded.TextBinding.BindDataContext((TDVM vm) => vm.ReportsRecordedString, DualBindingMode.OneWay);
+            reportsRecorded.TextBinding.Convert(null, (int value) => $"{value}").BindDataContext((TDVM vm) => vm.ReportsRecorded, DualBindingMode.OneWay);
             tabletVisualizer.ReportDataBinding.BindDataContext((TDVM vm) => vm.ReportData, DualBindingMode.OneWay);
             enableDataRecording.CheckedBinding.BindDataContext((TDVM vm) => vm.DataRecordingEnabled);
             reportsRecordedGroup.BindDataContext(x => x.Visible, (TDVM vm) => vm.HasReportsRecorded);

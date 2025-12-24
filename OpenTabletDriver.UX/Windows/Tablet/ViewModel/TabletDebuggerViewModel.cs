@@ -20,21 +20,20 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
         TabletDebuggerEnums.DecodingMode.Hex;
 
     private readonly HPETDeltaStopwatch _stopwatch = new();
+    private readonly HashSet<string> _seenTablets = [];
+    private readonly HashSet<string> _ignoredTablets = [];
+
+    private FileStream? _tabletRecordingFileStream;
+    private StreamWriter? _tabletRecordingStreamWriter;
 
     public void HandleReport(object sender, DebugReportData data) => ReportData = data;
 
-    private string _deviceName = string.Empty;
-    public string DeviceName
-    {
-        get => _deviceName;
-        set => RaiseAndSetIfChanged(ref _deviceName, value);
-    }
-
+    #region View Model Properties (and backing fields)
     private DebugReportData? _reportData;
     public DebugReportData? ReportData
     {
         get => _reportData;
-        set
+        private set
         {
             // early exit if ignored
             if (value != null && _ignoredTablets.Contains(GetNameKeyForFilter(value.Tablet, value.Path))) return;
@@ -47,8 +46,6 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
 
             var timeDelta = _stopwatch.Restart();
             ReportRate += (timeDelta.TotalMilliseconds - ReportRate) * 0.01f;
-
-            DeviceName = value.Tablet.Properties.Name;
 
             var dataObject = value.ToObject();
 
@@ -64,22 +61,7 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
         }
     }
 
-    private static string GetNameKeyForFilter(TabletReference tabletReference, string path) =>
-        $"{tabletReference.Properties.Name}: {path}";
-
-    private void HandleDataRecording(DebugReportData reportData, IDeviceReport report, TimeSpan timeDelta)
-    {
-        if (!DataRecordingEnabled || _tabletRecordingStreamWriter == null)
-            return;
-
-        string? output = ReportFormatter.GetStringFormatOneLine(reportData.Tablet.Properties,
-            report,
-            timeDelta,
-            reportData.Path);
-
-        _tabletRecordingStreamWriter.WriteLine(output);
-        ReportsRecorded++;
-    }
+    public string DeviceName => ReportData?.Tablet.Properties.Name ?? string.Empty;
 
     // BUG: this is mapped across all reporting tablets
     private double _reportRate;
@@ -93,32 +75,23 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
         }
     }
 
-    public string ReportRateString => $"{Math.Round(1000 / ReportRate)}hz";
-
-    private void SetRawTabletData(IDeviceReport report)
-    {
-        RawTabletData = DecodingMode switch
-        {
-            TabletDebuggerEnums.DecodingMode.Hex => ReportFormatter.GetStringRaw(report),
-            TabletDebuggerEnums.DecodingMode.Binary => ReportFormatter.GetStringRawAsBinary(report),
-            _ => throw new ArgumentOutOfRangeException(nameof(DecodingMode))
-        };
-    }
+    public string ReportRateString => $"{Math.Round(1000 / _reportRate)}hz";
 
     private string _rawTabletData = string.Empty;
     public string RawTabletData
     {
         get => _rawTabletData;
-        set => RaiseAndSetIfChanged(ref _rawTabletData, value);
+        private set => RaiseAndSetIfChanged(ref _rawTabletData, value);
     }
 
     private string _decodedTabletData = string.Empty;
     public string DecodedTabletData
     {
         get => _decodedTabletData;
-        set => RaiseAndSetIfChanged(ref _decodedTabletData, value);
+        private set => RaiseAndSetIfChanged(ref _decodedTabletData, value);
     }
 
+    // TODO: bind a control to this
     private TabletDebuggerEnums.DecodingMode _decodingMode = _DEFAULT_DECODING_MODE;
     public TabletDebuggerEnums.DecodingMode DecodingMode
     {
@@ -130,10 +103,9 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
     public int ReportsRecorded
     {
         get => _reportsRecorded;
-        set
+        private set
         {
             RaiseAndSetIfChanged(ref _reportsRecorded, value);
-            RaiseChanged(nameof(ReportsRecordedString));
 
             if (value > 0 && !HasReportsRecorded)
                 HasReportsRecorded = true;
@@ -144,13 +116,8 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
     public bool HasReportsRecorded
     {
         get => _hasReportsRecorded;
-        set => RaiseAndSetIfChanged(ref _hasReportsRecorded, value);
+        private set => RaiseAndSetIfChanged(ref _hasReportsRecorded, value);
     }
-
-    public string ReportsRecordedString => $"{_reportsRecorded}";
-
-    private FileStream? _tabletRecordingFileStream;
-    private StreamWriter? _tabletRecordingStreamWriter;
 
     private bool _dataRecordingEnabled;
     public bool DataRecordingEnabled
@@ -174,6 +141,15 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
         }
     }
 
+    private Vector2 _maxPosition = Vector2.Zero;
+    public string MaxPosition => $"Max Position: {_maxPosition}";
+
+    public IEnumerable<CheckMenuItem> ActiveTabletReportMenuItems => GenerateMenuItem(_seenTablets, _ignoredTablets);
+
+    #endregion
+
+    #region Class Functions
+
     private void HandleMaxPosition(ITabletReport report)
     {
         _maxPosition.X = Math.Max(report.Position.X, _maxPosition.X);
@@ -181,13 +157,33 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
         RaiseChanged(nameof(MaxPosition));
     }
 
-    private Vector2 _maxPosition = Vector2.Zero;
-    public string MaxPosition => $"Max Position: {_maxPosition}";
+    private void SetRawTabletData(IDeviceReport report)
+    {
+        RawTabletData = DecodingMode switch
+        {
+            TabletDebuggerEnums.DecodingMode.Hex => ReportFormatter.GetStringRaw(report),
+            TabletDebuggerEnums.DecodingMode.Binary => ReportFormatter.GetStringRawAsBinary(report),
+            _ => throw new NotImplementedException(),
+        };
+    }
 
-    private readonly HashSet<string> _seenTablets = new();
-    private readonly HashSet<string> _ignoredTablets = new();
+    private void HandleDataRecording(DebugReportData reportData, IDeviceReport report, TimeSpan timeDelta)
+    {
+        if (!DataRecordingEnabled || _tabletRecordingStreamWriter == null)
+            return;
 
-    public IEnumerable<CheckMenuItem> ActiveTabletReportMenuItems => GenerateMenuItem(_seenTablets, _ignoredTablets);
+        string? output = ReportFormatter.GetStringFormatOneLine(reportData.Tablet.Properties,
+            report,
+            timeDelta,
+            reportData.Path);
+
+        _tabletRecordingStreamWriter.WriteLine(output);
+        ReportsRecorded++;
+    }
+
+    #endregion
+
+    #region Static Functions
 
     private static IEnumerable<CheckMenuItem> GenerateMenuItem(HashSet<string> seenIDs, HashSet<string> ignoredIDs)
     {
@@ -224,6 +220,13 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
             checkCommand.Checked = true;
     }
 
+    private static string GetNameKeyForFilter(TabletReference tabletReference, string path) =>
+        $"{tabletReference.Properties.Name}: {path}";
+
+    #endregion
+
+    #region Cleanup/Management
+
     private void CleanupLocks()
     {
         _tabletRecordingStreamWriter?.Dispose();
@@ -237,6 +240,8 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, IDisposable
         CleanupLocks();
         GC.SuppressFinalize(this);
     }
+
+    #endregion
 }
 
 public static class TabletDebuggerEnums
