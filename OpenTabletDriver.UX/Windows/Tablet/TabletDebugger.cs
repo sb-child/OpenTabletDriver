@@ -213,7 +213,17 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                 Text = "Raw Data Mode",
             };
 
-            AddDecodingModes(decodingSwitchMenuItem);
+            foreach (var decodingMode in Enum.GetValues<TabletDebuggerEnums.DecodingMode>())
+            {
+                string modeName = decodingMode.ToString();
+
+                var item = new CheckMenuItem();
+                item.Text = modeName;
+                item.BindDataContext(x => x.Checked,
+                    Binding.Property((TDVM vm) => vm.DecodingMode).ToBool(decodingMode));
+
+                decodingSwitchMenuItem.Items.Add(item);
+            }
 
             Menu = new MenuBar
             {
@@ -234,21 +244,6 @@ namespace OpenTabletDriver.UX.Windows.Tablet
             if (DataContext is not TDVM viewmodel) return;
 
             _rawTabletGroup.Width = GetWidthOfRawTabletDataGroupBox(viewmodel.DecodingMode);
-        }
-
-        private static void AddDecodingModes(ButtonMenuItem decodingSwitchMenuItem)
-        {
-            foreach (var decodingMode in Enum.GetValues<TabletDebuggerEnums.DecodingMode>())
-            {
-                string modeName = decodingMode.ToString();
-
-                var item = new CheckMenuItem();
-                item.Text = modeName;
-                item.BindDataContext(x => x.Checked,
-                    Binding.Property((TDVM vm) => vm.DecodingMode).ToBool(decodingMode));
-
-                decodingSwitchMenuItem.Items.Add(item);
-            }
         }
 
         private void RefreshActiveTabletsMenu()
