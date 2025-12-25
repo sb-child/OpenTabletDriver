@@ -136,6 +136,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                                 Control = new DebuggerGroup
                                 {
                                     Text = "Maximum Position",
+                                    MinimumSize = (Size)MeasureMonospaceString("Max Position: <123456, 78901>") + _SPACING * 6,
                                     Content = _maxReportedPosition,
                                 },
                             },
