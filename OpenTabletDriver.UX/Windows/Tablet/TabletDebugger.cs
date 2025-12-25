@@ -22,71 +22,89 @@ namespace OpenTabletDriver.UX.Windows.Tablet
         const int FONTSIZE = LARGE_FONTSIZE - 4;
         const int SPACING = 5;
 
+        private readonly SizeF _rawTabletFontSizeSmallHex = MeasureMonospaceString("00 ", 8);
+        private readonly SizeF _rawTabletFontSizeBigBinary = MeasureMonospaceString("00000000 ", 4);
+
+        private static readonly Font s_LargeMonospaceFont = Fonts.Monospace(LARGE_FONTSIZE);
+        private static readonly Font s_MonospaceFont = Fonts.Monospace(FONTSIZE);
+
+        private readonly TabletVisualizer _tabletVisualizer = new();
+        private readonly Label _deviceName = new() { Font = s_LargeMonospaceFont };
+        private readonly Label _rawTablet = new() { Font = s_MonospaceFont };
+        private readonly Label _tablet = new() { Font = s_MonospaceFont };
+        private readonly Label _reportRate = new() { Font = s_LargeMonospaceFont };
+        private readonly Label _reportsRecorded = new() { Font = s_MonospaceFont };
+        private readonly Label _maxReportedPosition = new() { Font = s_MonospaceFont };
+        private readonly CheckBox _enableDataRecording = new() { Text = "Enable Data Recording" };
+
+        private readonly DebuggerGroup _reportsRecordedGroup = new() { Text = "Reports Recorded" };
+        private readonly DebuggerGroup _rawTabletGroup;
+
+        private readonly ButtonMenuItem _activeTablets = new() { Text = "Debugged Tablets", Visible = false };
+
         public TabletDebugger()
             : base(Application.Instance.MainForm)
         {
-            Label deviceName, rawTablet, tablet, reportRate, reportsRecorded, maxReportedPosition;
-            TabletVisualizer tabletVisualizer;
-            DebuggerGroup reportsRecordedGroup;
-            CheckBox enableDataRecording;
-
             SetTitle(App.Driver.Instance.GetTablets().Result);
 
             var viewmodel = new TDVM();
             this.DataContext = viewmodel;
 
-            var visualizerGroup = new StackLayout
+            this.Content = new StackLayout
             {
-                Padding = SPACING,
-                Spacing = SPACING,
+                Orientation = Orientation.Horizontal,
+                VerticalContentAlignment = VerticalAlignment.Stretch,
+                Spacing = 5,
+                Padding = 5,
+                MinimumSize = new Size(800, 420),
                 Items =
                 {
                     new StackLayoutItem
                     {
                         Expand = true,
-                        HorizontalAlignment = HorizontalAlignment.Stretch,
-                        Control = new DebuggerGroup
+                        Control = new StackLayout
                         {
-                            Text = "Visualizer",
-                            Content = tabletVisualizer = new TabletVisualizer(),
-                        },
-                    },
-                    new StackLayout
-                    {
-                        Orientation = Orientation.Horizontal,
-                        Items =
-                        {
-                            new DebuggerGroup
+                            Padding = SPACING,
+                            Spacing = SPACING,
+                            MinimumSize = new Size(200, -1),
+                            Items =
                             {
-                                Text = "Device",
-                                Content = deviceName = new Label
+                                new StackLayoutItem
                                 {
-                                    Font = Fonts.Monospace(LARGE_FONTSIZE)
-                                }
-                            },
-                            new DebuggerGroup
-                            {
-                                Text = "Report Rate",
-                                Width = LARGE_FONTSIZE * 6,
-                                Content = reportRate = new Label
+                                    Expand = true,
+                                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                                    Control = new DebuggerGroup
+                                    {
+                                        Text = "Visualizer",
+                                        Content = _tabletVisualizer,
+                                    },
+                                },
+                                new StackLayout
                                 {
-                                    Font = Fonts.Monospace(LARGE_FONTSIZE)
+                                    Orientation = Orientation.Horizontal,
+                                    Items =
+                                    {
+                                        new DebuggerGroup
+                                        {
+                                            Text = "Device",
+                                            Content = _deviceName,
+                                        },
+                                        new DebuggerGroup
+                                        {
+                                            Text = "Report Rate",
+                                            Width = (int)s_LargeMonospaceFont.MeasureString("8888Hz").Width + SPACING * 6,
+                                            Content = _reportRate,
+                                        },
+                                    }
                                 }
                             },
                         }
-                    }
-                },
-            };
-
-            var debugger = new StackLayout
-            {
-                Padding = SPACING,
-                Spacing = SPACING,
-                Items =
-                {
+                    },
                     new StackLayout
                     {
-                        Orientation = Orientation.Horizontal,
+                        Padding = SPACING,
+                        Spacing = SPACING,
+                        HorizontalContentAlignment = HorizontalAlignment.Stretch,
                         Items =
                         {
                             new StackLayoutItem
@@ -94,53 +112,23 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                                 Control = new DebuggerGroup
                                 {
                                     Text = "Options",
-                                    Content = enableDataRecording = new CheckBox
-                                    {
-                                        Text = "Enable Data Recording"
-                                    }
+                                    Content = _enableDataRecording,
                                 }
                             },
                             new StackLayoutItem
                             {
-                                Control = reportsRecordedGroup = new DebuggerGroup
-                                {
-                                    Text = "Reports Recorded",
-                                    Content = reportsRecorded = new Label
-                                    {
-                                        Font = Fonts.Monospace(FONTSIZE)
-                                    }
-                                }
+                                Control = _reportsRecordedGroup,
                             },
-                        }
-                    },
-                    new StackLayoutItem
-                    {
-                        Control = new DebuggerGroup
-                        {
-                            Text = "Raw Tablet Data",
-                            Width = FONTSIZE * 33,
-                            Content = rawTablet = new Label
-                            {
-                                Font = Fonts.Monospace(FONTSIZE)
-                            }
-                        }
-                    },
-                    new PaddingSpacerItem(),
-                    new StackLayout
-                    {
-                        Items =
-                        {
                             new StackLayoutItem
                             {
+                                Expand = true,
                                 Control = new DebuggerGroup
                                 {
+                                    ExpandContent = false,
+                                    MinimumSize = new Size(-1, FONTSIZE * 20),
                                     Text = "Tablet Report",
-                                    Width = FONTSIZE * 33,
-                                    Height = FONTSIZE * 25,
-                                    Content = tablet = new Label
-                                    {
-                                        Font = Fonts.Monospace(FONTSIZE)
-                                    }
+                                    Width = FONTSIZE * 22,
+                                    Content = _tablet,
                                 }
                             },
                             new StackLayoutItem
@@ -148,34 +136,30 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                                 Control = new DebuggerGroup
                                 {
                                     Text = "Maximum Position",
-                                    Width = FONTSIZE * 33,
-                                    Content = maxReportedPosition = new Label
-                                    {
-                                        Font = Fonts.Monospace(FONTSIZE)
-                                    }
+                                    Content = _maxReportedPosition,
                                 }
                             },
+                        }
+                    },
+                    {
+                        _rawTabletGroup = new DebuggerGroup
+                        {
+                            Padding = SPACING,
+                            Text = "Raw Tablet Data",
+                            Width = GetWidthOfRawTabletDataGroupBox(),
+                            MinimumSize = new Size(FONTSIZE * 22, -1),
+                            ExpandContent = false,
+                            Content = _rawTablet,
                         }
                     }
                 },
             };
 
-            var splitter = new Splitter
-            {
-                Orientation = Orientation.Horizontal,
-                Width = 610 + 340 + SPACING,
-                Panel1MinimumSize = 610,
-                Panel2MinimumSize = 340,
-                Height = 550,
-                FixedPanel = SplitterFixedPanel.Panel2,
-                Panel1 = visualizerGroup,
-                Panel2 = debugger,
-            };
+            _rawTabletGroup.Content = _rawTablet;
+            _reportsRecordedGroup.Content = _reportsRecorded;
 
-            this.Content = new Scrollable
-            {
-                Content = splitter,
-            };
+            SetupMenu();
+            SetupBindings();
 
             this.KeyDown += (_, args) =>
             {
@@ -183,6 +167,42 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                     this.Close();
             };
 
+            // handle ActiveTabletsMenuItems updates directly
+            viewmodel.PropertyChanged += (_, args) =>
+            {
+                switch (args.PropertyName)
+                {
+                    case nameof(TDVM.ActiveTabletReportMenuItems):
+                        RefreshActiveTabletsMenu();
+                        break;
+                    case nameof(TDVM.DecodingMode):
+                        ResizeRawBasedOnDecodingMode();
+                        break;
+                    default:
+                        return;
+                }
+            };
+
+            App.Driver.DeviceReport += viewmodel.HandleReport;
+            App.Driver.TabletsChanged += HandleTabletsChanged;
+            App.Driver.Instance.SetTabletDebug(true);
+        }
+
+        private void SetupBindings()
+        {
+            _deviceName.TextBinding.BindDataContext((TDVM vm) => vm.DeviceName, DualBindingMode.OneWay);
+            _rawTablet.TextBinding.BindDataContext((TDVM vm) => vm.RawTabletData, DualBindingMode.OneWay);
+            _tablet.TextBinding.BindDataContext((TDVM vm) => vm.DecodedTabletData, DualBindingMode.OneWay);
+            _maxReportedPosition.TextBinding.BindDataContext((TDVM vm) => vm.MaxPosition, DualBindingMode.OneWay);
+            _reportRate.TextBinding.BindDataContext((TDVM vm) => vm.ReportRateString, DualBindingMode.OneWay);
+            _reportsRecorded.TextBinding.Convert(null, (int value) => $"{value}").BindDataContext((TDVM vm) => vm.ReportsRecorded, DualBindingMode.OneWay);
+            _tabletVisualizer.ReportDataBinding.BindDataContext((TDVM vm) => vm.ReportData, DualBindingMode.OneWay);
+            _enableDataRecording.CheckedBinding.BindDataContext((TDVM vm) => vm.DataRecordingEnabled);
+            _reportsRecordedGroup.BindDataContext(x => x.Visible, (TDVM vm) => vm.HasReportsRecorded);
+        }
+
+        private void SetupMenu()
+        {
             var decodingSwitchMenuItem = new ButtonMenuItem
             {
                 Text = "Raw Data Mode",
@@ -202,33 +222,13 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                     _activeTablets,
                 },
             };
+        }
 
-            deviceName.TextBinding.BindDataContext((TDVM vm) => vm.DeviceName, DualBindingMode.OneWay);
-            rawTablet.TextBinding.BindDataContext((TDVM vm) => vm.RawTabletData, DualBindingMode.OneWay);
-            tablet.TextBinding.BindDataContext((TDVM vm) => vm.DecodedTabletData, DualBindingMode.OneWay);
-            maxReportedPosition.TextBinding.BindDataContext((TDVM vm) => vm.MaxPosition, DualBindingMode.OneWay);
-            reportRate.TextBinding.BindDataContext((TDVM vm) => vm.ReportRateString, DualBindingMode.OneWay);
-            reportsRecorded.TextBinding.Convert(null, (int value) => $"{value}").BindDataContext((TDVM vm) => vm.ReportsRecorded, DualBindingMode.OneWay);
-            tabletVisualizer.ReportDataBinding.BindDataContext((TDVM vm) => vm.ReportData, DualBindingMode.OneWay);
-            enableDataRecording.CheckedBinding.BindDataContext((TDVM vm) => vm.DataRecordingEnabled);
-            reportsRecordedGroup.BindDataContext(x => x.Visible, (TDVM vm) => vm.HasReportsRecorded);
+        private void ResizeRawBasedOnDecodingMode()
+        {
+            if (DataContext is not TDVM viewmodel) return;
 
-            // handle ActiveTabletsMenuItems updates directly
-            viewmodel.PropertyChanged += (_, args) =>
-            {
-                switch (args.PropertyName)
-                {
-                    case nameof(TDVM.ActiveTabletReportMenuItems):
-                        RefreshActiveTabletsMenu();
-                        break;
-                    default:
-                        return;
-                }
-            };
-
-            App.Driver.DeviceReport += viewmodel.HandleReport;
-            App.Driver.TabletsChanged += HandleTabletsChanged;
-            App.Driver.Instance.SetTabletDebug(true);
+            _rawTabletGroup.Width = GetWidthOfRawTabletDataGroupBox(viewmodel.DecodingMode);
         }
 
         private static void AddDecodingModes(ButtonMenuItem decodingSwitchMenuItem)
@@ -257,11 +257,21 @@ namespace OpenTabletDriver.UX.Windows.Tablet
             _activeTablets.Visible = _activeTablets.Items.Count > 1;
         }
 
-        private readonly ButtonMenuItem _activeTablets = new()
-        {
-            Text = "Debugged Tablets",
-            Visible = false,
-        };
+        // TODO: as extension method on Eto.Drawing.Fonts or some other way?
+        private static SizeF MeasureMonospaceString(string text, int repeats = 1) =>
+            s_MonospaceFont.MeasureString(
+                repeats > 1
+                    ? string.Concat(Enumerable.Repeat(text, repeats))
+                    : text);
+
+        private int GetWidthOfRawTabletDataGroupBox(
+            TabletDebuggerEnums.DecodingMode decodingMode = TabletDebuggerEnums.DecodingMode.Hex) =>
+            decodingMode switch
+            {
+                TabletDebuggerEnums.DecodingMode.Binary => (int)_rawTabletFontSizeBigBinary.Width + SPACING * 6,
+                TabletDebuggerEnums.DecodingMode.Hex => (int)_rawTabletFontSizeSmallHex.Width + SPACING * 6,
+                _ => throw new ArgumentOutOfRangeException(nameof(decodingMode)),
+            };
 
         protected override async void OnClosing(CancelEventArgs e)
         {
