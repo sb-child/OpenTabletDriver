@@ -54,8 +54,8 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, INotifyCollectionChang
                 RaiseChanged(nameof(ActiveTabletReportMenuItems));
 
             var timeDelta = _stopwatch.Restart();
-            ReportRate += (timeDelta.TotalMilliseconds - ReportRate) * 0.01f;
             AdditionalStatistics["Report Rate"].SaveMinMax(timeDelta.TotalMilliseconds, "ms");
+            HandleReportInterval(timeDelta);
 
             var dataObject = value.ToObject();
 
@@ -76,19 +76,15 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, INotifyCollectionChang
 
     public string DeviceName => ReportData?.Tablet.Properties.Name ?? string.Empty;
 
-    // BUG: this is mapped across all reporting tablets
-    private double _reportRate;
-    public double ReportRate
+    private readonly Queue<double> _reportRates = new();
+    private void HandleReportInterval(TimeSpan timeDelta)
     {
-        get => _reportRate;
-        set
-        {
-            RaiseAndSetIfChanged(ref _reportRate, value);
-            RaiseChanged(nameof(ReportRateString));
-        }
-    }
+        _reportRates.Enqueue(timeDelta.TotalMilliseconds);
+        if (_reportRates.Count > 100)
+            _reportRates.Dequeue();
 
-    public string ReportRateString => $"{Math.Round(1000 / _reportRate)}hz";
+        RaiseChanged(nameof(ReportRateString));
+    }
 
     private readonly Statistic _additionalStatistics = new("Additional Statistics");
 
@@ -97,6 +93,9 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, INotifyCollectionChang
         get => _additionalStatistics;
         init => RaiseAndSetIfChanged(ref _additionalStatistics, value);
     }
+
+    private double ReportRateAverage => 1000 / (_reportRates.Count > 0 ? _reportRates.Average() : 0);
+    public string ReportRateString => $"{ReportRateAverage:0.00}";
 
     private string _rawTabletData = string.Empty;
     public string RawTabletData
