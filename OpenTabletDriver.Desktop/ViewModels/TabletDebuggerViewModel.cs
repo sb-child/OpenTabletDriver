@@ -278,7 +278,7 @@ public class Statistic : INotifyPropertyChanged, INotifyCollectionChanged
     private bool _hidden;
     private ObservableCollection<Statistic> _children = [];
 
-    internal Statistic(string name, string? value = null, string? unit = null, string? valueStringFormat = null)
+    internal Statistic(string name, object? value = null, string? unit = null, string? valueStringFormat = null)
     {
         Name = name;
         Value = value;
