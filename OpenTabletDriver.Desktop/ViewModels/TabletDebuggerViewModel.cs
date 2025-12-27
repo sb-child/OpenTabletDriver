@@ -73,6 +73,9 @@ public class TabletDebuggerViewModel : ViewModel, INotifyCollectionChanged, IDis
                 if (auxReport.AuxButtons.Length > 0)
                     AdditionalStatistics["Aux Buttons"].SaveButtons(auxReport.AuxButtons, value.Tablet);
 
+            if (dataObject is ITiltReport tiltReport)
+                AdditionalStatistics["Tilt Axes"].SaveMinMax(tiltReport.Tilt);
+
             if (dataObject is IDeviceReport deviceReport)
             {
                 SetRawTabletData(deviceReport);
