@@ -326,8 +326,6 @@ namespace OpenTabletDriver.UX.Windows.Tablet
             _activeTablets.Visible = _activeTablets.Items.Count > 1;
         }
 
-        private const int _MAX_GROUPS_PER_ROW = 3;
-
         private void UpdateAdditionalStatisticsFields()
         {
             if (DataContext is not TDVM viewmodel) return;
@@ -343,14 +341,17 @@ namespace OpenTabletDriver.UX.Windows.Tablet
 
             int groupCount = relevantGroups.Length;
 
-            for (int chunk = 0; chunk <= groupCount / _MAX_GROUPS_PER_ROW; chunk++)
+            // try to avoid runt elements (sorry to count of 13 users)
+            int maxGroupsPerRow = (groupCount % 4 == 1) ? 3 : 4;
+
+            for (int chunk = 0; chunk <= groupCount / maxGroupsPerRow; chunk++)
             {
                 var container = new StackLayout
                 {
                     Orientation = Orientation.Horizontal,
                 };
 
-                foreach (var group in relevantGroups.Skip(chunk * _MAX_GROUPS_PER_ROW).Take(_MAX_GROUPS_PER_ROW))
+                foreach (var group in relevantGroups.Skip(chunk * maxGroupsPerRow).Take(maxGroupsPerRow))
                 {
                     var children = new StackLayout();
 
