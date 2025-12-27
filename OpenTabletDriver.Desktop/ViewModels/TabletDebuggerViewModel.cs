@@ -42,6 +42,7 @@ public class TabletDebuggerViewModel : ViewModel, INotifyCollectionChanged, IDis
     public DebugReportData? ReportData
     {
         get => _reportData;
+        // TODO: only gather AdditionalStatistics if enabled
         private set
         {
             // early exit if ignored
@@ -235,6 +236,7 @@ public class TabletDebuggerViewModel : ViewModel, INotifyCollectionChanged, IDis
     }
 
     public ReadOnlyCollection<string> SeenTablets => _seenTablets.ToArray().AsReadOnly();
+    // TODO: make this an ObservableHashSet so that we can reset AdditionalStats on changes
     public HashSet<string> IgnoredTablets { get; } = [];
 
     #endregion
@@ -414,12 +416,20 @@ public class Statistic : INotifyPropertyChanged, INotifyCollectionChanged
     /// Retrieve the child group <see cref="Statistic"/> from the current instance
     /// </summary>
     /// <param name="childName">The <see cref="Name"/> of the child</param>
+    /// TODO: make this take an enum or similar instead of a string
     public Statistic this[string childName]
     {
         get
         {
             var rv = Children.FirstOrDefault(x => x.Name == childName);
+
+            // BUG: seems like this addition doesn't cause an update in the viewmodel?
+            //     known workaround: add children as fast as possible (no empty groups!)
+            //     Fixing this seem interesting since the viewmodel currently does some action subscription jank
+            //     with a delay/debounce to ensure that all elements are picked up correctly
+            //     ..but new outer groups seem to be observed? idk lmao
             if (rv == null) Children.Add(rv = new Statistic(childName));
+
             return rv;
         }
     }
@@ -574,6 +584,7 @@ public class Statistic : INotifyPropertyChanged, INotifyCollectionChanged
     {
         if (EqualityComparer<T>.Default.Equals(field, value)) return false;
 
+        // TODO: is this even necessary?
         CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, value, field));
 
         field = value;
