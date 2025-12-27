@@ -269,18 +269,27 @@ public class Statistic : ViewModel, INotifyCollectionChanged
         Children.CollectionChanged += (sender, args) => CollectionChanged?.Invoke(sender, args);
     }
 
+    /// <summary>
+    /// If <c>Children</c> has any elements, this instance effectively becomes a group
+    /// </summary>
     public ObservableCollection<Statistic> Children
     {
         get => _children;
         set => RaiseAndSetIfChanged(ref _children, value);
     }
 
+    /// <summary>
+    /// The key name of the instance
+    /// </summary>
     public string Name
     {
         get => _name;
         private init => RaiseAndSetIfChanged(ref _name, value);
     }
 
+    /// <summary>
+    /// The optional value of the instance
+    /// </summary>
     public object? Value
     {
         get => _value;
@@ -291,12 +300,19 @@ public class Statistic : ViewModel, INotifyCollectionChanged
         }
     }
 
+    /// <summary>
+    /// The unit intended to be appended to the string. Consumed by clients.
+    /// </summary>
     public string? Unit
     {
         get => _unit;
         set => RaiseAndSetIfChanged(ref _unit, value);
     }
 
+    /// <summary>
+    /// The string format to use. See <see cref="string.Format(string, object?[])"/>.
+    /// Used when retrieving <see cref="ValueString"/>
+    /// </summary>
     public string ValueStringFormat
     {
         get => _valueStringFormat;
@@ -316,8 +332,15 @@ public class Statistic : ViewModel, INotifyCollectionChanged
         set => RaiseAndSetIfChanged(ref _hidden, value);
     }
 
+    /// <summary>
+    /// Formatted string of the value using the specified <see cref="ValueStringFormat"/>
+    /// </summary>
     public string ValueString => Value != null ? string.Format(ValueStringFormat, Value) : "<null>";
 
+    /// <summary>
+    /// Retrieve the child group <see cref="Statistic"/> from the current instance
+    /// </summary>
+    /// <param name="childName">The <see cref="Name"/> of the child</param>
     public Statistic this[string childName]
     {
         get
