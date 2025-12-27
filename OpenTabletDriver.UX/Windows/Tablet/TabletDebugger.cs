@@ -369,8 +369,10 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                     Orientation = Orientation.Horizontal,
                 };
 
-                foreach (var group in relevantGroups.Skip(takenElements).Take(takenElements += groupsForThisRow))
+                foreach (var group in relevantGroups.Skip(takenElements).Take(groupsForThisRow))
                 {
+                    takenElements += 1;
+
                     var children = new StackLayout();
 
                     foreach (var groupChild in group.Children.Where(x => !x.Hidden))
