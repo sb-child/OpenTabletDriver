@@ -232,7 +232,11 @@ public class TabletDebuggerViewModel : ViewModel, INotifyCollectionChanged, IDis
 
     private void CleanupLocks()
     {
-        // TODO: print statistics before closing
+        // dump stats
+        if (_tabletRecordingStreamWriter != null && _additionalStatistics.Children.Count > 0)
+            foreach (string s in _additionalStatistics.DumpTreeAsStrings())
+                _tabletRecordingStreamWriter?.WriteLine(s);
+
         _tabletRecordingStreamWriter?.Dispose();
         _tabletRecordingStreamWriter = null;
         _tabletRecordingFileStream?.Dispose();
@@ -363,6 +367,15 @@ public class Statistic : INotifyPropertyChanged, INotifyCollectionChanged
             if (rv == null) Children.Add(rv = new Statistic(childName));
             return rv;
         }
+    }
+
+    public IEnumerable<string> DumpTreeAsStrings()
+    {
+        yield return $"{Name}: {ValueString} {Unit}";
+
+        foreach (var child in Children)
+            foreach (var s in child.DumpTreeAsStrings())
+                yield return $"  {s}";
     }
 
     public Statistic SaveMinMax(double source, string? unit = null, int precision = 2) => SaveMinMax(source, Math.Min, Math.Max, unit, precision);
