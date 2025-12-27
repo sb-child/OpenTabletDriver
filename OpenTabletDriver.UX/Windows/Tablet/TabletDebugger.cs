@@ -327,10 +327,14 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                             int => "10000",
                             float => "1000.000",
                             double => "1000.000",
+                            string => "not too short",
                             _ => "1234",
                         };
 
                         var label = new UnitLabel(s_MonospaceFont, exampleValue, groupChild.Unit);
+
+                        if (groupChild.Value is string)
+                            label.TextAlignment = TextAlignment.Left;
 
                         var item = new DebuggerGroup
                         {

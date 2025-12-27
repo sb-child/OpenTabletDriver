@@ -65,6 +65,10 @@ public class TabletDebuggerViewModel : Desktop.ViewModel, INotifyCollectionChang
             if (dataObject is ITabletReport tabletReport)
                 AdditionalStatistics["Pressure"].SaveMinMax(tabletReport.Pressure);
 
+            if (dataObject is IAuxReport auxReport)
+                if (auxReport.AuxButtons.Length > 0)
+                    AdditionalStatistics["Aux Buttons"].SaveButtons(auxReport.AuxButtons, value.Tablet);
+
             if (dataObject is IDeviceReport deviceReport)
             {
                 SetRawTabletData(deviceReport);
@@ -382,6 +386,71 @@ public class Statistic : Desktop.ViewModel, INotifyCollectionChanged
         }
 
         return this;
+    }
+
+    // null: valid (full 'false -> true -> false' transition happened)
+    // false: only seen false
+    // true: have seen false and then true but haven't seen false after true
+    private readonly Dictionary<int, bool?> _seenButtons = new();
+
+    public void SaveButtons(bool[] auxReportAuxButtons, TabletReference tabletReference)
+    {
+        uint expectedButtons = tabletReference.Properties.Specifications.AuxiliaryButtons?.ButtonCount ?? 0;
+
+        // no buttons expected, don't log anything
+        if (expectedButtons == 0) return;
+
+        // skip if more than 1 button pressed
+        if (auxReportAuxButtons.Take((int)expectedButtons).Count(x => x) > 1) return;
+
+        for (int i = 0; i < expectedButtons; i++)
+        {
+            var buttonStatistic = this[$"{i}"];
+            buttonStatistic.Hidden = true;
+
+            bool buttonState = auxReportAuxButtons[i];
+
+            if (!_seenButtons.TryGetValue(i, out bool? seenButton))
+            {
+                // don't add true-first buttons (click another button first, unless there's no other button to click)
+                if (buttonState && expectedButtons > 1) continue;
+
+                _seenButtons.Add(i, buttonState);
+                buttonStatistic.Value = "Press Down";
+                continue;
+            }
+
+            // null means this button has already been successfully processed
+            if (seenButton == null) continue;
+
+            if (buttonState && !seenButton.Value) // if button pressed and only seen false
+            {
+                _seenButtons[i] = true;
+                buttonStatistic.Value = "Release Button";
+                continue;
+            }
+
+            if (!buttonState && seenButton.Value) // if button released and last known state was true
+            {
+                _seenButtons[i] = null;
+                buttonStatistic.Value = "PASS";
+            }
+        }
+
+        var status = this["Status"];
+        status.Value = string.Join(" ", _seenButtons.Select(SelectEmojisFromButtonBool));
+
+        // TODO/FIXME: don't commit this, it's for debugging breakpoint assistance
+        _ = _seenButtons;
+        return;
+
+        string SelectEmojisFromButtonBool(KeyValuePair<int, bool?> button) =>
+            button.Value switch
+            { // add 1 to key number to display human-friendly number
+                null => $"{button.Key + 1}✔️",
+                false => $"{button.Key + 1}↓️️",
+                true => $"{button.Key + 1}↑",
+            };
     }
 
     public event NotifyCollectionChangedEventHandler? CollectionChanged;
