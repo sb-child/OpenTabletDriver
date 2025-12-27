@@ -410,20 +410,20 @@ public class Statistic : INotifyPropertyChanged, INotifyCollectionChanged
     // true: have seen false and then true but haven't seen false after true
     private readonly Dictionary<int, bool?> _seenButtons = new();
 
-    public void SaveButtons(bool[] auxReportAuxButtons, int expectedButtons)
+    public void SaveButtons(bool[] buttons, int expectedButtons)
     {
         // no buttons expected, don't log anything
         if (expectedButtons == 0) return;
 
         // skip if more than 1 button pressed
-        if (auxReportAuxButtons.Take((int)expectedButtons).Count(x => x) > 1) return;
+        if (buttons.Take(expectedButtons).Count(x => x) > 1) return;
 
         for (int i = 0; i < expectedButtons; i++)
         {
             var buttonStatistic = this[$"{i}"];
             buttonStatistic.Hidden = true;
 
-            bool buttonState = auxReportAuxButtons[i];
+            bool buttonState = buttons[i];
 
             if (!_seenButtons.TryGetValue(i, out bool? seenButton))
             {
