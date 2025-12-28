@@ -60,7 +60,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
 
         private readonly ButtonMenuItem _activeTablets = new() { Text = "Debugged Tablets", Visible = false };
 
-        public int AdditionalStatColumnsPerRow { get; set; } = 3;
+        private int AdditionalStatColumnsPerRow { get; set; } = 3;
 
         public TabletDebugger()
             : base(Application.Instance.MainForm)
@@ -172,7 +172,6 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                     Close();
             };
 
-            // handle ActiveTabletsMenuItems updates directly
             viewmodel.PropertyChanged += (_, args) =>
             {
                 switch (args.PropertyName)
@@ -202,7 +201,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             };
 
-            this.SizeChanged += async (_, args) =>
+            this.SizeChanged += async (_, _) =>
             {
                 // readjust AdditionalStats box on window resize
                 int oldValue = this.AdditionalStatColumnsPerRow;
@@ -560,33 +559,18 @@ namespace OpenTabletDriver.UX.Windows.Tablet
             {
                 Debug.Assert(ReportData != null); // ReportData should already be checked by callers
                 object report = ReportData!.ToObject();
-                var specifications = ReportData?.Tablet.Properties.Specifications;
-                string tabletName = ReportData?.Tablet.Properties.Name;
-                var touchDigitizerSpecification = specifications?.Touch;
-                var absDigitizerSpecification = specifications?.Digitizer;
+                var specifications = ReportData.Tablet.Properties.Specifications;
+                string tabletName = ReportData.Tablet.Properties.Name;
+                var touchDigitizerSpecification = specifications.Touch;
+                var absDigitizerSpecification = specifications.Digitizer;
 
                 if (report is IAbsolutePositionReport absReport)
                 {
-                    if (absDigitizerSpecification != null)
-                    {
                         var tabletScale = CalculateTabletScale(absDigitizerSpecification, scale);
                         var position = new PointF(absReport.Position.X, absReport.Position.Y) * tabletScale;
 
                         var drawRect = RectangleF.FromCenter(position, new SizeF(_SPACING, _SPACING));
                         graphics.FillEllipse(s_AccentColor, drawRect);
-                    }
-                    else
-                    {
-                        string absHashName = tabletName + "abs";
-                        int absHash = absHashName.GetHashCode();
-                        if (!_warnedDigitizers.Contains(absHash))
-                        {
-                            _warnedDigitizers.Add(absHash);
-                            Log.Write("TabletDebugger",
-                                "Digitizer undefined in tablet configuration - unable to draw points",
-                                LogLevel.Warning);
-                        }
-                    }
                 }
 
                 // touch reports
