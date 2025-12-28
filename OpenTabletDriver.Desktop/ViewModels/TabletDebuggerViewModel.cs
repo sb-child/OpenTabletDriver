@@ -341,7 +341,7 @@ public static class TabletDebuggerEnums
     }
 }
 
-public class Statistic : INotifyPropertyChanged
+public class Statistic : INotifyPropertyChanged, IComparable
 {
     private readonly string _name = null!;
     private object? _value;
@@ -612,6 +612,11 @@ public class Statistic : INotifyPropertyChanged
         string groupText = Children.Count > 0 ? "Group" : string.Empty;
         return $"{hiddenText} {groupText} {Name} {ValueString} {Unit}".Trim();
     }
+
+    public int CompareTo(object? obj) =>
+        obj is Statistic statistic
+            ? string.CompareOrdinal(this.Name, statistic.Name)
+            : throw new ArgumentException("Invalid type of object", nameof(obj));
 
     #region Event Handling
 

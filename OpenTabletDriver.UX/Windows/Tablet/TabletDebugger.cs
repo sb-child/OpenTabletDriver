@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
@@ -387,9 +388,10 @@ namespace OpenTabletDriver.UX.Windows.Tablet
 
                 var relevantGroups =
                     viewmodel.AdditionalStatistics.Children.Where(x =>
-                        x.Children.Count > 0 && x.Children.Any(c => !c.Hidden)).ToArray();
+                            x.Children.Count > 0 && x.Children.Any(c => !c.Hidden))
+                        .ToImmutableSortedSet();
 
-                int[] groupsPerRow = Helpers.SplitIntoBuckets(relevantGroups.Length, AdditionalStatColumnsPerRow);
+                int[] groupsPerRow = Helpers.SplitIntoBuckets(relevantGroups.Count, AdditionalStatColumnsPerRow);
 
                 int takenElements = 0;
 
