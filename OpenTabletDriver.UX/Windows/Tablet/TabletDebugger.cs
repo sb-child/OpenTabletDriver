@@ -566,11 +566,11 @@ namespace OpenTabletDriver.UX.Windows.Tablet
 
                 if (report is IAbsolutePositionReport absReport)
                 {
-                        var tabletScale = CalculateTabletScale(absDigitizerSpecification, scale);
-                        var position = new PointF(absReport.Position.X, absReport.Position.Y) * tabletScale;
+                    var tabletScale = CalculateTabletScale(absDigitizerSpecification, scale);
+                    var position = new PointF(absReport.Position.X, absReport.Position.Y) * tabletScale;
 
-                        var drawRect = RectangleF.FromCenter(position, new SizeF(_SPACING, _SPACING));
-                        graphics.FillEllipse(s_AccentColor, drawRect);
+                    var drawRect = RectangleF.FromCenter(position, new SizeF(_SPACING, _SPACING));
+                    graphics.FillEllipse(s_AccentColor, drawRect);
                 }
 
                 // touch reports

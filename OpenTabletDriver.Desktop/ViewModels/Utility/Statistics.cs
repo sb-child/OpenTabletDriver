@@ -139,8 +139,8 @@ namespace OpenTabletDriver.Desktop.ViewModels.Utility
             yield return $"{Name}: {ValueString} {Unit}".TrimEnd();
 
             foreach (var child in Children)
-            foreach (var s in child.DumpTreeAsStrings())
-                yield return $"  {s}";
+                foreach (var s in child.DumpTreeAsStrings())
+                    yield return $"  {s}";
         }
 
         #endregion
