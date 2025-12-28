@@ -271,7 +271,7 @@ public class TabletDebuggerViewModel : ViewModel, IDisposable
         {
             DecodingMode.Hex => ReportFormatter.GetStringRaw(report),
             DecodingMode.Binary => ReportFormatter.GetStringRawAsBinary(report),
-            _ => throw new NotImplementedException(),
+            _ => throw new ArgumentOutOfRangeException(nameof(report)),
         };
     }
 
