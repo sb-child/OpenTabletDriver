@@ -86,46 +86,69 @@ public class TabletDebuggerViewModel : ViewModel, INotifyCollectionChanged, IDis
 
             if (dataObject is IMouseReport mouseReport)
             {
-                AdditionalStatistics["Mouse Position"].SaveMinMax(mouseReport.Position);
-                AdditionalStatistics["Mouse Scroll"].SaveMinMax(mouseReport.Scroll);
-                AdditionalStatistics["Mouse Buttons"].SaveButtons(mouseReport.MouseButtons, (int)(value.Tablet.Properties.Specifications.MouseButtons?.ButtonCount ?? 0));
+                AdditionalStatistics["Mouse Position"]
+                    .SaveMinMax(mouseReport.Position);
+
+                AdditionalStatistics["Mouse Scroll"]
+                    .SaveMinMax(mouseReport.Scroll);
+
+                AdditionalStatistics["Mouse Buttons"]
+                    .SaveButtons(mouseReport.MouseButtons, (int)(value.Tablet.Properties.Specifications.MouseButtons?.ButtonCount ?? 0));
             }
 
             if (dataObject is IProximityReport proximityReport)
             {
-                AdditionalStatistics["Hover Distance"].SaveMinMax(proximityReport.HoverDistance);
-                AdditionalStatistics["Proximity"].SaveButtons([proximityReport.NearProximity], 1);
+                AdditionalStatistics["Hover Distance"]
+                    .SaveMinMax(proximityReport.HoverDistance)
+                    .HideAllChildren();
+
+                AdditionalStatistics["Proximity"]
+                    .SaveButtons([proximityReport.NearProximity], 1)
+                    .HideAllChildren();
             }
 
             if (dataObject is IToolReport toolReport)
             {
-                AdditionalStatistics["Tool ID"].SaveCountAdd1(toolReport.RawToolID.ToString());
-                AdditionalStatistics["Tool Serial"].SaveCountAdd1(toolReport.Serial.ToString());
-                AdditionalStatistics["Tool Type"].SaveCountAdd1(toolReport.Tool.ToString());
+                AdditionalStatistics["Tool ID"]
+                    .SaveCountAdd1(toolReport.RawToolID.ToString())
+                    .HideAllChildren();
+
+                AdditionalStatistics["Tool Serial"]
+                    .SaveCountAdd1(toolReport.Serial.ToString())
+                    .HideAllChildren();
+
+                AdditionalStatistics["Tool Type"]
+                    .SaveCountAdd1(toolReport.Tool.ToString())
+                    .HideAllChildren();
             }
 
             if (dataObject is IAuxReport auxReport)
                 if (auxReport.AuxButtons.Length > 0)
-                    AdditionalStatistics["Aux Buttons"].SaveButtons(auxReport.AuxButtons,
-                        (int)(value.Tablet.Properties.Specifications.AuxiliaryButtons?.ButtonCount ?? 0));
+                    AdditionalStatistics["Aux Buttons"]
+                        .SaveButtons(auxReport.AuxButtons,
+                            (int)(value.Tablet.Properties.Specifications.AuxiliaryButtons?.ButtonCount ?? 0));
 
             if (dataObject is ITiltReport tiltReport)
-                AdditionalStatistics["Tilt Axes"].SaveMinMax(tiltReport.Tilt);
+                AdditionalStatistics["Tilt Axes"]
+                    .SaveMinMax(tiltReport.Tilt);
 
             if (dataObject is IAbsoluteWheelReport absoluteWheelReport)
                 for (int i = 0; i < absoluteWheelReport.AnalogPositions.Length; i++)
                     if (absoluteWheelReport.AnalogPositions[i].HasValue)
-                        AdditionalStatistics[$"Abs. Wheel {i} Position"].SaveMinMax(absoluteWheelReport.AnalogPositions[i]!.Value);
+                        AdditionalStatistics[$"Abs. Wheel {i} Position"]
+                            .SaveMinMax(absoluteWheelReport.AnalogPositions[i]!.Value);
 
             if (dataObject is IRelativeWheelReport relativeWheelReport)
                 for (int i = 0; i < relativeWheelReport.AnalogDeltas.Length; i++)
                     if (relativeWheelReport.AnalogDeltas[i] != 0)
-                        AdditionalStatistics[$"Rel. Wheel {i} Position"].SaveMinMax(relativeWheelReport.AnalogDeltas[i]);
+                        AdditionalStatistics[$"Rel. Wheel {i} Position"].
+                            SaveMinMax(relativeWheelReport.AnalogDeltas[i]);
 
             if (dataObject is IWheelButtonReport wheelButtonReport)
                 for (int i = 0; i < wheelButtonReport.WheelButtons.Length; i++)
-                    AdditionalStatistics["Wheel Buttons"].SaveButtons(wheelButtonReport.WheelButtons[i],
-                        (int)(value.Tablet.Properties.Specifications.Wheels?[i].ButtonCount ?? 0));
+                    AdditionalStatistics["Wheel Buttons"].
+                        SaveButtons(wheelButtonReport.WheelButtons[i],
+                            (int)(value.Tablet.Properties.Specifications.Wheels?[i].ButtonCount ?? 0));
 
             if (dataObject is IDeviceReport deviceReport)
             {
