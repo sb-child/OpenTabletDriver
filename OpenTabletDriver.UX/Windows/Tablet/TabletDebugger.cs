@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -17,6 +18,8 @@ using OpenTabletDriver.Plugin;
 using OpenTabletDriver.Plugin.Tablet;
 using OpenTabletDriver.Plugin.Tablet.Touch;
 using OpenTabletDriver.UX.Controls.Generic;
+
+#nullable enable
 
 namespace OpenTabletDriver.UX.Windows.Tablet
 {
@@ -184,9 +187,8 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                         return;
                 }
             };
-#nullable enable
+
             CancellationTokenSource? cts = null;
-#nullable restore
 
             viewmodel.StatisticsCollectionChanged += void (sender, args) =>
             {
@@ -344,7 +346,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
             }
         }
 
-        private static void HandleCheckCommand(object sender, EventArgs e)
+        private static void HandleCheckCommand(object? sender, EventArgs e)
         {
             if (sender is not CheckCommand checkCommand) return;
 
@@ -496,7 +498,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
             Title = sb.ToString();
         }
 
-        private void HandleTabletsChanged(object sender, IEnumerable<TabletReference> tablets) =>
+        private void HandleTabletsChanged(object? sender, IEnumerable<TabletReference> tablets) =>
             Application.Instance.AsyncInvoke(() => SetTitle(tablets));
 
         private class DebuggerGroup : Group
@@ -508,14 +510,14 @@ namespace OpenTabletDriver.UX.Windows.Tablet
         {
             private static readonly Color s_AccentColor = SystemColors.Highlight;
 
-            private DebugReportData ReportData { set; get; }
+            private DebugReportData? ReportData { set; get; }
             private readonly List<int> _warnedDigitizers = [];
 
-            public BindableBinding<TabletVisualizer, DebugReportData> ReportDataBinding
+            public BindableBinding<TabletVisualizer, DebugReportData?> ReportDataBinding
             {
                 get
                 {
-                    return new BindableBinding<TabletVisualizer, DebugReportData>(
+                    return new BindableBinding<TabletVisualizer, DebugReportData?>(
                         this,
                         c => c.ReportData,
                         (c, v) => c.ReportData = v
@@ -556,7 +558,8 @@ namespace OpenTabletDriver.UX.Windows.Tablet
 
             private void DrawPosition(Graphics graphics, float scale)
             {
-                object report = ReportData?.ToObject();
+                Debug.Assert(ReportData != null); // ReportData should already be checked by callers
+                object report = ReportData!.ToObject();
                 var specifications = ReportData?.Tablet.Properties.Specifications;
                 string tabletName = ReportData?.Tablet.Properties.Name;
                 var touchDigitizerSpecification = specifications?.Touch;
