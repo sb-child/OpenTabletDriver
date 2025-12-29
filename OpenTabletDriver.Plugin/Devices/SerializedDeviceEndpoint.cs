@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace OpenTabletDriver.Plugin.Devices
@@ -55,7 +56,7 @@ namespace OpenTabletDriver.Plugin.Devices
             string title = name.Contains(Manufacturer) ? name : $"{Manufacturer} {name}";
 
             // hex value preferable (but not consistent.. yet?)
-            return $"[0x{VendorID:x4}, 0x{ProductID:x4}] {title}";
+            return $"[0x{VendorID:x4} 0x{ProductID:x4}]{Environment.NewLine}{title}";
         }
     }
 }
