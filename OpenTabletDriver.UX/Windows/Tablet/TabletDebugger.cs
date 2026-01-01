@@ -328,6 +328,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
             _rawTabletDataGroup.Width = GetWidthOfRawTabletDataGroupBox(viewmodel.DecodingMode);
         }
 
+        // TODO: move to utility class
         private static IEnumerable<CheckMenuItem> GenerateTabletFilterMenuItem(IReadOnlyCollection<string> seenIDs, HashSet<string> ignoredIDs)
         {
             foreach (string id in seenIDs)
@@ -349,6 +350,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
             }
         }
 
+        // TODO: move to utility class
         private static void HandleCheckCommand(object? sender, EventArgs e)
         {
             if (sender is not CheckCommand checkCommand) return;
@@ -371,6 +373,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
             UpdateFilterList(_debuggedReports, viewmodel.SeenReports, viewmodel.IgnoredReports);
         }
 
+        // TODO: move to utility class
         private static void UpdateFilterList(ButtonMenuItem menuItem, IReadOnlyCollection<string> seenIDs, HashSet<string> ignoredIDs)
         {
             menuItem.Items.Clear();
