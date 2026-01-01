@@ -187,14 +187,14 @@ public class TabletDebuggerViewModel : ViewModel, IDisposable
     {
         get
         {
-           if (_deviceReport == null) return string.Empty;
+            if (_deviceReport == null) return string.Empty;
 
-           return DecodingMode switch
-           {
-               DecodingMode.Hex => ReportFormatter.GetStringRaw(_deviceReport),
-               DecodingMode.Binary => ReportFormatter.GetStringRawAsBinary(_deviceReport),
-               _ => throw new ArgumentOutOfRangeException(nameof(DecodingMode)),
-           };
+            return DecodingMode switch
+            {
+                DecodingMode.Hex => ReportFormatter.GetStringRaw(_deviceReport),
+                DecodingMode.Binary => ReportFormatter.GetStringRawAsBinary(_deviceReport),
+                _ => throw new ArgumentOutOfRangeException(nameof(DecodingMode)),
+            };
         }
     }
 

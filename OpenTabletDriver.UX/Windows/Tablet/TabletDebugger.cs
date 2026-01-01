@@ -53,7 +53,8 @@ namespace OpenTabletDriver.UX.Windows.Tablet
         private readonly DebuggerGroup _rawTabletDataGroup;
         private readonly DebuggerGroup _tabletVisualizerGroup = new()
         {
-            Text = "Visualizer", MinimumSize = new Size(-1, 200),
+            Text = "Visualizer",
+            MinimumSize = new Size(-1, 200),
         };
         private readonly Group _additionalStatsGroup = new()
         {
