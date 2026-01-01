@@ -93,7 +93,6 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                             {
                                 Padding = _SPACING,
                                 Spacing = _SPACING,
-                                MinimumSize = new Size(240, -1),
                                 Items =
                                 {
                                     new StackLayoutItem
