@@ -13,12 +13,6 @@ namespace OpenTabletDriver.UX.Controls
     {
         public FloatSlider()
         {
-            var slider = new Slider
-            {
-                MinValue = Minimum,
-                MaxValue = Maximum
-            };
-
             var nb = new FloatNumberBox();
 
             slider.Bind(
@@ -38,9 +32,13 @@ namespace OpenTabletDriver.UX.Controls
                     new StackLayoutItem(nb)
                 }
             };
+
+            this.slider.MaxValue = 100; // as default only
         }
 
         public event EventHandler<EventArgs> ValueChanged;
+
+        private readonly Slider slider = new();
 
         private float value;
         public float Value
@@ -53,11 +51,17 @@ namespace OpenTabletDriver.UX.Controls
             get => this.value;
         }
 
-        [DefaultValue(0)]
-        public int Minimum { set; get; } = 0;
+        public int Minimum
+        {
+            get => this.slider.MinValue;
+            set => this.slider.MinValue = value;
+        }
 
-        [DefaultValue(100)]
-        public int Maximum { set; get; } = 100;
+        public int Maximum
+        {
+            get => this.slider.MaxValue;
+            set => this.slider.MaxValue = value;
+        }
 
         public BindableBinding<FloatSlider, float> ValueBinding
         {
