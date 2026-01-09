@@ -19,6 +19,11 @@
         "StepCount": 24,
         "IsRelative": true,
         "ButtonCount": 0
+      },
+      {
+        "StepCount": 24,
+        "IsRelative": true,
+        "ButtonCount": 0
       }
     ]
   },
