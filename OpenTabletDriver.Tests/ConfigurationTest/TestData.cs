@@ -59,7 +59,7 @@ namespace OpenTabletDriver.Tests.ConfigurationTest
 
         private static IEnumerable<TabletWithWheel> relativeWheelsFromConfigs =>
             from config in configsWithWheels
-            from wheel in config.Specifications.Wheels
+            from wheel in config.Specifications.Wheels!
             where wheel.IsRelative
             select new TabletWithWheel(config.Name, wheel);
 
