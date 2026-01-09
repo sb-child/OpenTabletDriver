@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 #nullable enable
@@ -19,9 +18,9 @@ namespace OpenTabletDriver.Plugin.Tablet
         public float? AngleOfZeroReading { get; set; }
 
         /// <summary>
-        /// Specifications for the wheel buttons
+        /// Amount of wheel buttons
         /// </summary>
-        [Required(ErrorMessage = $"{nameof(Buttons)} must be defined")]
-        public ButtonSpecifications Buttons { set; get; } = new ButtonSpecifications();
+        [Required(ErrorMessage = $"{nameof(ButtonCount)} must be defined")]
+        public uint ButtonCount { set; get; }
     }
 }

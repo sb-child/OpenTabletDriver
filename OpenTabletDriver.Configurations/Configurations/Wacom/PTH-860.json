@@ -19,9 +19,7 @@
         "StepCount": 71,
         "IsRelative": false,
         "AngleOfZeroReading": 90.0,
-        "Buttons": {
-          "ButtonCount": 1
-        }
+        "ButtonCount": 1
       }
     ]
   },
