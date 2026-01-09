@@ -36,8 +36,10 @@
 | Huion HS610                        |     Supported     |
 | Huion Kamvas 12                    |     Supported     |
 | Huion Kamvas 13                    |     Supported     |
+| Huion Kamvas 13 (Gen 3)            |     Supported     | Function-switch buttons act as regular auxiliary keys.
 | Huion Kamvas 16                    |     Supported     |
 | Huion Kamvas 16 (2021)             |     Supported     |
+| Huion Kamvas 16 (Gen 3)            |     Supported     |
 | Huion Kamvas 20                    |     Supported     |
 | Huion Kamvas 22                    |     Supported     |
 | Huion Kamvas 22 Plus               |     Supported     |
@@ -140,7 +142,9 @@
 | Wacom PTK-470                      |     Supported     |
 | Wacom PTK-540WL                    |     Supported     |
 | Wacom PTK-640                      |     Supported     |
+| Wacom PTK-670                      |     Supported     |
 | Wacom PTK-840                      |     Supported     |
+| Wacom PTK-870                      |     Supported     |
 | Wacom PTK-1240                     |     Supported     |
 | Wacom XD-0405-U                    |     Supported     |
 | Wacom XD-0608-U                    |     Supported     |
@@ -255,8 +259,6 @@
 | Huion HC16                         |  Missing Features | Wheel is not yet supported.
 | Huion HC16 (Variant 2)             |  Missing Features | Wheel is not yet supported.
 | Huion HS611                        |  Missing Features | Touch bar is not yet supported.
-| Huion Kamvas 13 (Gen 3)            |  Missing Features | Both wheels function as a single wheel, function-switch buttons act as regular auxiliary keys.
-| Huion Kamvas 16 (Gen 3)            |  Missing Features | Both wheels function as a single wheel.
 | Huion Kamvas Pro 12                |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 13                |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 16                |  Missing Features | Touch bar is not yet supported.
@@ -304,8 +306,6 @@
 | Wacom PTH-850                      |  Missing Features | Wheel is not yet supported.
 | Wacom PTK-450                      |  Missing Features | Wheel is not yet supported.
 | Wacom PTK-650                      |  Missing Features | Wheel is not yet supported.
-| Wacom PTK-670                      |  Missing Features | Left and right wheels map to the same control.
-| Wacom PTK-870                      |  Missing Features | Left and right wheels map to the same control.
 | Wacom PTZ-1230                     |  Missing Features | Touch bars are not yet supported.
 | Wacom PTZ-1231W                    |  Missing Features | Touch bars are not yet supported.
 | Wacom PTZ-431W                     |  Missing Features | Touch bars are not yet supported.
