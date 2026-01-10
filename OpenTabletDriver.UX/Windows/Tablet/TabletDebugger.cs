@@ -463,12 +463,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                     outerContainer.Items.Add(container);
                 }
 
-                await Application.Instance.InvokeAsync(delegate
-                {
-                    if (!_additionalStatsGroup.Content?.IsDisposed ?? false)
-                        _additionalStatsGroup.Content.Dispose();
-                    _additionalStatsGroup.Content = outerContainer;
-                });
+                await Application.Instance.InvokeAsync(() => _additionalStatsGroup.Content = outerContainer);
             }).ConfigureAwait(false);
         }
 
