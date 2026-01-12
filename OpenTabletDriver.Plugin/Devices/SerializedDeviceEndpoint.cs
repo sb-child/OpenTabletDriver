@@ -48,15 +48,5 @@ namespace OpenTabletDriver.Plugin.Devices
         public bool CanOpen { get; set; }
 
         public IDictionary<string, string> DeviceAttributes { get; set; }
-
-        public override string ToString()
-        {
-            // don't include manufacturer if it's already in the product name (e.g. Razer)
-            string name = ProductName ?? FriendlyName;
-            string title = name.Contains(Manufacturer) ? name : $"{Manufacturer} {name}";
-
-            // hex value preferable (but not consistent.. yet?)
-            return $"[0x{VendorID:x4} 0x{ProductID:x4}]{Environment.NewLine}{title}";
-        }
     }
 }

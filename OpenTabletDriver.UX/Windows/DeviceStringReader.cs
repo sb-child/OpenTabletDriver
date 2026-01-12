@@ -107,6 +107,16 @@ namespace OpenTabletDriver.UX.Windows
                 App.Driver.Instance.GetDevices().Result
                     .Where(x => x.CanOpen)
                     .DistinctBy(x => new { x.VendorID, x.ProductID });
+
+            this.deviceDropDown.ItemTextBinding = Binding.Delegate<SerializedDeviceEndpoint, string>(x =>
+            {
+                // don't include manufacturer if it's already in the product name (e.g. Razer)
+                string name = x.ProductName ?? x.FriendlyName;
+                string title = name.Contains(x.Manufacturer) ? name : $"{x.Manufacturer} {name}";
+
+                // hex value preferable (but not consistent.. yet?)
+                return $"[0x{x.VendorID:x4} 0x{x.ProductID:x4}]{Environment.NewLine}{title}";
+            });
         }
 
         private const int NUMERICBOX_WIDTH = 150;
