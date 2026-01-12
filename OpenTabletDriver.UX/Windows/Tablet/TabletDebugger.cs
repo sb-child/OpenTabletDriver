@@ -377,8 +377,12 @@ namespace OpenTabletDriver.UX.Windows.Tablet
         // TODO: move to utility class
         private static void UpdateFilterList(ButtonMenuItem menuItem, IReadOnlyCollection<string> seenIDs, HashSet<string> ignoredIDs)
         {
-            menuItem.Items.Clear();
+            int menuItemCount = menuItem.Items.Count;
             menuItem.Items.AddRange(GenerateTabletFilterMenuItem(seenIDs, ignoredIDs));
+            for (int i = 0; i < menuItemCount; i++)
+            {
+                menuItem.Items.RemoveAt(0);
+            }
 
             // hide if only 1 tablet active
             menuItem.Visible = menuItem.Items.Count > 1;
