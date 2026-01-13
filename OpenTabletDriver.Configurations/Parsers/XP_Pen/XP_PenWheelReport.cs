@@ -19,6 +19,9 @@ namespace OpenTabletDriver.Configurations.Parsers.XP_Pen
             {
                 Delta = -1;
             }
+            else {
+                Delta = null;
+            }
             // The XP-Pen Deco 03 wheel sequence is goofy. To track clockwise vs counterclockwise, the previous
             // report is needed. For example, if report[wheelIndex] is 0xC0, and the previous report has report[wheelIndex]
             // set to 0x40, then the wheel is going clockwise. If however the previous report has report[wheelIndex]
@@ -28,38 +31,27 @@ namespace OpenTabletDriver.Configurations.Parsers.XP_Pen
             // anyone looking at this.
             //
             // Perhaps only God knows why on earth the firmware devs for the Deco 03 did it this way.
-            else if (report[wheelIndex] == 0x00) {
-                if (previousWheelByte == 0x80) {
+            switch ((report[wheelIndex], previousWheelByte)) {
+                case (0x00, 0x80):
+                case (0x40, 0x00):
+                case (0xC0, 0x40):
+                case (0x80, 0x40):
                     Delta = 1;
-                } else if (previousWheelByte == 0x40) {
+                    break;
+
+                case (0x00, 0x40):
+                case (0x40, 0xC0):
+                case (0xC0, 0x80):
+                case (0x80, 0x00):
                     Delta = -1;
-                }
+                    break;
+
+                default:
+                    Delta = null;
+                    break;
             }
-            else if (report[wheelIndex] == 0x40) {
-                if (previousWheelByte == 0x00) {
-                    Delta = 1;
-                } else if (previousWheelByte == 0xC0) {
-                    Delta = -1;
-                }
-            }
-            else if (report[wheelIndex] == 0xC0) {
-                if (previousWheelByte == 0x40) {
-                    Delta = 1;
-                } else if (previousWheelByte == 0x80) {
-                    Delta = -1;
-                }
-            }
-            else if (report[wheelIndex] == 0x80) {
-                if (previousWheelByte == 0x40) {
-                    Delta = 1;
-                } else if (previousWheelByte == 0x00) {
-                    Delta = -1;
-                }
-            }
-            else
-            {
-                Delta = null;
-            }
+
+            // Set for the next report
             previousWheelByte = report[wheelIndex];
         }
 
