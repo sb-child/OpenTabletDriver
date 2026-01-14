@@ -114,6 +114,9 @@ namespace OpenTabletDriver.UX.Windows
                 string name = x.ProductName ?? x.FriendlyName;
                 string title = name.Contains(x.Manufacturer) ? name : $"{x.Manufacturer} {name}";
 
+                if (title.Length >= 32) // truncate if too long, used in GUI
+                    title = title[..32] + "...";
+
                 // hex value preferable (but not consistent.. yet?)
                 return $"[0x{x.VendorID:x4} 0x{x.ProductID:x4}]{Environment.NewLine}{title}";
             });
