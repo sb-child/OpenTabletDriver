@@ -69,7 +69,7 @@ namespace OpenTabletDriver.UX
                     var timeout = Task.Delay(TimeSpan.FromSeconds(15));
                     var result = await Task.WhenAny(Driver.Connect(), timeout);
 
-                    if (result != timeout)
+                    if (result != timeout || Driver.IsConnected)
                         break; // daemon connected
 
                     var message = SystemInterop.CurrentPlatform switch
@@ -83,7 +83,9 @@ namespace OpenTabletDriver.UX
                     var dialogResult = MessageBox.Show(this, message, "Daemon Connection Error",
                         MessageBoxButtons.OKCancel, MessageBoxType.Error);
 
-                    if (dialogResult == DialogResult.Cancel && !Driver.IsConnected)
+                    if (Driver.IsConnected) break;
+
+                    if (dialogResult == DialogResult.Cancel)
                         Environment.Exit(1);
 
                     if (App.EnableDaemonWatchdog)
