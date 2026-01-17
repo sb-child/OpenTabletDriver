@@ -29,5 +29,7 @@
     <string>OpenTabletDriver.UX.MacOS</string>
     <key>NSRequiresAquaSystemAppearance</key>
     <string>False</string>
+    <key>LSUIElement</key>
+    <string>true</string>
   </dict>
 </plist>
