@@ -73,9 +73,11 @@ namespace OpenTabletDriver.Desktop.Binding
         {
             for (int i = 0; i < relativeWheelReport.AnalogDeltas.Length; i++)
             {
+                int reportDelta = relativeWheelReport.AnalogDeltas[i];
+
                 if (Wheels.TryGetValue(i, out var wheelBinding))
-                    wheelBinding.HandleRelativeWheel(tabletReference, relativeWheelReport, relativeWheelReport.AnalogDeltas[i]);
-                else if (_triedRelativeWheels.Add(i))
+                    wheelBinding.HandleRelativeWheel(tabletReference, relativeWheelReport, reportDelta);
+                else if (reportDelta != 0 && _triedRelativeWheels.Add(i))
                 {
                     Log.Write(nameof(BindingHandler),
                         $"Tablet '{tablet.Properties.Name}' is missing wheel declarations for wheel '{i}' to handle its wheel bindings",
@@ -90,11 +92,11 @@ namespace OpenTabletDriver.Desktop.Binding
         {
             for (int i = 0; i < absoluteWheelReport.AnalogPositions.Length; i++)
             {
+                uint? reportPosition = absoluteWheelReport.AnalogPositions[i];
+
                 if (Wheels.TryGetValue(i, out var wheelBinding))
-                    wheelBinding.HandleAbsoluteWheel(tabletReference,
-                        absoluteWheelReport,
-                        absoluteWheelReport.AnalogPositions[i]);
-                else if (_triedAbsoluteWheels.Add(i))
+                    wheelBinding.HandleAbsoluteWheel(tabletReference, absoluteWheelReport, reportPosition);
+                else if (reportPosition != null && _triedAbsoluteWheels.Add(i))
                 {
                     Log.Write(nameof(BindingHandler),
                         $"Tablet '{tablet.Properties.Name}' is missing wheel declarations for wheel '{i}' to handle its wheel bindings",
