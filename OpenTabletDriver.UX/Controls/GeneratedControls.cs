@@ -62,6 +62,7 @@ namespace OpenTabletDriver.UX.Controls
 
         private static Control GetControlForSetting(PropertyInfo property, DirectBinding<PluginSetting> binding)
         {
+            Control rv = null;
             if (property.PropertyType == typeof(string))
             {
                 if (property.GetCustomAttribute<PropertyValidatedAttribute>() is PropertyValidatedAttribute validateAttr)
@@ -71,13 +72,13 @@ namespace OpenTabletDriver.UX.Controls
                         DataStore = validateAttr.GetValue<IEnumerable<string>>(property),
                     };
                     comboBox.SelectedItemBinding.Bind(binding.Convert<string>(property));
-                    return comboBox;
+                    rv = comboBox;
                 }
                 else
                 {
                     var textBox = new TextBox();
                     textBox.TextBinding.Bind(binding.Convert<string>(property));
-                    return textBox;
+                    rv = textBox;
                 }
             }
             else if (property.PropertyType == typeof(bool))
@@ -96,7 +97,7 @@ namespace OpenTabletDriver.UX.Controls
                         v => new PluginSetting(property, v)
                     )
                 );
-                return checkbox;
+                rv = checkbox;
             }
             else if (property.PropertyType == typeof(float))
             {
@@ -111,13 +112,18 @@ namespace OpenTabletDriver.UX.Controls
                     if (!binding.DataValue.HasValue)
                         binding.DataValue.SetValue(sliderAttr.DefaultValue);
                 }
-                return tb;
+                rv = tb;
             }
             else if (genericControls.TryGetValue(property.PropertyType, out var getGenericTextBox))
             {
-                return getGenericTextBox(property, binding);
+                rv = getGenericTextBox(property, binding);
             }
-            throw new NotSupportedException($"'{property.PropertyType}' is not supported for generated controls.");
+
+            if (rv == null)
+                throw new NotSupportedException($"'{property.PropertyType}' is not supported for generated controls.");
+
+            rv.UpdateBindings(); // avoid empty/default values becoming null in settings
+            return rv;
         }
 
         private static Control ApplyModifierAttribute(Control control, ModifierAttribute attribute)
