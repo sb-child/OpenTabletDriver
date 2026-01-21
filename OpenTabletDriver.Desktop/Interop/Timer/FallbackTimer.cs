@@ -29,7 +29,8 @@ namespace OpenTabletDriver.Desktop.Interop.Timer
 
             this.threadTimer = new Thread(ThreadMain)
             {
-                Priority = ThreadPriority.AboveNormal
+                Priority = ThreadPriority.AboveNormal,
+                IsBackground = true,
             };
             this.threadTimer.Start();
         }
