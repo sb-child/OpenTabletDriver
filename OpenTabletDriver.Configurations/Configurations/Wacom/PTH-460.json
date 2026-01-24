@@ -16,8 +16,7 @@
     },
     "Wheels": [
       {
-        "StepCount": 71,
-        "IsRelative": false,
+        "AbsoluteWheelMax": 71,
         "AngleOfZeroReading": 90.0,
         "ButtonCount": 1
       }

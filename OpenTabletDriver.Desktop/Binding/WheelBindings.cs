@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using OpenTabletDriver.Plugin.Tablet;
 
@@ -8,6 +9,7 @@ namespace OpenTabletDriver.Desktop.Binding
     /// <summary>
     /// Bindings associated with a single wheel
     /// </summary>
+    // TODO: probably needs support for absolute wheels that don't start at 0
     public class WheelBindings
     {
         private readonly uint _wheelSteps;
@@ -17,10 +19,13 @@ namespace OpenTabletDriver.Desktop.Binding
 
         public WheelBindings(WheelSpecifications wheelSpec)
         {
-            _wheelSteps = wheelSpec.StepCount;
-            _halfWheelSteps = wheelSpec.StepCount / 2d;
+            uint stepCount = wheelSpec.StepCount ??
+                             throw new InvalidOperationException("Could not determine step count from wheel");
+
+            _wheelSteps = stepCount;
+            _halfWheelSteps = stepCount / 2d;
             _threeHalfWheelSteps = _halfWheelSteps * 3d;
-            _stepsPerTick = 360d / (wheelSpec.StepCount + 1);
+            _stepsPerTick = 360d / (stepCount + 1);
         }
 
         public Dictionary<int, BindingState?> WheelButtons { get; } = new();
@@ -35,7 +40,7 @@ namespace OpenTabletDriver.Desktop.Binding
         /// <see cref="DeltaThresholdBindingState"/> depending on consecutive position deltas.
         /// <para/>
         /// The position will be normalized to 360 degrees, so make sure that
-        /// your <see cref="AnalogSpecifications.StepCount"/> is correct.
+        /// your <see cref="WheelSpecifications.StepCount"/> is correct.
         /// <para/>
         /// You must send at least 2 consecutive different positions to properly invoke
         /// the appropriate binding state.
@@ -61,7 +66,7 @@ namespace OpenTabletDriver.Desktop.Binding
                 return;
             }
 
-            HandleWheelDelta(tabletReference, report, ComputeWheelDelta(_lastAbsolutePosition.Value, position.Value));
+            HandleWheelDelta(tabletReference, report, ComputeAbsoluteWheelDelta(_lastAbsolutePosition.Value, position.Value));
 
             _lastAbsolutePosition = position.Value;
         }
@@ -110,13 +115,13 @@ namespace OpenTabletDriver.Desktop.Binding
         /// <summary>
         /// Compute the delta, accounting for values wrapping around
         ///
-        /// Suppose a wheel with <see cref="AnalogSpecifications.StepCount"/> of <c>71</c>,
+        /// Suppose a wheel with <see cref="WheelSpecifications.AbsoluteWheelMax"/> of <c>71</c>,
         /// going from <c>71</c> to <c>1</c> would equal <c>2</c> steps.
         /// </summary>
         /// <param name="from">The previous position</param>
         /// <param name="to">The current position</param>
         /// <returns>The delta between the 2 positions, accounting for wheel step counts</returns>
-        private int ComputeWheelDelta(uint from, uint to) =>
+        private int ComputeAbsoluteWheelDelta(uint from, uint to) =>
             (int)((((int)to - from + _threeHalfWheelSteps) % _wheelSteps) - _halfWheelSteps);
     }
 }

@@ -11,7 +11,7 @@ namespace OpenTabletDriver.Desktop.Profiles
     public class WheelBindingSettings : ViewModel
     {
         private PluginSettingStoreCollection _wheelButtons = [];
-        private float _ct = 15, _cct = 15;
+        private float _ct = 15, _cct = 15; // TODO: default values for these based on entry wheel
 
         private PluginSettingStore?
             _clockwiseRotation,

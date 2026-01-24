@@ -57,14 +57,16 @@ namespace OpenTabletDriver.Tests.ConfigurationTest
             where config.Specifications.Wheels is { Count: > 0 }
             select config;
 
-        private static IEnumerable<TabletWithWheel> relativeWheelsFromConfigs =>
+        private static IEnumerable<TabletWithWheel> wheelsFromConfigs =>
             from config in configsWithWheels
-            from wheel in config.Specifications.Wheels!
-            where wheel.IsRelative
+            from wheel in config.Specifications.Wheels! // null warning silenced because it's checked in referenced property
             select new TabletWithWheel(config.Name, wheel);
 
+        public static TheoryData<TabletWithWheel> WheelsFromConfigs =>
+            wheelsFromConfigs.ToTheoryData();
+
         public static TheoryData<TabletWithWheel> RelativeWheelsFromConfigs =>
-            relativeWheelsFromConfigs.ToTheoryData();
+            wheelsFromConfigs.Where(x => x.WheelSpecifications.RelativeWheelSteps.HasValue).ToTheoryData();
 
         public record TabletWithWheel(string Name, WheelSpecifications WheelSpecifications);
 
