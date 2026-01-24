@@ -40,15 +40,17 @@ namespace OpenTabletDriver.UX.Controls
 
         private readonly Slider slider = new();
 
-        private float value;
+        private float _value;
+        private bool _clampValue;
+
         public float Value
         {
             set
             {
-                this.value = value;
+                this._value = _clampValue ? Math.Clamp(value, Minimum, Maximum) : value;
                 ValueChanged?.Invoke(this, new EventArgs());
             }
-            get => this.value;
+            get => this._value;
         }
 
         public int Minimum
@@ -74,6 +76,21 @@ namespace OpenTabletDriver.UX.Controls
             get => slider.SnapToTick;
             set => slider.SnapToTick = value;
         }
+
+        /// <summary>
+        /// Clamps <see cref="Value"/> to <see cref="Minimum"/> and <see cref="Maximum"/>
+        /// </summary>
+        public bool ClampValue
+        {
+            get => _clampValue;
+            set
+            {
+                _value = Clamp(_value);
+                _clampValue = value;
+            }
+        }
+
+        private float Clamp(float val) => Math.Clamp(val, Minimum, Maximum);
 
         public BindableBinding<FloatSlider, float> ValueBinding
         {

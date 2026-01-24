@@ -54,6 +54,7 @@ namespace OpenTabletDriver.UX.Controls.Bindings
                                             Minimum = 1,
                                             Maximum = 360,
                                             SnapToTick = true,
+                                            ClampValue = true,
                                         }
                                     }
                                 }
@@ -85,6 +86,7 @@ namespace OpenTabletDriver.UX.Controls.Bindings
                                             Minimum = 1,
                                             Maximum = 360,
                                             SnapToTick = true,
+                                            ClampValue = true,
                                         }
                                     }
                                 }
