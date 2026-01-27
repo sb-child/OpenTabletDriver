@@ -9,8 +9,8 @@
             "cwd": "${workspaceFolder}/OpenTabletDriver.Daemon/bin/Debug/net8.0",
             "program": "${workspaceFolder}/OpenTabletDriver.Daemon/bin/Debug/net8.0/OpenTabletDriver.Daemon.dll",
             "args": [
-              "--config",
-              "${workspaceFolder}/bin/Configurations"
+              "--appdata",
+              "${workspaceFolder}/bin/userdata"
             ],
             "console": "internalConsole",
             "stopAtEntry": false
