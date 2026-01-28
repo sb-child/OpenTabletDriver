@@ -52,6 +52,15 @@ namespace OpenTabletDriver.Tests.ConfigurationTest
 
         public static TheoryData<string> ParsersInConfigs => parsersInConfigs.Distinct().ToTheoryData();
 
+        private static IEnumerable<TabletsDefiningVendor> vendorsInConfigs => from configuration in DeviceConfigurationProvider.TabletConfigurations
+                                                                              from identifier in configuration.DigitizerIdentifiers.Concat(configuration.AuxiliaryDeviceIdentifiers ?? Enumerable.Empty<DeviceIdentifier>())
+                                                                              group configuration by identifier.VendorID into configs
+                                                                              select new TabletsDefiningVendor(configs.Key, configs.ToList());
+
+        public static TheoryData<TabletsDefiningVendor> VendorsInConfigs => vendorsInConfigs.ToTheoryData();
+
+        public record TabletsDefiningVendor(int VendorID, IEnumerable<TabletConfiguration> Tablets);
+
         #region Schema
 
         private static JSchema? tabletConfigurationSchema;

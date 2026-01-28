@@ -215,6 +215,20 @@ namespace OpenTabletDriver.Tests.ConfigurationTest
             }
         }
 
+        [Theory]
+        [MemberData(nameof(TestData.VendorsInConfigs), MemberType = typeof(TestData))]
+        public void Configurations_Have_Known_Vendors(TestData.TabletsDefiningVendor tabletsDefiningVendor)
+        {
+            if (Enum.GetValues<DeviceVendor>().All(dv => (int)dv != tabletsDefiningVendor.VendorID))
+            {
+                string associatedTabletConfigs = string.Join(", ", tabletsDefiningVendor.Tablets.Select(x => x.Name));
+
+                testOutputHelper.WriteLine(
+                    $"Vendor ID '{tabletsDefiningVendor.VendorID}' (0x{tabletsDefiningVendor.VendorID:X4}) not found in {nameof(DeviceVendor)} enum. Defined in tablet config(s) '{associatedTabletConfigs}'.");
+                Assert.True(false);
+            }
+        }
+
         private static void PrintDiff(ITestOutputHelper outputHelper, DiffPaneModel diff)
         {
             foreach (var line in diff.Lines)

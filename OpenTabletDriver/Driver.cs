@@ -23,12 +23,13 @@ namespace OpenTabletDriver
         {
             CompositeDeviceHub = deviceHub;
             _reportParserProvider = reportParserProvider;
-            _deviceConfigurationProvider = configurationProvider;
+
+            _tabletConfigurations = configurationProvider.TabletConfigurations.ToArray();
         }
 
         private readonly IReportParserProvider _reportParserProvider;
-        private readonly IDeviceConfigurationProvider _deviceConfigurationProvider;
         private readonly object _detectSync = new object();
+        private readonly TabletConfiguration[] _tabletConfigurations;
         private ImmutableArray<InputDeviceTree> _inputDeviceTrees = ImmutableArray<InputDeviceTree>.Empty;
 
         public event EventHandler<IEnumerable<TabletReference>>? TabletsChanged;
@@ -42,6 +43,12 @@ namespace OpenTabletDriver
             return _reportParserProvider.GetReportParser(identifier.ReportParser);
         }
 
+        public IEnumerable<int> KnownVendorIDs =>
+            from configuration in _tabletConfigurations
+            from identifier in configuration.DigitizerIdentifiers.Concat(configuration.AuxiliaryDeviceIdentifiers ??
+                                                                         Enumerable.Empty<DeviceIdentifier>())
+            select identifier.VendorID;
+
         public virtual bool Detect()
         {
             lock (_detectSync)
@@ -51,7 +58,7 @@ namespace OpenTabletDriver
                 Log.Write("Detect", "Searching for tablets...");
 
                 var treeBuilder = ImmutableArray.CreateBuilder<InputDeviceTree>();
-                foreach (var config in _deviceConfigurationProvider.TabletConfigurations)
+                foreach (var config in _tabletConfigurations)
                 {
                     if (Match(config) is InputDeviceTree tree)
                     {
