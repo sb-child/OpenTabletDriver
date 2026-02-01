@@ -14,6 +14,7 @@ namespace OpenTabletDriver.Desktop.Diagnostics
             {
                 case PluginPlatform.Linux:
                     AddVariable(
+                            "HOME",
                             "DISPLAY",
                             "WAYLAND_DISPLAY",
                             "PWD",
