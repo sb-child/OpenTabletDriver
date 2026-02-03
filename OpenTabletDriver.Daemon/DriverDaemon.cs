@@ -395,16 +395,21 @@ namespace OpenTabletDriver.Daemon
         {
             string group = dev.Properties.Name;
 
-            var elements = from store in profile.Filters
-                           where store.Enable
-                           let filter = store.Construct<IPositionedPipelineElement<IDeviceReport>>(outputMode.Tablet)
-                           where filter != null
-                           select filter;
+            var elements = (from store in profile.Filters
+                            where store.Enable
+                            let filter = store.Construct<IPositionedPipelineElement<IDeviceReport>>(outputMode.Tablet)
+                            where filter != null
+                            select filter!).ToArray();
+
             outputMode.Elements = elements.Append(bindingHandler).ToList();
 
-            var activeFilters = outputMode.Elements.Where(e => e != bindingHandler).ToList();
-            if (activeFilters.Count != 0)
-                Log.Write(group, $"Filters: {string.Join(", ", activeFilters)}");
+            foreach (var filter in elements)
+            {
+                var pluginSettings = profile.Filters.First(x => x.Path == filter.GetType().FullName);
+                if (pluginSettings == null) continue;
+
+                Log.Write(group, $"Filter Settings {pluginSettings.GetHumanReadableString()}");
+            }
         }
 
         private void SetAbsoluteModeSettings(InputDeviceTree dev, AbsoluteOutputMode absoluteMode, AbsoluteModeSettings settings)
