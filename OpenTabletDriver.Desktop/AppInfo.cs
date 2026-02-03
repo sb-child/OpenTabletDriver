@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using OpenTabletDriver.Desktop.Reflection;
@@ -20,6 +21,17 @@ namespace OpenTabletDriver.Desktop
             cacheDirectory,
             backupDirectory,
             trashDirectory;
+
+        public AppInfo()
+        {
+            // on Linux, verify presence of necessary environment variables (as '~' expands to $HOME environment variable)
+            if (SystemInterop.CurrentPlatform == PluginPlatform.Linux && IsEnvVarUnset("HOME") && IsEnvVarUnset("XDG_DATA_HOME"))
+            {
+                Log.Write(nameof(AppInfo),
+                    "Unable to look up environment variable 'HOME' or 'XDG_DATA_HOME'. '~/.local/share/OpenTabletDriver' paths will not detect (such as configuration overrides).",
+                    LogLevel.Warning);
+            }
+        }
 
         private static AppInfo current;
         public static AppInfo Current
@@ -142,5 +154,8 @@ namespace OpenTabletDriver.Desktop
         private string GetDefaultCacheDirectory() => Path.Join(AppDataDirectory, "Cache");
         private string GetDefaultBackupDirectory() => Path.Join(AppDataDirectory, "Backup");
         private string GetDefaultTrashDirectory() => Path.Join(AppDataDirectory, "Trash");
+
+        private static bool IsEnvVarUnset([DisallowNull] string envVar) =>
+            string.IsNullOrEmpty(Environment.GetEnvironmentVariable(envVar));
     }
 }
