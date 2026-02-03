@@ -55,6 +55,11 @@ namespace OpenTabletDriver.Console
             settings.Serialize(file);
         }
 
+        private static async Task SaveDefaultSettings()
+        {
+            await SaveSettings(new FileInfo(AppInfo.Current.SettingsFile));
+        }
+
         private static async Task ApplyPreset(string name)
         {
             if (!await EnsureDaemonReady()) return;
