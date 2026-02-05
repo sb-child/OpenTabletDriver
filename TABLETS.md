@@ -119,6 +119,7 @@
 | Wacom CTL-672                      |     Supported     |
 | Wacom CTL-680                      |     Supported     |
 | Wacom CTL-690                      |     Supported     |
+| Wacom DTC-121                      |     Supported     |
 | Wacom DTC-133                      |     Supported     |
 | Wacom Cintiq 16 (DTK-1660)         |     Supported     |
 | Wacom Cintiq 21UX (DTK-2100)       |     Supported     |
