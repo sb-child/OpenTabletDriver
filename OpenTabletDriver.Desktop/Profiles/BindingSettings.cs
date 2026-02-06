@@ -172,6 +172,12 @@ namespace OpenTabletDriver.Desktop.Profiles
 
                 int buttonCountForWheel = (int)tabletSpecifications.Wheels![i].ButtonCount;
                 wheelBinding.WheelButtons.SetExpectedCount(buttonCountForWheel);
+
+                wheelBinding.ClockwiseActivationThreshold =
+                    VerifyWheelActivationThreshold(wheelBinding.ClockwiseActivationThreshold);
+
+                wheelBinding.CounterClockwiseActivationThreshold =
+                    VerifyWheelActivationThreshold(wheelBinding.CounterClockwiseActivationThreshold);
             }
 
             if (trimmed > 0)
@@ -225,6 +231,14 @@ namespace OpenTabletDriver.Desktop.Profiles
                 return 360d / spec.Wheels[wheelIndex].StepCount!.Value;
 
             throw new InvalidOperationException("Provided TabletSpecifications does not define wheel step count for this wheel");
+        }
+
+        private static float VerifyWheelActivationThreshold(float threshold)
+        {
+            if (threshold > 0) return threshold;
+
+            Log.Write(nameof(BindingSettings), $"Forcing invalid wheel threshold value '{threshold}' to 1");
+            return 1;
         }
     }
 }
