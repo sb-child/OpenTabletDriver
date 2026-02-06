@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Eto.Forms;
 using OpenTabletDriver.Desktop.Profiles;
 using OpenTabletDriver.Plugin.Tablet;
@@ -54,7 +55,6 @@ namespace OpenTabletDriver.UX.Controls.Bindings
                                             Minimum = 1,
                                             Maximum = 360,
                                             SnapToTick = true,
-                                            ClampValue = true,
                                         }
                                     }
                                 }
@@ -86,7 +86,6 @@ namespace OpenTabletDriver.UX.Controls.Bindings
                                             Minimum = 1,
                                             Maximum = 360,
                                             SnapToTick = true,
-                                            ClampValue = true,
                                         }
                                     }
                                 }
@@ -101,26 +100,36 @@ namespace OpenTabletDriver.UX.Controls.Bindings
             {
                 if (sender is not DelegateBinding<BindingSettings> delegateBinding) return;
 
-                this.DataContext = delegateBinding.DataValue.WheelBindings.Count > 0
+                var wheel = delegateBinding.DataValue.WheelBindings.Count > 0
                     ? delegateBinding.DataValue.WheelBindings[wheelIndex]
                     : null;
+
+                if (wheel != null)
+                {
+                    // we manually handle Minimum and StepSize, as binding it to the model interferes with model updates
+                    // e.g. switching from a tablet with a Minimum/StepSize of 15 to a tablet with StepSize 5 would
+                    //   cause the 2nd tablet to have its values increased to the minimum if they were below this
+                    clockwiseThreshold.Minimum = clockwiseThreshold.StepSize =
+                        counterClockwiseThreshold.Minimum = clockwiseThreshold.StepSize = 1;
+
+                    this.DataContext = wheel;
+
+                    Debug.Assert(wheel.StepSize.HasValue); // should've been set at some point by the daemon
+
+                    // manually handle Minimum and StepSize part 2 of 2
+                    clockwiseThreshold.Minimum = clockwiseThreshold.StepSize =
+                        counterClockwiseThreshold.Minimum = clockwiseThreshold.StepSize = (int)wheel.StepSize.Value;
+                }
             };
 
-            int? GetDegreesPerStep(TabletReference x)
-            {
-                if (x == null) return null;
-                var spec = x.Properties.Specifications;
-
-                if (spec.Wheels != null && spec.Wheels.Count >= wheelIndex && spec.Wheels![wheelIndex].StepCount != null)
-                    return (int)(360d / x.Properties.Specifications.Wheels![wheelIndex].StepCount!.Value);
-
-                throw new InvalidOperationException("Provided TabletReference does not define wheel step count for this wheel");
-            }
-
-            clockwiseThreshold.Bind(x => x.StepSize, TabletBinding.Convert(GetDegreesPerStep));
-            counterClockwiseThreshold.Bind(x => x.StepSize, TabletBinding.Convert(GetDegreesPerStep));
-            clockwiseThreshold.Bind(x => x.Minimum, TabletBinding.Convert(GetDegreesPerStep));
-            counterClockwiseThreshold.Bind(x => x.Minimum, TabletBinding.Convert(GetDegreesPerStep));
+            // this is Minimum and StepSize handling if attached via the model
+            // but causes model values to change before the new StepSize can be bound
+            //
+            //var minimumBinding = Binding.Property((WheelBindingSettings wbs) => wbs.StepSize).Convert(x => x ?? 1);
+            //clockwiseThreshold.BindDataContext(x => x.StepSize, minimumBinding, DualBindingMode.OneWay);
+            //counterClockwiseThreshold.BindDataContext(x => x.StepSize, minimumBinding, DualBindingMode.OneWay);
+            //clockwiseThreshold.BindDataContext(x => x.Minimum, minimumBinding, DualBindingMode.OneWay);
+            //counterClockwiseThreshold.BindDataContext(x => x.Minimum, minimumBinding, DualBindingMode.OneWay);
 
             clockwiseButton.StoreBinding.BindDataContext((WheelBindingSettings wbs) =>
                 wbs.ClockwiseRotation);

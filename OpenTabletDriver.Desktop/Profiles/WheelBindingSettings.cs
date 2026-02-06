@@ -20,6 +20,8 @@ namespace OpenTabletDriver.Desktop.Profiles
             _clockwiseRotation,
             _counterClockwiseRotation;
 
+        private double? _stepSize;
+
         [JsonProperty(nameof(WheelButtons))]
         public PluginSettingStoreCollection WheelButtons
         {
@@ -53,6 +55,14 @@ namespace OpenTabletDriver.Desktop.Profiles
         {
             set => RaiseAndSetIfChanged(ref _cct, value);
             get => _cct;
+        }
+
+        // should be instantiated by daemon on load
+        [JsonProperty(nameof(StepSize))]
+        public double? StepSize
+        {
+            set => RaiseAndSetIfChanged(ref _stepSize, value);
+            get => _stepSize;
         }
     }
 }

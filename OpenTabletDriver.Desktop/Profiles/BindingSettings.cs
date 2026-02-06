@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Newtonsoft.Json;
@@ -167,6 +168,7 @@ namespace OpenTabletDriver.Desktop.Profiles
             for (int i = 0; i < wheelCount; i++)
             {
                 int buttonCountForWheel = (int)tabletSpecifications.Wheels![i].ButtonCount;
+                WheelBindings[i].StepSize = GetDegreesPerStep(tabletSpecifications, i);
                 WheelBindings[i].WheelButtons.SetExpectedCount(buttonCountForWheel);
             }
 
@@ -211,6 +213,16 @@ namespace OpenTabletDriver.Desktop.Profiles
                 // wheelBinding.ClockwiseRotation = new PluginSettingStore(new KeyBinding { Key = "PageDown" });
                 // wheelBinding.CounterClockwiseRotation = new PluginSettingStore(new KeyBinding { Key = "PageUp" });
             }
+        }
+
+        private static double GetDegreesPerStep(TabletSpecifications spec, int wheelIndex)
+        {
+            ArgumentNullException.ThrowIfNull(spec);
+
+            if (spec.Wheels != null && spec.Wheels.Count >= wheelIndex && spec.Wheels[wheelIndex].StepCount != null)
+                return 360d / spec.Wheels[wheelIndex].StepCount!.Value;
+
+            throw new InvalidOperationException("Provided TabletSpecifications does not define wheel step count for this wheel");
         }
     }
 }
