@@ -167,9 +167,11 @@ namespace OpenTabletDriver.Desktop.Profiles
 
             for (int i = 0; i < wheelCount; i++)
             {
+                var wheelBinding = WheelBindings[i];
+                wheelBinding.StepSize = GetDegreesPerStep(tabletSpecifications, i);
+
                 int buttonCountForWheel = (int)tabletSpecifications.Wheels![i].ButtonCount;
-                WheelBindings[i].StepSize = GetDegreesPerStep(tabletSpecifications, i);
-                WheelBindings[i].WheelButtons.SetExpectedCount(buttonCountForWheel);
+                wheelBinding.WheelButtons.SetExpectedCount(buttonCountForWheel);
             }
 
             if (trimmed > 0)
