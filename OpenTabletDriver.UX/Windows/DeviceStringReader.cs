@@ -128,6 +128,7 @@ namespace OpenTabletDriver.UX.Windows
         private const string RequestTabletReplug = "Please replug the tablet, and then press OK to continue";
         private const string DisconnectionIndex = "Device disconnected";
         private const string OperationTimedOut = "Operation timed-out";
+        private const string OperationFailed = "Operation failed";
 
         private async void SendRequestAllStrings(object sender, EventArgs args)
         {
@@ -138,7 +139,7 @@ namespace OpenTabletDriver.UX.Windows
                 bool shouldRead = true;
                 await SendRequestWithTimeout($"{i}",
                     (str) => stringDump.AppendLine($"{StringIndex} {i}: {str}"),
-                    (e) => shouldRead = AskReconnection(stringDump, i),
+                    (e) => stringDump.AppendLine($"{StringIndex} {i}: {{ OTD: {OperationFailed} }}"),
                     () => stringDump.AppendLine($"{StringIndex} {i}: {{ OTD: {OperationTimedOut} }}")
                 );
 
