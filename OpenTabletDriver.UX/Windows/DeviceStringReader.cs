@@ -57,7 +57,8 @@ namespace OpenTabletDriver.UX.Windows
                 PlaceholderText = "Device String",
                 ReadOnly = true
             };
-            this.requireReconnect = new CheckBox {
+            this.requireReconnect = new CheckBox
+            {
                 Text = "Require reconnect on fail",
                 Checked = false,
             };
@@ -153,7 +154,8 @@ namespace OpenTabletDriver.UX.Windows
                 bool shouldRead = true;
                 await SendRequestWithTimeout($"{i}",
                     (str) => stringDump.AppendLine($"{StringIndex} {i}: {str}"),
-                    (e) => {
+                    (e) =>
+                    {
                         if ((bool)requireReconnect.Checked)
                         {
                             shouldRead = AskReconnection(stringDump, i);
@@ -237,7 +239,7 @@ namespace OpenTabletDriver.UX.Windows
         private readonly DropDown<SerializedDeviceEndpoint> deviceDropDown = new();
         private readonly NumericMaskedTextBox<ushort> vendorIdText, productIdText, stringIndexText;
         private readonly TextBox deviceStringText;
-        private readonly Group vendorIdCtrl, productIdCtrl, stringIndexCtrl, requireReconnectCtrl;
+        private readonly Group vendorIdCtrl, productIdCtrl, stringIndexCtrl;
         private readonly CheckBox requireReconnect;
     }
 }
