@@ -132,9 +132,10 @@ namespace OpenTabletDriver.UX.Windows
 
         private async void SendRequestAllStrings(object sender, EventArgs args)
         {
+            var validVid = int.TryParse(vendorIdText.Text, out var vid);
+            var validPid = int.TryParse(productIdText.Text, out var pid);
             // ensure requested device exists/is found
-            if (int.TryParse(vendorIdText.Text, out var vid) && int.TryParse(productIdText.Text, out var pid) &&
-                !(await App.Driver.Instance.GetDevices()).Any(x => x.ProductID == pid && x.VendorID == vid))
+            if (!validVid || !validPid || !(await App.Driver.Instance.GetDevices()).Any(x => x.ProductID == pid && x.VendorID == vid))
             {
                 MessageBox.Show($"Error: Device not found", MessageBoxType.Error);
                 return;
