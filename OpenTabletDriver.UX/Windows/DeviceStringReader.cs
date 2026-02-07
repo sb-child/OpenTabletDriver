@@ -17,7 +17,7 @@ namespace OpenTabletDriver.UX.Windows
         {
             this.Title = "Device String Reader";
             this.Icon = App.Logo.WithSize(App.Logo.Size);
-            this.ClientSize = new Size(480, 300);
+            this.ClientSize = new Size(-1, 300);
 
             var sendRequestButton = new Button
             {
@@ -69,7 +69,7 @@ namespace OpenTabletDriver.UX.Windows
                 HorizontalContentAlignment = HorizontalAlignment.Stretch,
                 Items =
                 {
-                    new Group("Connected Devices", deviceDropDown, Orientation.Horizontal, false),
+                    new Group("Connected HIDs", deviceDropDown, Orientation.Horizontal, false),
                     vendorIdCtrl,
                     productIdCtrl,
                     stringIndexCtrl,
