@@ -57,6 +57,10 @@ namespace OpenTabletDriver.UX.Windows
                 PlaceholderText = "Device String",
                 ReadOnly = true
             };
+            this.requireReconnect = new CheckBox {
+                Text = "Require reconnect on fail",
+                Checked = false,
+            };
 
             this.vendorIdCtrl = new Group("VendorID", vendorIdText, Orientation.Horizontal, false);
             this.productIdCtrl = new Group("ProductID", productIdText, Orientation.Horizontal, false);
@@ -73,6 +77,7 @@ namespace OpenTabletDriver.UX.Windows
                     vendorIdCtrl,
                     productIdCtrl,
                     stringIndexCtrl,
+                    new StackLayoutItem(requireReconnect, false),
                     new StackLayoutItem(
                         new StackLayout
                         {
@@ -148,7 +153,16 @@ namespace OpenTabletDriver.UX.Windows
                 bool shouldRead = true;
                 await SendRequestWithTimeout($"{i}",
                     (str) => stringDump.AppendLine($"{StringIndex} {i}: {str}"),
-                    (e) => stringDump.AppendLine($"{StringIndex} {i}: {{ OTD: {OperationFailed} }}"),
+                    (e) => {
+                        if ((bool)requireReconnect.Checked)
+                        {
+                            shouldRead = AskReconnection(stringDump, i);
+                        }
+                        else
+                        {
+                            stringDump.AppendLine($"{StringIndex} {i}: {{ OTD: {OperationFailed} }}");
+                        }
+                    },
                     () => stringDump.AppendLine($"{StringIndex} {i}: {{ OTD: {OperationTimedOut} }}")
                 );
 
@@ -223,6 +237,7 @@ namespace OpenTabletDriver.UX.Windows
         private readonly DropDown<SerializedDeviceEndpoint> deviceDropDown = new();
         private readonly NumericMaskedTextBox<ushort> vendorIdText, productIdText, stringIndexText;
         private readonly TextBox deviceStringText;
-        private readonly Group vendorIdCtrl, productIdCtrl, stringIndexCtrl;
+        private readonly Group vendorIdCtrl, productIdCtrl, stringIndexCtrl, requireReconnectCtrl;
+        private readonly CheckBox requireReconnect;
     }
 }
