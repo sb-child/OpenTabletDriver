@@ -15,7 +15,7 @@ namespace OpenTabletDriver.Desktop
         XdgRuntimeDir,
     }
 
-    public record struct XdgPathRecord(string EnvVar, string FallbackPath);
+    internal record struct XdgPathRecord(string EnvVar, string FallbackPath);
 
     /// <summary>
     /// Class for arbitrating XDG paths.
