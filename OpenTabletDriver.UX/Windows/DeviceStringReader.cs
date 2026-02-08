@@ -61,6 +61,7 @@ namespace OpenTabletDriver.UX.Windows
             {
                 Text = "Require reconnect on fail",
                 Checked = false,
+                ToolTip = "Pauses string dump with a pop-up box if any string dump errors occur",
             };
 
             this.vendorIdCtrl = new Group("VendorID", vendorIdText, Orientation.Horizontal, false);
