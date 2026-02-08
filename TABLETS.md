@@ -186,6 +186,7 @@
 | XP-Pen Deco Pro XLW Gen2           |     Supported     |
 | XP-Pen Star 03                     |     Supported     | Older variants may use the same configuration as the UC-Logic 1060N.
 | XP-Pen Star 03 Pro                 |     Supported     |
+| XP-Pen Star 03 V2                  |     Supported     |
 | XP-Pen Star 05 V3                  |     Supported     |
 | XP-Pen Star G430S                  |     Supported     |
 | XP-Pen Star G430S V2               |     Supported     |
