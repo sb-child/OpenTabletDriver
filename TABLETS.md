@@ -20,6 +20,7 @@
 | Huion G930L                        |     Supported     |
 | Huion GT-191 V2                    |     Supported     |
 | Huion GT-220 V2                    |     Supported     |
+| Huion GT-220 V2 (2048)             |     Supported     |
 | Huion H1060P                       |     Supported     |
 | Huion H320M                        |     Supported     |
 | Huion H420X                        |     Supported     |

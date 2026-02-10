@@ -1,14 +1,14 @@
 {
-  "Name": "Huion GT-220 V2",
+  "Name": "Huion GT-220 V2 (2048)",
   "Specifications": {
     "Digitizer": {
-      "Width": 476.68,
-      "Height": 268.145,
-      "MaxX": 95336,
-      "MaxY": 53629
+      "Width": 476.758,
+      "Height": 268.224,
+      "MaxX": 37540,
+      "MaxY": 21120
     },
     "Pen": {
-      "MaxPressure": 8191,
+      "MaxPressure": 2047,
       "ButtonCount": 2
     }
   },
@@ -16,8 +16,8 @@
     {
       "VendorID": 9580,
       "ProductID": 110,
-      "InputReportLength": 12,
-      "ReportParser": "OpenTabletDriver.Configurations.Parsers.Huion.GianoReportParser",
+      "InputReportLength": 8,
+      "ReportParser": "OpenTabletDriver.Configurations.Parsers.UCLogic.UCLogicReportParser",
       "DeviceStrings": {
         "201": "HUION_M165_\\d{6}$"
       },
@@ -25,7 +25,7 @@
         200
       ],
       "Attributes": {
-        "Interface": "1"
+        "Interface": "0"
       }
     }
   ],
