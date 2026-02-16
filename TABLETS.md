@@ -57,6 +57,7 @@
 | Huion Q11K                         |     Supported     |
 | Huion Q11K V2                      |     Supported     |
 | Huion RDS-160                      |     Supported     |
+| Huion RDS-220                      |     Supported     |
 | Huion RTS-300                      |     Supported     | Uses the same configuration as the Huion H642.
 | Huion RTE-100                      |     Supported     |
 | Huion WH1409                       |     Supported     |
