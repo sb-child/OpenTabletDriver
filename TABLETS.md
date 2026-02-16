@@ -61,6 +61,7 @@
 | Huion RTE-100                      |     Supported     |
 | Huion WH1409                       |     Supported     |
 | Huion WH1409 V2                    |     Supported     |
+| LetSketch WP9620C                  |     Supported     |
 | Parblo A609                        |     Supported     |
 | Parblo A610 Pro (Variant 2)        |     Supported     |
 | Parblo A640 V2                     |     Supported     |
