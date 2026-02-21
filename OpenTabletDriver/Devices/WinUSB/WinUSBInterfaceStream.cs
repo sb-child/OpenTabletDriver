@@ -70,7 +70,7 @@ namespace OpenTabletDriver.Devices.WinUSB
             }
         }
 
-        public unsafe void GetFeature(byte[] buffer)
+        public void GetFeature(byte[] buffer)
         {
             var length = buffer.Length; // requires HID report descriptor parsing to implement properly, assume caller is correct for now
             var packet = new SetupPacket()
