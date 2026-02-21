@@ -70,7 +70,7 @@ namespace OpenTabletDriver.UX.Windows.Plugins
 
         public void SelectFirstOrDefault(Func<PluginMetadata, bool> predicate)
         {
-            if ((this.DataStore as IEnumerable<PluginMetadata>)?.FirstOrDefault(m => predicate(m)) is PluginMetadata existingMeta)
+            if ((this.DataStore as IEnumerable<PluginMetadata>)?.FirstOrDefault(predicate) is PluginMetadata existingMeta)
             {
                 this.SelectedValue = existingMeta;
             }

@@ -20,7 +20,7 @@ namespace OpenTabletDriver.Desktop.Profiles
         }
 
         public ProfileCollection(IEnumerable<TabletReference> tablets)
-            : this(tablets.Select(s => Profile.GetDefaults(s)))
+            : this(tablets.Select(Profile.GetDefaults))
         {
         }
 

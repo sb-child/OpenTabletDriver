@@ -243,7 +243,7 @@ namespace OpenTabletDriver.Desktop.Reflection
             Log.Write("Plugin", $"Unloading plugin '{context.FriendlyName}'", LogLevel.Debug);
             Plugins.Remove(context);
             AssembliesChanged?.Invoke(this, EventArgs.Empty);
-            return context.Assemblies.All(p => RemoveAllTypesForAssembly(p));
+            return context.Assemblies.All(RemoveAllTypesForAssembly);
         }
 
         public bool RemoveAllTypesForAssembly(Assembly asm)

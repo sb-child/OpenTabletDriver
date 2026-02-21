@@ -155,7 +155,7 @@ namespace OpenTabletDriver.Desktop.Updater
             Action<string, string> fileAction,
             Action<string, string> directoryAction)
         {
-            foreach (var path in pathsToUpdate.Select(f => Path.GetFileName(f)))
+            foreach (var path in pathsToUpdate.Select(Path.GetFileName))
             {
                 var source = Path.Join(BinaryDirectory, path);
                 var destination = Path.Join(binaryRollback, path);

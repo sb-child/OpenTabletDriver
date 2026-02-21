@@ -33,7 +33,7 @@ namespace OpenTabletDriver.Tests.Fakes
         {
             var entriesCache = entries.ToArray();
             var dirEntries = Directory.GetFileSystemEntries(directory);
-            var dirEntriesMap = dirEntries.ToDictionary(e => Path.GetFileName(e));
+            var dirEntriesMap = dirEntries.ToDictionary<string, string>(Path.GetFileName);
 
             if (strict && (entriesCache.Length != dirEntries.Length))
                 throw new XunitException($"Expected {entriesCache.Length} file system entries, got {dirEntries.Length}");

@@ -186,7 +186,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
             deviceName.TextBinding.Bind(ReportDataBinding.Child(c => c.Tablet.Properties.Name));
             rawTablet.TextBinding.Bind(reportBinding.Child(c => ReportFormatter.GetStringRaw(c)));
             tablet.TextBinding.Bind(reportBinding.Child(c => ReportFormatter.GetStringFormat(c)));
-            maxReportedPosition.TextBinding.Bind(MaxPositionBinding.Convert(c => MaxPositionString(c)));
+            maxReportedPosition.TextBinding.Bind(MaxPositionBinding.Convert(MaxPositionString));
             reportRate.TextBinding.Bind(ReportPeriodBinding.Convert(c => Math.Round(1000.0 / c) + "hz"));
             reportsRecorded.TextBinding.Bind(NumberOfReportsRecordedBinding.Convert(c => c.ToString()));
             tabletVisualizer.ReportDataBinding.Bind(ReportDataBinding);
