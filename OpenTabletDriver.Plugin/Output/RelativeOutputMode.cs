@@ -20,7 +20,7 @@ namespace OpenTabletDriver.Plugin.Output
 
         // for handling detection of low resetTimes
         private uint _resets;
-        private bool _warnedBadResets = false;
+        private bool _warnedBadResets;
 
         /// <summary>
         /// The class in which the final relative positioned output is handled.

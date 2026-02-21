@@ -21,7 +21,7 @@ namespace OpenTabletDriver.Daemon
         private readonly StreamWriter _writer;
         private readonly Channel<LogMessage> _channel = Channel.CreateUnbounded<LogMessage>();
         private readonly CancellationTokenSource _cts = new CancellationTokenSource();
-        private bool _disposed = false;
+        private bool _disposed;
 
         public string Directory { get; }
 

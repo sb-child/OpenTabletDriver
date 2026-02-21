@@ -12,7 +12,7 @@ namespace OpenTabletDriver.Desktop.Interop.Input.Keyboard
     public class MacOSVirtualKeyboard : IVirtualKeyboard
     {
         // Keep track of current modifier flags, as CGEventSourceFlagsState does not return updated flags immediately after an event is posted.
-        private ulong _currentFlags = 0;
+        private ulong _currentFlags;
         private void KeyEvent(string key, bool isPress)
         {
             if (EtoKeysymToVK.TryGetValue(key, out var code))
