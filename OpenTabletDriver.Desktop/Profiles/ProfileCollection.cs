@@ -11,7 +11,6 @@ namespace OpenTabletDriver.Desktop.Profiles
     public class ProfileCollection : ObservableCollection<Profile>
     {
         public ProfileCollection()
-            : base()
         {
         }
 

@@ -6,7 +6,6 @@ namespace OpenTabletDriver.UX.Controls.Generic
     public class StylizedText : Panel
     {
         public StylizedText()
-            : base()
         {
             Content = new Label();
         }
