@@ -52,7 +52,7 @@ namespace OpenTabletDriver.UX.Windows.Plugins
                 () =>
                 {
                     // Get the plugin's updated metadata from the repo
-                    updatedMetadata = GetUpdatedMetadatas(PluginMetadataList.Repository, Metadata, CurrentDriverVersion).FirstOrDefault() ?? Metadata;
+                    updatedMetadata = GetRepoMetadataForPlugin(PluginMetadataList.Repository, Metadata, CurrentDriverVersion).FirstOrDefault() ?? Metadata;
                     return updatedMetadata != Metadata;
                 },
                 addChangeEvent: (e) => MetadataChanged += e,
@@ -231,16 +231,16 @@ namespace OpenTabletDriver.UX.Windows.Plugins
             this.ParentWindow.Enabled = true;
         }
 
-        private static IEnumerable<PluginMetadata> GetUpdatedMetadatas(PluginMetadataCollection repo, PluginMetadata Metadata, Version CurrentDriverVersion)
+        private static IEnumerable<PluginMetadata> GetRepoMetadataForPlugin(PluginMetadataCollection repo, PluginMetadata metadata, Version currentDriverVersion)
         {
             if (repo == null)
                 return Enumerable.Empty<PluginMetadata>();
 
             return from meta in repo
-                   where PluginMetadata.Match(meta, Metadata)
-                   where meta.PluginVersion > Metadata.PluginVersion
-                   where CurrentDriverVersion >= meta.SupportedDriverVersion
-                   where meta.MaxSupportedDriverVersion == null || CurrentDriverVersion <= meta.MaxSupportedDriverVersion
+                   where PluginMetadata.Match(meta, metadata)
+                   where meta.PluginVersion > metadata.PluginVersion
+                   where currentDriverVersion >= meta.SupportedDriverVersion
+                   where meta.MaxSupportedDriverVersion == null || currentDriverVersion <= meta.MaxSupportedDriverVersion
                    orderby meta.PluginVersion descending
                    select meta;
         }
