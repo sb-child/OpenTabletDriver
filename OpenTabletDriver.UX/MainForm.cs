@@ -726,8 +726,9 @@ namespace OpenTabletDriver.UX
                         var file = new FileInfo(fileDialog.FileName + (options.Any(fileDialog.FileName.EndsWith) ? "" : ".json"));
                         if (file.Exists)
                             file.Delete();
-                        using (var fs = file.OpenWrite())
-                        using (var sw = new StreamWriter(fs))
+
+                        await using (var fs = file.OpenWrite())
+                        await using (var sw = new StreamWriter(fs))
                             await sw.WriteLineAsync(diagnosticDump.ToString());
                         break;
                 }

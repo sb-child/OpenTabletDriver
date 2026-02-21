@@ -161,8 +161,9 @@ namespace OpenTabletDriver.UX.Windows
                     var file = new FileInfo(fileDialog.FileName);
                     if (file.Exists)
                         file.Delete();
-                    using (var fs = file.OpenWrite())
-                    using (var sw = new StreamWriter(fs))
+
+                    await using (var fs = file.OpenWrite())
+                    await using (var sw = new StreamWriter(fs))
                         await sw.WriteAsync(stringDump);
                     break;
             }

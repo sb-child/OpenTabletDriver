@@ -96,7 +96,7 @@ namespace OpenTabletDriver.Desktop.Reflection.Metadata
 
         public async Task DownloadAsync(string outputDirectory)
         {
-            using (var httpStream = await GetDownloadStream())
+            await using (var httpStream = await GetDownloadStream())
             using (var stream = new MemoryStream())
             {
                 // Download into memory

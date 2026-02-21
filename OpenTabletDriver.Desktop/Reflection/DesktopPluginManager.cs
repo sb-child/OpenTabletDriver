@@ -197,7 +197,7 @@ namespace OpenTabletDriver.Desktop.Reflection
             var context = Plugins.FirstOrDefault(ctx => ctx.Directory.FullName == targetDir.FullName);
             var result = targetDir.Exists ? UpdatePlugin(context, sourceDir) : InstallPlugin(targetDir, sourceDir);
 
-            using (var fs = File.Create(metadataPath))
+            await using (var fs = File.Create(metadataPath))
                 Serialization.Serialize(fs, metadata);
 
             if (!TemporaryDirectory.GetFileSystemInfos().Any())

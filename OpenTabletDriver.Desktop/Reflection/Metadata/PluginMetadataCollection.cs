@@ -50,7 +50,7 @@ namespace OpenTabletDriver.Desktop.Reflection.Metadata
         public static async Task<PluginMetadataCollection> DownloadAsync(string archiveUrl)
         {
             using (var client = GetClient())
-            using (var httpStream = await client.GetStreamAsync(archiveUrl))
+            await using (var httpStream = await client.GetStreamAsync(archiveUrl))
                 return FromStream(httpStream);
         }
 
