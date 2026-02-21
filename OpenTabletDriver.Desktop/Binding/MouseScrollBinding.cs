@@ -78,16 +78,22 @@ namespace OpenTabletDriver.Desktop.Binding
 
         public void Press(TabletReference tablet, IDeviceReport report)
         {
+            if (Timer == null)
+                Log.Write(nameof(MouseScrollBinding), $"{nameof(Timer)} not found, key repeat will not work", LogLevel.Warning);
+
             Scroll();
-            Timer.Start();
+            Timer?.Start();
         }
 
-        public void Release(TabletReference tablet, IDeviceReport report) => Timer.Stop();
+        public void Release(TabletReference tablet, IDeviceReport report) => Timer?.Stop();
 
         public void Scroll()
         {
-            if (Amount == 0 || Pointer == null)
-                return;
+            if (Amount == 0)
+                throw new InvalidOperationException($"{nameof(Amount)} must be greater than zero");
+
+            if (Pointer == null)
+                throw new InvalidOperationException($"{nameof(Pointer)} was not injected by daemon");
 
             if (_direction == ScrollDirection.Vertical)
                 Pointer.ScrollVertically(-Amount);
