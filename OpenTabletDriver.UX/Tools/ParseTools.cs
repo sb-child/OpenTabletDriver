@@ -1,8 +1,10 @@
 using System;
 using System.Globalization;
+using JetBrains.Annotations;
 
 namespace OpenTabletDriver.UX.Tools
 {
+    [PublicAPI]
     public static class ParseTools
     {
         public static float? ToNullableFloat(string str) => float.TryParse(str, out var val) ? val : (float?)null;

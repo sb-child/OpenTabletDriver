@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.Serialization;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OpenTabletDriver.Plugin;
@@ -43,7 +44,7 @@ namespace OpenTabletDriver.Desktop.Diagnostics
             return $"OpenTabletDriver v{version}";
         }
 
-        [OnError]
+        [OnError, UsedImplicitly]
         [SuppressMessage("Performance", "CA1822:Mark members as static")] // unclear if [OnError] works when static, so let's err on the side of caution
         internal void OnError(StreamingContext _, ErrorContext errorContext)
         {

@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace OpenTabletDriver.Native.Windows.USB
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public enum DescriptorType : byte
     {
         Undefined,

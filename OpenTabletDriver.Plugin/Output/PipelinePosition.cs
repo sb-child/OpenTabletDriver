@@ -1,5 +1,8 @@
+using JetBrains.Annotations;
+
 namespace OpenTabletDriver.Plugin.Output
 {
+    [PublicAPI]
     public enum PipelinePosition
     {
         None = 0,

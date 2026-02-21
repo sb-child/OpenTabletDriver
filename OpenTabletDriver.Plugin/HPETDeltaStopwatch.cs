@@ -1,8 +1,10 @@
 using System;
 using System.Diagnostics;
+using JetBrains.Annotations;
 
 namespace OpenTabletDriver.Plugin.Timing
 {
+    [PublicAPI]
     public class HPETDeltaStopwatch
     {
         public HPETDeltaStopwatch(bool startRunning = true)

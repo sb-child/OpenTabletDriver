@@ -1,8 +1,11 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OpenTabletDriver.Plugin
 {
     [Flags]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public enum PluginPlatform
     {
         Unknown = 0,

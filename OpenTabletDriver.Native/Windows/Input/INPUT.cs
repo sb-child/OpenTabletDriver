@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace OpenTabletDriver.Native.Windows.Input
@@ -10,6 +11,8 @@ namespace OpenTabletDriver.Native.Windows.Input
         public static int Size => Marshal.SizeOf(typeof(INPUT));
     }
 
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public enum INPUT_TYPE
     {
         MOUSE_INPUT,

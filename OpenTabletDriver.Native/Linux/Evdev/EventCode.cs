@@ -1,5 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace OpenTabletDriver.Native.Linux.Evdev
 {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    [SuppressMessage("Design", "CA1069:Enums values should not be duplicated")]
     public enum EventCode : uint
     {
         SYN_REPORT = 0,
