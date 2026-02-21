@@ -6,13 +6,11 @@ using OpenTabletDriver.Plugin;
 
 namespace OpenTabletDriver.UX
 {
-    using static App;
-
     public abstract class DesktopForm : Form
     {
         public DesktopForm()
         {
-            Icon = Logo.WithSize(Logo.Size);
+            Icon = App.Logo.WithSize(App.Logo.Size);
         }
 
         public DesktopForm(Window parentWindow)
