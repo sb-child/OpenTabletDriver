@@ -130,6 +130,7 @@ namespace OpenTabletDriver.Daemon
 
             _cts.Cancel();
             _writer.Flush();
+            _cts.Dispose();
             _writer.Dispose();
             _stream.Dispose();
 

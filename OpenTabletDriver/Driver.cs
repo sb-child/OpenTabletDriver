@@ -260,9 +260,22 @@ namespace OpenTabletDriver
 
         public void Dispose()
         {
-            DisposeDevices(_inputDeviceTrees);
-
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        private bool _isDisposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed) return;
+
+            if (disposing)
+            {
+                DisposeDevices(_inputDeviceTrees);
+            }
+
+            _isDisposed = true;
         }
     }
 }

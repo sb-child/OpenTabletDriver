@@ -7,7 +7,7 @@ using OpenTabletDriver.Plugin;
 
 namespace OpenTabletDriver.UX
 {
-    public class DaemonWatchdog : IDisposable
+    public sealed class DaemonWatchdog : IDisposable
     {
         public event EventHandler DaemonExited;
 

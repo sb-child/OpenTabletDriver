@@ -122,10 +122,23 @@ namespace OpenTabletDriver.Plugin.Output
 
         public void Dispose()
         {
-            Scheduler?.Dispose();
-            Scheduler = null;
-
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        private bool _isDisposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed) return;
+
+            if (disposing)
+            {
+                Scheduler?.Dispose();
+                Scheduler = null;
+            }
+
+            _isDisposed = true;
         }
     }
 }

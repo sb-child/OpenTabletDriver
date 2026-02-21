@@ -132,15 +132,28 @@ namespace OpenTabletDriver.Plugin.Output
             UnlinkAll(links, output);
         }
 
-        public virtual void Dispose()
+        public void Dispose()
         {
-            entryElement = null;
-
-            foreach (var obj in Elements ?? [])
-                if (obj is IDisposable disposable)
-                    disposable.Dispose();
-
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        private bool _isDisposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed) return;
+
+            if (disposing)
+            {
+                entryElement = null;
+
+                foreach (var obj in Elements ?? [])
+                    if (obj is IDisposable disposable)
+                        disposable.Dispose();
+            }
+
+            _isDisposed = true;
         }
     }
 }

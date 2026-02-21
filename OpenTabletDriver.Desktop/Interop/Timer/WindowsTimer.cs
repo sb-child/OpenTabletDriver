@@ -72,6 +72,7 @@ namespace OpenTabletDriver.Desktop.Interop.Timer
                     else
                     {
                         fallbackTimer.Stop();
+                        fallbackTimer.Dispose();
                         fallbackTimer = null;
                     }
                     Enabled = false;

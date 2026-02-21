@@ -161,8 +161,20 @@ namespace OpenTabletDriver.Desktop.Interop.Input.Absolute
 
         public void Dispose()
         {
-            Device?.Dispose();
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        private bool _isDisposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed) return;
+
+            if (disposing)
+                Device?.Dispose();
+
+            _isDisposed = true;
         }
 
         public void Flush()
