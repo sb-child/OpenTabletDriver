@@ -697,10 +697,6 @@ namespace OpenTabletDriver.Daemon
                 var update = await _updateInfo.GetUpdate();
                 Updater?.Install(update);
             }
-            catch
-            {
-                throw;
-            }
             finally
             {
                 _updateInfo = null;
