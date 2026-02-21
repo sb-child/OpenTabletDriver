@@ -273,30 +273,5 @@ namespace OpenTabletDriver.UX.Windows.Plugins
                 get => container.Content;
             }
         }
-
-        private class LinkButtonGroup : Group
-        {
-            public LinkButtonGroup(string header, string link, string text = null)
-            {
-                var linkButton = new Button
-                {
-                    Text = text ?? header,
-                    Width = 175,
-                    Enabled = !string.IsNullOrEmpty(link)
-                };
-                linkButton.Click += (sender, e) => DesktopInterop.Open(link);
-
-                this.Text = header;
-                this.Content = new StackLayout
-                {
-                    HorizontalContentAlignment = HorizontalAlignment.Right,
-                    Items =
-                    {
-                        linkButton
-                    }
-                };
-                this.Orientation = Orientation.Horizontal;
-            }
-        }
     }
 }

@@ -145,14 +145,5 @@ namespace OpenTabletDriver.Desktop.Binding
                     binding?.Invoke(tablet, report, newStates[i]);
             }
         }
-
-        private static void HandleRangeBindingCollection(TabletReference tablet, IDeviceReport report, IDictionary<int, RangeBindingState?> bindings, float value)
-        {
-            for (int i = 0; i < bindings.Count; i++)
-            {
-                if (bindings.TryGetValue(i, out var binding))
-                    binding?.Invoke(tablet, report, value);
-            }
-        }
     }
 }

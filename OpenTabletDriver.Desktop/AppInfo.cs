@@ -122,24 +122,6 @@ namespace OpenTabletDriver.Desktop
 
         public static string ProgramDirectory => AppContext.BaseDirectory;
 
-        private static string GetDirectory(params string[] directories)
-        {
-            foreach (var dir in directories.Select(InjectEnvironmentVariables))
-                if (Path.IsPathRooted(dir))
-                    return dir;
-
-            return null;
-        }
-
-        private static string GetDirectoryIfExists(params string[] directories)
-        {
-            foreach (var dir in directories.Select(InjectEnvironmentVariables))
-                if (Directory.Exists(dir))
-                    return dir;
-
-            return InjectEnvironmentVariables(directories.Last());
-        }
-
         private string GetDefaultConfigurationDirectory() => GetExistingPathOrLast(
             Path.Join(AppDataDirectory, "Configurations"),
             Path.Join(ProgramDirectory, "Configurations"),

@@ -136,12 +136,6 @@ namespace OpenTabletDriver.Desktop.Interop.Input
             }
         }
 
-        protected void QueuePendingScroll(int x, int y)
-        {
-            _scrollDeltaX = x;
-            _scrollDeltaY = y;
-        }
-
         public void SetPressure(float percentage)
         {
             _pressure = percentage;

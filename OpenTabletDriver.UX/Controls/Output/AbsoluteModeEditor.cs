@@ -155,43 +155,6 @@ namespace OpenTabletDriver.UX.Controls.Output
             }
         }
 
-        private void HookAreaConstraint(object sender, EventArgs args)
-        {
-            var areaEditor = (AreaEditor)sender;
-            if (areaEditor.LockToUsableArea)
-            {
-                lock (this)
-                {
-                    if (sender == tabletAreaEditor)
-                    {
-                        tabletWidth.DataValueChanged += HandleTabletAreaConstraint;
-                        tabletHeight.DataValueChanged += HandleTabletAreaConstraint;
-                    }
-                    else if (sender == displayAreaEditor)
-                    {
-                        displayWidth.DataValueChanged += HandleDisplayAreaConstraint;
-                        displayHeight.DataValueChanged += HandleDisplayAreaConstraint;
-                    }
-                }
-            }
-            else
-            {
-                lock (this)
-                {
-                    if (sender == tabletAreaEditor)
-                    {
-                        tabletWidth.DataValueChanged -= HandleTabletAreaConstraint;
-                        tabletHeight.DataValueChanged -= HandleTabletAreaConstraint;
-                    }
-                    else if (sender == displayAreaEditor)
-                    {
-                        displayWidth.DataValueChanged -= HandleDisplayAreaConstraint;
-                        displayHeight.DataValueChanged -= HandleDisplayAreaConstraint;
-                    }
-                }
-            }
-        }
-
         private void HandleAspectRatioLock(object sender, EventArgs e)
         {
             if (!handlingArLock && !handlingSettingsChanging)

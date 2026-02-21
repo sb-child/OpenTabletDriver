@@ -1,6 +1,6 @@
 namespace OpenTabletDriver.Native.Windows.USB
 {
-    public enum PipeType : int
+    public enum PipeType
     {
         Control,
         Isochronous,

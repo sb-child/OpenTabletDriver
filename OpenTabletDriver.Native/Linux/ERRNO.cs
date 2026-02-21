@@ -1,6 +1,6 @@
 namespace OpenTabletDriver.Native.Linux
 {
-    public enum ERRNO : int
+    public enum ERRNO
     {
         NONE = 0, /* No error has occurred */
         EPERM = 1, /* Operation not permitted */

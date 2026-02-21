@@ -589,26 +589,6 @@ namespace OpenTabletDriver.Daemon
             }
         }
 
-        private static void SetBindingHandlerRangeCollectionSettings(IServiceManager serviceManager, PluginSettingStoreCollection collection, float[] ends, Dictionary<int, RangeBindingState?> targetDict, TabletReference tabletReference)
-        {
-            var start = 0;
-
-            for (int index = 0; index < collection.Count; index++)
-            {
-                var binding = collection[index]?.Construct<IBinding>(serviceManager, tabletReference);
-                var end = ends[index];
-                var state = binding == null ? null : new RangeBindingState
-                {
-                    Binding = binding,
-                    StartThreshold = start,
-                    EndThreshold = end >= start ? end : start
-                };
-
-                if (!targetDict.TryAdd(index, state))
-                    targetDict[index] = state;
-            }
-        }
-
         private void SetToolSettings()
         {
             foreach (var runningTool in Tools)

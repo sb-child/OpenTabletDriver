@@ -174,11 +174,6 @@ namespace OpenTabletDriver.UX
 
         public WindowSingleton<AboutWindow> AboutWindow { get; } = new WindowSingleton<AboutWindow>();
 
-        public void AddNotificationHandler(string identifier, Action handler)
-        {
-            NotificationHandlers.Add(identifier, handler);
-        }
-
         private void HandleNotification(object sender, NotificationEventArgs e)
         {
             if (NotificationHandlers.ContainsKey(e.ID))

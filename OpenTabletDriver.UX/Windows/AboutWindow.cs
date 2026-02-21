@@ -10,7 +10,6 @@ namespace OpenTabletDriver.UX.Windows
     public class AboutWindow : DesktopForm
     {
         const int LARGE_FONTSIZE = 14;
-        const int FONTSIZE = LARGE_FONTSIZE - 4;
         const int SPACING = 10;
         const int TAB_CONTENT_WIDTH = 500;
 

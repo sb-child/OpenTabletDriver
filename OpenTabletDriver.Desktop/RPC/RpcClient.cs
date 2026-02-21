@@ -11,7 +11,6 @@ namespace OpenTabletDriver.Desktop.RPC
         private readonly string pipeName;
         private NamedPipeClientStream stream;
         private JsonRpc rpc;
-        private IList<Action<T>> reconnectHooks = new List<Action<T>>();
 
         public T Instance { private set; get; }
         public bool IsConnected { get => rpc != null && !rpc.IsDisposed; }

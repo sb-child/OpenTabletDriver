@@ -21,15 +21,8 @@ namespace OpenTabletDriver.Daemon
 {
     class CommandLineOptions
     {
-        public object SpecialCommand { get; set; }
         public DirectoryInfo AppDataDirectory { get; set; }
         public DirectoryInfo ConfigurationDirectory { get; set; }
-    }
-
-    class UpdateCommandOptions
-    {
-        public List<DirectoryInfo> Sources { get; set; }
-        public DirectoryInfo Destination { get; set; }
     }
 
     partial class Program
