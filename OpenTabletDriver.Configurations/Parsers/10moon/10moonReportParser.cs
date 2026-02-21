@@ -1,8 +1,10 @@
-﻿using OpenTabletDriver.Plugin;
+﻿using System.Diagnostics.CodeAnalysis;
+using OpenTabletDriver.Plugin;
 using OpenTabletDriver.Plugin.Tablet;
 
 namespace OpenTabletDriver.Configurations.Parsers.TenMoon
 {
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public class TenMoonReportParser : IReportParser<IDeviceReport>
     {
         public IDeviceReport Parse(byte[] report)

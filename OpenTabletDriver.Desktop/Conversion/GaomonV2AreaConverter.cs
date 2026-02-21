@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using OpenTabletDriver.Plugin;
 using OpenTabletDriver.Plugin.Attributes;
@@ -6,6 +7,7 @@ using OpenTabletDriver.Plugin.Tablet;
 namespace OpenTabletDriver.Desktop.Conversion
 {
     [PluginName("Gaomon, 2024 and newer")]
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public class GaomonV2AreaConverter : IAreaConverter
     {
         public virtual DeviceVendor Vendor => DeviceVendor.Gaomon;

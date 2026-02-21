@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using OpenTabletDriver.Configurations.Parsers.Wacom.IntuosV1;
 using OpenTabletDriver.Plugin.Tablet;
 
 namespace OpenTabletDriver.Configurations.Parsers.Wacom.IntuosPro
 {
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public class IntuosProReportParser : IntuosV1ReportParser
     {
         public override IDeviceReport Parse(byte[] report)

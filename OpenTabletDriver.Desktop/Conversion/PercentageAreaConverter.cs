@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using OpenTabletDriver.Plugin;
 using OpenTabletDriver.Plugin.Attributes;
@@ -6,6 +7,7 @@ using OpenTabletDriver.Plugin.Tablet;
 namespace OpenTabletDriver.Desktop.Conversion
 {
     [PluginName("Huion, Gaomon")]
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public class PercentageAreaConverter : IAreaConverter
     {
         public virtual DeviceVendor Vendor => DeviceVendor.Huion & DeviceVendor.Gaomon;

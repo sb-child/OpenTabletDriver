@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using OpenTabletDriver.Plugin;
 using OpenTabletDriver.Plugin.Attributes;
@@ -6,6 +7,7 @@ using OpenTabletDriver.Plugin.Tablet;
 namespace OpenTabletDriver.Desktop.Conversion
 {
     [PluginName("XP Pen")]
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public class XP_PenDriverAreaConverter : IAreaConverter
     {
         public virtual DeviceVendor Vendor => DeviceVendor.XP_Pen;

@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using OpenTabletDriver.Configurations.Parsers.XP_Pen;
 using OpenTabletDriver.Plugin.Tablet;
 
 namespace OpenTabletDriver.Configurations.Parsers.XenceLabs
 {
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public class XenceLabsReportParser : IReportParser<IDeviceReport>
     {
         public IDeviceReport Parse(byte[] report)
