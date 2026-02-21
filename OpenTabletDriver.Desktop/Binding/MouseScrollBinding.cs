@@ -30,9 +30,11 @@ namespace OpenTabletDriver.Desktop.Binding
             {
                 if (_timer != null)
                     _timer.Elapsed -= Scroll;
-                else
+
+                _timer = value;
+
+                if (_timer != null)
                 {
-                    _timer = value;
                     _timer.Interval = _interval;
                     _timer.Elapsed += Scroll;
                 }
