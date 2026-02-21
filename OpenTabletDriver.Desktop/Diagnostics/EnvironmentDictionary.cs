@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using OpenTabletDriver.Desktop.Interop;
 using OpenTabletDriver.Interop;
 using OpenTabletDriver.Plugin;
 
@@ -11,6 +10,10 @@ namespace OpenTabletDriver.Desktop.Diagnostics
         public EnvironmentDictionary()
         {
             AddVariable("USER");
+
+            // we don't need ReSharper to tell us about missing statements, as
+            //   the missing statements are intentionally absent since they do not need special handling
+            // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
             switch (SystemInterop.CurrentPlatform)
             {
                 case PluginPlatform.Linux:
