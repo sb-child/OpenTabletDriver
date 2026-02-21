@@ -260,6 +260,7 @@
 | Huion Kamvas Pro 12                |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 13                |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 16                |  Missing Features | Touch bar is not yet supported.
+| Huion Kamvas Pro 16 V2             |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 20                |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 22 (2019)         |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 24                |  Missing Features | Touch bar is not yet supported.
