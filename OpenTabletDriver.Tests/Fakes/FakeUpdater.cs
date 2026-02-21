@@ -32,7 +32,7 @@ namespace OpenTabletDriver.Tests.Updater
 
             _update = new Update(
                 version,
-                [..Directory.GetFileSystemEntries(_downloadPath)],
+                [.. Directory.GetFileSystemEntries(_downloadPath)],
                 BinaryDirectory
             );
         }

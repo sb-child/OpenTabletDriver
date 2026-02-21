@@ -72,7 +72,7 @@ namespace OpenTabletDriver.UX.Controls
 
         private void HandleTabletsChanged(object sender, IEnumerable<TabletReference> tablets)
         {
-            tabletSwitcher.HandleTabletsChanged(sender, [..tablets]);
+            tabletSwitcher.HandleTabletsChanged(sender, [.. tablets]);
         }
 
         private class TabletSwitcher : DropDown
@@ -104,7 +104,7 @@ namespace OpenTabletDriver.UX.Controls
             {
                 ProfilesChanged?.Invoke(this, EventArgs.Empty);
                 var tablets = await App.Driver.Instance.GetTablets();
-                HandleTabletsChanged(this, [..tablets]);
+                HandleTabletsChanged(this, [.. tablets]);
             }
 
             public BindableBinding<TabletSwitcher, ProfileCollection> ProfilesBinding

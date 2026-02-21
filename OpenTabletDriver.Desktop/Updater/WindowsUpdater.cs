@@ -69,7 +69,7 @@ namespace OpenTabletDriver.Desktop.Updater
 
             return new Update(
                 version,
-                [..Directory.GetFileSystemEntries(downloadPath)],
+                [.. Directory.GetFileSystemEntries(downloadPath)],
                 BinaryDirectory
             );
         }
