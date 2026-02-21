@@ -203,7 +203,7 @@ namespace OpenTabletDriver.UX
             App.DaemonWatchdog = watchdog;
         }
 
-        private MenuBar ConstructLimitedMenu()
+        private static MenuBar ConstructLimitedMenu()
         {
             var quitCommand = new Command { MenuText = "Quit", Shortcut = Application.Instance.CommonModifier | Keys.Q };
             quitCommand.Executed += (sender, e) => Application.Instance.Quit();
@@ -468,19 +468,19 @@ namespace OpenTabletDriver.UX
             });
         }
 
-        private async Task ResetSettings()
+        private static async Task ResetSettings()
         {
             await App.Driver.Instance.ResetSettings();
             App.Current.Settings = await App.Driver.Instance.GetSettings();
         }
 
-        private async Task ResetSettingsDialog()
+        private static async Task ResetSettingsDialog()
         {
             if (MessageBox.Show("Reset settings to default?", "Reset to defaults", MessageBoxButtons.OKCancel, MessageBoxType.Question) == DialogResult.Ok)
                 await ResetSettings();
         }
 
-        private async Task SyncSettings()
+        private static async Task SyncSettings()
         {
             App.Current.Settings = await App.Driver.Instance.GetSettings();
         }
@@ -612,11 +612,7 @@ namespace OpenTabletDriver.UX
             }
         }
 
-        private Task LoadPresets()
-        {
-            AppInfo.PresetManager.Refresh();
-            return Task.CompletedTask;
-        }
+        private static void LoadPresets() => AppInfo.PresetManager.Refresh();
 
         private Task RefreshPresets()
         {
@@ -688,7 +684,7 @@ namespace OpenTabletDriver.UX
             Log.Write("Settings", $"Applied preset '{preset.Name}'");
         }
 
-        private async Task DetectTablet()
+        private static async Task DetectTablet()
         {
             await App.Driver.Instance.DetectTablets();
             await App.Driver.Instance.SetSettings(await App.Driver.Instance.GetSettings());
@@ -737,7 +733,7 @@ namespace OpenTabletDriver.UX
                 ex.ShowMessageBox();
             }
         }
-        private async Task ExportDiagnosticsToClipboard()
+        private static async Task ExportDiagnosticsToClipboard()
         {
             try
             {
@@ -753,7 +749,7 @@ namespace OpenTabletDriver.UX
                 ex.ShowMessageBox();
             }
         }
-        private void CheckForUpdates()
+        private static void CheckForUpdates()
         {
             // ReSharper disable once AsyncVoidMethod
             Application.Instance.AsyncInvoke(async void () =>

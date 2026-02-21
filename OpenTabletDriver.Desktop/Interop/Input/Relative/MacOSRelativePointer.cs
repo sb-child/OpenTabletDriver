@@ -34,7 +34,7 @@ namespace OpenTabletDriver.Desktop.Interop.Input.Relative
             QueuePendingPosition(0, 0);
         }
 
-        private CGPoint GetCursorPosition()
+        private static CGPoint GetCursorPosition()
         {
             var eventRef = CGEventCreate(IntPtr.Zero);
             var pos = CGEventGetLocation(eventRef);

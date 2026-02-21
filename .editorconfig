@@ -32,6 +32,8 @@ dotnet_diagnostic.CA1063.severity = warning
 dotnet_diagnostic.CA1816.severity = warning
 dotnet_diagnostic.CA2213.severity = warning
 dotnet_diagnostic.CA2216.severity = warning
+# Method can be marked as static
+dotnet_diagnostic.CA1822.severity = warning
 
 [*.{sh,md,csproj,json,yml}]
 indent_size = 2

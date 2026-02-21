@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
@@ -25,7 +26,7 @@ namespace OpenTabletDriver.Desktop.Diagnostics
         public string BuildDate { private set; get; } = typeof(BuildDateAttribute).Assembly.GetCustomAttribute<BuildDateAttribute>().BuildDate;
 
         [JsonProperty("Operating System")]
-        public OSInfo OperatingSystem => OSInfo.GetOSInfo();
+        public static OSInfo OperatingSystem => OSInfo.GetOSInfo();
 
         [JsonProperty("Environment Variables")]
         public IDictionary<string, string> EnvironmentVariables { private set; get; } = new EnvironmentDictionary();
@@ -43,6 +44,7 @@ namespace OpenTabletDriver.Desktop.Diagnostics
         }
 
         [OnError]
+        [SuppressMessage("Performance", "CA1822:Mark members as static")] // unclear if [OnError] works when static, so let's err on the side of caution
         internal void OnError(StreamingContext _, ErrorContext errorContext)
         {
             errorContext.Handled = true;

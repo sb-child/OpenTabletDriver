@@ -522,7 +522,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                 }
             }
 
-            protected SizeF calculateTabletScale(DigitizerSpecifications digitizer, float scale)
+            private static SizeF calculateTabletScale(DigitizerSpecifications digitizer, float scale)
             {
                 var tabletMm = new SizeF(digitizer.Width, digitizer.Height);
                 var tabletPx = new SizeF(digitizer.MaxX, digitizer.MaxY);

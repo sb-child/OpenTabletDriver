@@ -194,7 +194,7 @@ namespace OpenTabletDriver.UX.Windows
             }
         }
 
-        private async Task<string> SendRequest(string strIndex, string strVid, string strPid)
+        private static async Task<string> SendRequest(string strIndex, string strVid, string strPid)
         {
             if (int.TryParse(strIndex, out var index) && index < 256 && index > 0)
             {
@@ -204,7 +204,7 @@ namespace OpenTabletDriver.UX.Windows
             throw new ArgumentException("Invalid index");
         }
 
-        private bool AskReconnection(StringBuilder stringDump, int i)
+        private static bool AskReconnection(StringBuilder stringDump, int i)
         {
             stringDump.AppendLine($"{StringIndex} {i}: {{ OTD: {DisconnectionIndex} }}");
             var result = MessageBox.Show(RequestTabletReplug, MessageBoxButtons.OKCancel);

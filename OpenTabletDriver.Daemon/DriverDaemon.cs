@@ -106,7 +106,7 @@ namespace OpenTabletDriver.Daemon
             };
         }
 
-        private IEnumerable<string> safeGetProcessDetails(Process[] processes)
+        private static IEnumerable<string> safeGetProcessDetails(Process[] processes)
         {
             foreach (var driverProcess in processes)
             {
@@ -386,7 +386,7 @@ namespace OpenTabletDriver.Daemon
             }
         }
 
-        private void MoveSettingsFile()
+        private static void MoveSettingsFile()
         {
             var src = AppInfo.Current.SettingsFile;
 
@@ -398,7 +398,7 @@ namespace OpenTabletDriver.Daemon
             File.Move(src, dst);
         }
 
-        private void SetOutputModeElements(InputDeviceTree dev, IOutputMode outputMode, Profile profile, BindingHandler bindingHandler)
+        private static void SetOutputModeElements(InputDeviceTree dev, IOutputMode outputMode, Profile profile, BindingHandler bindingHandler)
         {
             string group = dev.Properties.Name;
 
@@ -419,7 +419,7 @@ namespace OpenTabletDriver.Daemon
             }
         }
 
-        private void SetAbsoluteModeSettings(InputDeviceTree dev, AbsoluteOutputMode absoluteMode, AbsoluteModeSettings settings)
+        private static void SetAbsoluteModeSettings(InputDeviceTree dev, AbsoluteOutputMode absoluteMode, AbsoluteModeSettings settings)
         {
             string group = dev.Properties.Name;
             absoluteMode.Output = settings.Display.Area;
@@ -436,7 +436,7 @@ namespace OpenTabletDriver.Daemon
             Log.Write(group, $"Ignoring reports outside area: {(absoluteMode.AreaLimiting ? "Enabled" : "Disabled")}");
         }
 
-        private void SetRelativeModeSettings(InputDeviceTree dev, RelativeOutputMode relativeMode, RelativeModeSettings settings)
+        private static void SetRelativeModeSettings(InputDeviceTree dev, RelativeOutputMode relativeMode, RelativeModeSettings settings)
         {
             string group = dev.Properties.Name;
             relativeMode.Sensitivity = settings.Sensitivity;

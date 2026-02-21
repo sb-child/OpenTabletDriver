@@ -76,7 +76,7 @@ namespace OpenTabletDriver.UX.Windows.Plugins
             }
         }
 
-        protected async Task<PluginMetadataCollection> DownloadMetadataAsync()
+        protected static async Task<PluginMetadataCollection> DownloadMetadataAsync()
         {
             var repoFetch = PluginMetadataCollection.DownloadAsync();
             var timeoutTask = Task.Delay(DOWNLOAD_TIMEOUT);

@@ -184,7 +184,7 @@ namespace OpenTabletDriver.Desktop.Interop.Input.Keyboard
             // only USB consumer control buttons: https://zmk.dev/docs/keymaps/list-of-keycodes#media-controls
         };
 
-        private CGEventFlags fromCGKeyCode(CGKeyCode code)
+        private static CGEventFlags fromCGKeyCode(CGKeyCode code)
         {
             return code switch
             {
