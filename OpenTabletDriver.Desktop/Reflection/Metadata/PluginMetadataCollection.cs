@@ -16,7 +16,6 @@ namespace OpenTabletDriver.Desktop.Reflection.Metadata
     {
         [JsonConstructor]
         protected PluginMetadataCollection()
-            : base()
         {
         }
 

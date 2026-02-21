@@ -26,7 +26,6 @@ namespace OpenTabletDriver.UX
     public class MainForm : DesktopForm
     {
         public MainForm()
-            : base()
         {
             this.DataContext = App.Current;
 

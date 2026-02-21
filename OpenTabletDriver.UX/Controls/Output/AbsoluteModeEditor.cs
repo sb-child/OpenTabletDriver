@@ -304,7 +304,6 @@ namespace OpenTabletDriver.UX.Controls.Output
         public class DisplayAreaEditor : AreaEditor
         {
             public DisplayAreaEditor()
-                : base()
             {
                 this.ToolTip = "You can right click the area editor to set the area to a display, adjust alignment, or resize the area.";
             }
@@ -353,7 +352,6 @@ namespace OpenTabletDriver.UX.Controls.Output
         public class TabletAreaEditor : RotationAreaEditor
         {
             public TabletAreaEditor()
-                : base()
             {
                 this.ToolTip = "You can right click the area editor to enable aspect ratio locking, adjust alignment, or resize the area.";
             }
