@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using OpenTabletDriver.Desktop.Interop;
+using OpenTabletDriver.Interop;
 using OpenTabletDriver.Plugin;
 
 namespace OpenTabletDriver.Desktop.Diagnostics
@@ -10,7 +11,7 @@ namespace OpenTabletDriver.Desktop.Diagnostics
         public EnvironmentDictionary()
         {
             AddVariable("USER");
-            switch (DesktopInterop.CurrentPlatform)
+            switch (SystemInterop.CurrentPlatform)
             {
                 case PluginPlatform.Linux:
                     AddVariable(

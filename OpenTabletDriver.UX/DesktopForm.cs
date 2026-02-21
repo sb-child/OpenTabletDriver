@@ -1,6 +1,7 @@
 using Eto.Drawing;
 using Eto.Forms;
 using OpenTabletDriver.Desktop.Interop;
+using OpenTabletDriver.Interop;
 using OpenTabletDriver.Plugin;
 
 namespace OpenTabletDriver.UX
@@ -51,7 +52,7 @@ namespace OpenTabletDriver.UX
 
         private void ToCenter()
         {
-            if (DesktopInterop.CurrentPlatform == PluginPlatform.Windows)
+            if (SystemInterop.CurrentPlatform == PluginPlatform.Windows)
             {
                 var x = Owner.Location.X + (Owner.Size.Width / 2);
                 var y = Owner.Location.Y + (Owner.Size.Height / 2);

@@ -123,7 +123,7 @@ namespace OpenTabletDriver.UX
 
                 this.Size = new Size((int)minWidth, (int)minHeight);
 
-                if (DesktopInterop.CurrentPlatform == PluginPlatform.Windows)
+                if (SystemInterop.CurrentPlatform == PluginPlatform.Windows)
                 {
                     var x = Screen.WorkingArea.Center.X - (minWidth / 2);
                     var y = Screen.WorkingArea.Center.Y - (minHeight / 2);
@@ -134,7 +134,7 @@ namespace OpenTabletDriver.UX
 
         protected void InitializePlatform()
         {
-            switch (DesktopInterop.CurrentPlatform)
+            switch (SystemInterop.CurrentPlatform)
             {
                 case PluginPlatform.Windows:
                     var programPath = AppInfo.ProgramDirectory;
