@@ -17,7 +17,7 @@ using OpenTabletDriver.Plugin.Timing;
 
 namespace OpenTabletDriver.Desktop.ViewModels;
 
-public class TabletDebuggerViewModel : ViewModel, IDisposable
+public sealed class TabletDebuggerViewModel : ViewModel, IDisposable
 {
     private const DecodingMode _DEFAULT_DECODING_MODE = DecodingMode.Hex;
 
@@ -326,11 +326,7 @@ public class TabletDebuggerViewModel : ViewModel, IDisposable
         _tabletRecordingFileStream = null;
     }
 
-    public void Dispose()
-    {
-        StopDataRecordingAsNeeded();
-        GC.SuppressFinalize(this);
-    }
+    public void Dispose() => StopDataRecordingAsNeeded();
 
     #endregion
 }
