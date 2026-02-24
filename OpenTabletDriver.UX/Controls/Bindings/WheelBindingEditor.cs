@@ -98,7 +98,7 @@ namespace OpenTabletDriver.UX.Controls.Bindings
 
             SettingsBinding.DataValueChanged += (sender, args) =>
             {
-                if (sender is not DelegateBinding<BindingSettings> delegateBinding) return;
+                if (sender is not DelegateBinding<BindingSettings> delegateBinding || delegateBinding.DataValue == null) return;
 
                 var wheel = delegateBinding.DataValue.WheelBindings.Count > 0
                     ? delegateBinding.DataValue.WheelBindings[wheelIndex]
