@@ -26,9 +26,7 @@ namespace OpenTabletDriver.Console
             if (store == null || !store.Enable)
                 return null;
 
-            IList<string> storeSettings = new List<string>();
-            foreach (var setting in store.Settings)
-                storeSettings.Add(setting.Format());
+            var storeSettings = store.Settings.Select(setting => setting.Format()).ToList();
 
             string prefix = store.Name ?? store.Path;
             string suffix = storeSettings.Count == 0 ? null : string.Join(", ", storeSettings);
