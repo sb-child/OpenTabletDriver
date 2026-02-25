@@ -241,7 +241,7 @@ namespace OpenTabletDriver.Devices.WinUSB
             }
         }
 
-        private IDictionary<string, string> GetDeviceAttributes()
+        private Dictionary<string, string> GetDeviceAttributes()
         {
             var deviceAttributes = new Dictionary<string, string>
             {

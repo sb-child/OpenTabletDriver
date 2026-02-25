@@ -28,7 +28,7 @@ namespace OpenTabletDriver.Desktop.RPC
             }
         }
 
-        private async Task RespondToRpcRequestAsync(T host, Stream stream, CancellationToken ct)
+        private async Task RespondToRpcRequestAsync(T host, NamedPipeServerStream stream, CancellationToken ct)
         {
             try
             {
