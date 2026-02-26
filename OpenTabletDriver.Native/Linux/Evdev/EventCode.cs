@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace OpenTabletDriver.Native.Linux.Evdev
 {
+    // Reference: https://github.com/torvalds/linux/blob/733a8924229ff8c0385121a30fcd00bf70644743/include/uapi/linux/input-event-codes.h
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     [SuppressMessage("Design", "CA1069:Enums values should not be duplicated")]
