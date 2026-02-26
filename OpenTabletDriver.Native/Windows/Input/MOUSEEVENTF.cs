@@ -1,7 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace OpenTabletDriver.Native.Windows.Input
 {
+    [Flags]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public enum MOUSEEVENTF : uint
