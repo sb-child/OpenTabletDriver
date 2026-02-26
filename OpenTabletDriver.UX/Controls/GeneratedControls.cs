@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Eto.Forms;
 using OpenTabletDriver.Desktop.Reflection;
@@ -48,8 +49,7 @@ namespace OpenTabletDriver.UX.Controls
             if (control != null)
             {
                 // Apply all visual modifier attributes
-                foreach (ModifierAttribute modifierAttr in property.GetCustomAttributes<ModifierAttribute>())
-                    control = ApplyModifierAttribute(control, modifierAttr);
+                control = property.GetCustomAttributes<ModifierAttribute>().Aggregate(control, ApplyModifierAttribute);
 
                 control.Width = 400;
                 return new Group(attr.DisplayName ?? property.Name, control, Orientation.Horizontal, false);
