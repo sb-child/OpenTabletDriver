@@ -2,6 +2,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace OpenTabletDriver.Native.Linux
 {
+    // Values should match Linux kernel sources:
+    //      include/uapi/asm-generic/errno-base.h
+    //      include/uapi/asm-generic/errno.h
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public enum ERRNO
@@ -40,6 +43,7 @@ namespace OpenTabletDriver.Native.Linux
         EMLINK = 31, /* Too many links */
         EPIPE = 32, /* Broken pipe */
         EDOM = 33, /* Math argument out of domain of func */
-        ERANGE = 34 /* Math result not representable */
+        ERANGE = 34, /* Math result not representable */
+        ECANCELED = 125, /* Operation Canceled */
     }
 }
