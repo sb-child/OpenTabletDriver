@@ -14,7 +14,7 @@ namespace OpenTabletDriver.Native.Linux.Timers
     public enum ClockID
     {
         /// <summary>
-        /// Based on system clock, following system time changes, inclduing administrator changing date and time
+        /// Based on system clock, following system time changes, including administrator changing date and time
         /// </summary>
         RealTime = 0,
         /// <summary>
