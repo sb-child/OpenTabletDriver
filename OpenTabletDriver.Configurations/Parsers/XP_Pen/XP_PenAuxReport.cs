@@ -30,7 +30,7 @@ namespace OpenTabletDriver.Configurations.Parsers.XP_Pen
                 report[auxIndex + 2].IsBitSet(1),
                 report[auxIndex + 2].IsBitSet(2),
                 report[auxIndex + 2].IsBitSet(3),
-            };
+            ];
         }
 
         public bool[] AuxButtons { set; get; }
