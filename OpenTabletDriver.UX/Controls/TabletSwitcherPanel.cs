@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Eto.Drawing;
 using Eto.Forms;
 using OpenTabletDriver.Desktop.Profiles;
@@ -54,7 +55,8 @@ namespace OpenTabletDriver.UX.Controls
             tabletSwitcher.ProfilesBinding.BindDataContext<App>(a => a.Settings.Profiles);
 
             App.Driver.TabletsChanged += HandleTabletsChanged;
-            Application.Instance.AsyncInvoke(async () => HandleTabletsChanged(this, await App.Driver.Instance.GetTablets()));
+            // ReSharper disable once AsyncVoidMethod
+            Application.Instance.AsyncInvoke(async void () => HandleTabletsChanged(this, await App.Driver.Instance.GetTablets()));
         }
 
         private StackLayout layout;
@@ -70,7 +72,7 @@ namespace OpenTabletDriver.UX.Controls
 
         private void HandleTabletsChanged(object sender, IEnumerable<TabletReference> tablets)
         {
-            tabletSwitcher.HandleTabletsChanged(sender, tablets.ToImmutableArray());
+            tabletSwitcher.HandleTabletsChanged(sender, [.. tablets]);
         }
 
         private class TabletSwitcher : DropDown
@@ -82,7 +84,7 @@ namespace OpenTabletDriver.UX.Controls
                 this.SelectedIndex = 0;
             }
 
-            private readonly ObservableCollection<Profile> visibleProfiles = new ObservableCollection<Profile>();
+            private readonly ObservableCollection<Profile> visibleProfiles = [];
 
             private ProfileCollection profiles;
             public ProfileCollection Profiles
@@ -90,18 +92,19 @@ namespace OpenTabletDriver.UX.Controls
                 set
                 {
                     this.profiles = value;
-                    this.OnProfilesChanged();
+                    // ReSharper disable once AsyncVoidMethod
+                    Application.Instance.AsyncInvoke(async void () => await this.OnProfilesChanged());
                 }
                 get => this.profiles;
             }
 
             public event EventHandler<EventArgs> ProfilesChanged;
 
-            protected virtual async void OnProfilesChanged()
+            protected virtual async Task OnProfilesChanged()
             {
-                ProfilesChanged?.Invoke(this, new EventArgs());
+                ProfilesChanged?.Invoke(this, EventArgs.Empty);
                 var tablets = await App.Driver.Instance.GetTablets();
-                HandleTabletsChanged(this, tablets.ToImmutableArray());
+                HandleTabletsChanged(this, [.. tablets]);
             }
 
             public BindableBinding<TabletSwitcher, ProfileCollection> ProfilesBinding

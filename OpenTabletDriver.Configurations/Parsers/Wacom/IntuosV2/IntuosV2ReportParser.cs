@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using OpenTabletDriver.Plugin.Tablet;
 using OpenTabletDriver.Plugin.Tablet.Touch;
 
 namespace OpenTabletDriver.Configurations.Parsers.Wacom.IntuosV2
 {
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public class IntuosV2ReportParser : IReportParser<IDeviceReport>
     {
         public virtual IDeviceReport Parse(byte[] data)

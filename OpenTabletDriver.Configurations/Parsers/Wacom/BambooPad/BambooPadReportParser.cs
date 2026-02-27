@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using OpenTabletDriver.Plugin.Tablet;
 
 namespace OpenTabletDriver.Configurations.Parsers.Wacom.BambooPad
 {
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public class BambooPadReportParser : IReportParser<IDeviceReport>
     {
         public virtual IDeviceReport Parse(byte[] report)
@@ -13,7 +15,7 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom.BambooPad
             };
         }
 
-        private IDeviceReport GetToolReport(byte[] report)
+        private static IDeviceReport GetToolReport(byte[] report)
         {
             if (report[1] == 0x01)
                 return new BambooPadTabletReport(report);

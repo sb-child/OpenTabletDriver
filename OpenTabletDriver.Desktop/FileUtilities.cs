@@ -14,27 +14,15 @@ namespace OpenTabletDriver.Desktop
         /// Evaluates all environment variables and returns the first rooted path, otherwise null.
         /// </summary>
         /// <returns>A valid path in which may or may not currently exist.</returns>
-        public static string? GetPath(params string[] paths)
-        {
-            foreach (var dir in paths.Select(InjectEnvironmentVariables))
-                if (Path.IsPathRooted(dir))
-                    return dir;
-
-            return null;
-        }
+        public static string? GetPath(params string[] paths) =>
+            paths.Select(InjectEnvironmentVariables).FirstOrDefault(Path.IsPathRooted);
 
         /// <summary>
         /// Evaluates all environment variables and returns the first existing path or null.
         /// </summary>
         /// <returns>An existing path or null.</returns>
-        public static string? GetExistingPath(params string[] paths)
-        {
-            foreach (var dir in paths.Select(InjectEnvironmentVariables))
-                if (Directory.Exists(dir))
-                    return dir;
-
-            return null;
-        }
+        public static string? GetExistingPath(params string[] paths) =>
+            paths.Select(InjectEnvironmentVariables).FirstOrDefault(Directory.Exists);
 
         /// <summary>
         /// Evaluates all environment variables and returns the first existing path.

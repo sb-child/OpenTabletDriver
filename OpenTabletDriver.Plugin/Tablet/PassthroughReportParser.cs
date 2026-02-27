@@ -1,4 +1,4 @@
-﻿namespace OpenTabletDriver.Plugin.Tablet
+namespace OpenTabletDriver.Plugin.Tablet
 {
     public class PassthroughReportParser : IReportParser<IDeviceReport>
     {

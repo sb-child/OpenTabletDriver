@@ -7,8 +7,8 @@ namespace OpenTabletDriver.Configurations.Parsers.Veikk
         public VeikkAuxReport(byte[] report)
         {
             Raw = report;
-            AuxButtons = new bool[]
-            {
+            AuxButtons =
+            [
                 report[4].IsBitSet(0) && report[3].IsBitSet(0),
                 report[4].IsBitSet(1) && report[3].IsBitSet(0),
                 report[4].IsBitSet(2) && report[3].IsBitSet(0),
@@ -21,7 +21,7 @@ namespace OpenTabletDriver.Configurations.Parsers.Veikk
                 report[5].IsBitSet(1) && report[3].IsBitSet(0),
                 report[5].IsBitSet(2) && report[3].IsBitSet(0),
                 report[5].IsBitSet(3) && report[3].IsBitSet(0),
-            };
+            ];
         }
 
         public byte[] Raw { get; set; }

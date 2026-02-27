@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -9,7 +9,6 @@ namespace OpenTabletDriver.Desktop.Interop.Display
 {
     using static XLib;
     using static XRandr;
-    using Window = IntPtr;
 
     public class XScreen : IVirtualScreen, IDisposable
     {
@@ -37,8 +36,8 @@ namespace OpenTabletDriver.Desktop.Interop.Display
             Position = new Vector2(primary.X, primary.Y);
         }
 
-        private Window Display;
-        private Window RootWindow;
+        private IntPtr Display;
+        private IntPtr RootWindow;
 
         public float Width
         {
@@ -72,7 +71,25 @@ namespace OpenTabletDriver.Desktop.Interop.Display
 
         public void Dispose()
         {
-            XCloseDisplay(Display);
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
+        private bool _isDisposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed) return;
+
+            if (Display != IntPtr.Zero)
+            {
+                int result = XCloseDisplay(Display);
+                Display = IntPtr.Zero;
+            }
+            RootWindow = IntPtr.Zero;
+            _isDisposed = true;
+        }
+
+        ~XScreen() => Dispose(false);
     }
 }

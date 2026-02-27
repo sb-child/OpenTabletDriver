@@ -16,12 +16,12 @@ namespace OpenTabletDriver.Plugin.Tablet
             };
             Pressure = Unsafe.ReadUnaligned<ushort>(ref report[6]);
 
-            PenButtons = new bool[]
-            {
+            PenButtons =
+            [
                 report[1].IsBitSet(1),
                 report[1].IsBitSet(2),
-                report[1].IsBitSet(3)
-            };
+                report[1].IsBitSet(3),
+            ];
         }
 
         public byte[] Raw { set; get; }

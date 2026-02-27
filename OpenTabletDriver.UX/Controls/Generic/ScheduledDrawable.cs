@@ -34,9 +34,15 @@ namespace OpenTabletDriver.UX.Controls.Generic
             Invalidate();
         }
 
-        ~ScheduledDrawable()
+        protected override void Dispose(bool disposing)
         {
             CompositionScheduler.Unregister(OnCompose);
+            base.Dispose(disposing);
+        }
+
+        ~ScheduledDrawable()
+        {
+            Dispose(false);
         }
     }
 }

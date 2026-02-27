@@ -96,6 +96,7 @@ namespace OpenTabletDriver.Desktop.Interop.Timer
                     _enabled = true;
 
                     _timerThread.Priority = ThreadPriority.Highest;
+                    _timerThread.IsBackground = true;
                     _timerThread.Start();
                 }
             }

@@ -1,8 +1,11 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OpenTabletDriver.Native.Windows.USB
 {
     [Flags]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public enum DIGCF
     {
         None = 0,

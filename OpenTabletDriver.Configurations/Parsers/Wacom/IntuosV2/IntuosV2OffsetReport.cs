@@ -24,12 +24,12 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom.IntuosV2
 
             var penByte = report[2];
             Eraser = penByte.IsBitSet(4);
-            PenButtons = new bool[]
-            {
+            PenButtons =
+            [
                 penByte.IsBitSet(1),
                 penByte.IsBitSet(2),
-                penByte.IsBitSet(3)
-            };
+                penByte.IsBitSet(3),
+            ];
             NearProximity = report[1].IsBitSet(5);
             HoverDistance = report[11];
         }

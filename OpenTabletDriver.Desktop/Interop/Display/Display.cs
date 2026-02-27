@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using OpenTabletDriver.Plugin.Platform.Display;
 
 namespace OpenTabletDriver.Desktop.Interop.Display

@@ -136,12 +136,6 @@ namespace OpenTabletDriver.Desktop.Interop.Input
             }
         }
 
-        protected void QueuePendingScroll(int x, int y)
-        {
-            _scrollDeltaX = x;
-            _scrollDeltaY = y;
-        }
-
         public void SetPressure(float percentage)
         {
             _pressure = percentage;
@@ -257,12 +251,12 @@ namespace OpenTabletDriver.Desktop.Interop.Input
             };
         }
 
-        private bool IsButtonSet(int buttonStates, CGMouseButton button)
+        private static bool IsButtonSet(int buttonStates, CGMouseButton button)
         {
             return (buttonStates & (1 << (int)button)) != 0;
         }
 
-        private void SetButtonState(ref int buttonStates, CGMouseButton button, bool state)
+        private static void SetButtonState(ref int buttonStates, CGMouseButton button, bool state)
         {
             if (state)
                 buttonStates |= 1 << (int)button;

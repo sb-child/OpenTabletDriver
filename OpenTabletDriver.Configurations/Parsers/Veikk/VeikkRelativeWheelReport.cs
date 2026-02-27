@@ -10,15 +10,19 @@ namespace OpenTabletDriver.Configurations.Parsers.Veikk
             Raw = report;
             if (report[4].IsBitSet(1) && report[3].IsBitSet(0))
             {
-                Delta = 1;
+                AnalogDeltas = [1];
             }
             else if (report[4].IsBitSet(0) && report[3].IsBitSet(0))
             {
-                Delta = -1;
+                AnalogDeltas = [-1];
+            }
+            else
+            {
+                AnalogDeltas = [0];
             }
         }
 
         public byte[] Raw { get; set; }
-        public int? Delta { get; set; }
+        public int[] AnalogDeltas { get; set; }
     }
 }

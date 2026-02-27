@@ -19,18 +19,18 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom.Graphire
             Pressure = report[1].IsBitSet(0) ? (uint)(report[6] | ((report[7] & 0x03) << 8)) : 0;
             Eraser = report[1].IsBitSet(5);
 
-            PenButtons = new bool[]
-            {
+            PenButtons =
+            [
                 report[1].IsBitSet(1),
-                report[1].IsBitSet(2)
-            };
+                report[1].IsBitSet(2),
+            ];
 
             var auxByte = report[7];
-            AuxButtons = new bool[]
-            {
+            AuxButtons =
+            [
                 auxByte.IsBitSet(6),
                 auxByte.IsBitSet(7),
-            };
+            ];
 
             // wheel = report[7][5:3]
 

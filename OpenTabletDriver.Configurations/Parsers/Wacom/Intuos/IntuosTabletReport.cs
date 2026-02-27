@@ -17,11 +17,11 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom.Intuos
             };
             Pressure = Unsafe.ReadUnaligned<ushort>(ref report[6]);
 
-            PenButtons = new bool[]
-            {
+            PenButtons =
+            [
                 report[1].IsBitSet(1),
-                report[1].IsBitSet(2)
-            };
+                report[1].IsBitSet(2),
+            ];
             Eraser = report[1].IsBitSet(3);
             NearProximity = report[1].IsBitSet(7);
             HoverDistance = (uint)report[8];

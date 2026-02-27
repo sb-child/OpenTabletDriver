@@ -7,8 +7,8 @@ namespace OpenTabletDriver.Configurations.Parsers.XENX
         public XENXAuxReport(byte[] report)
         {
             Raw = report;
-            AuxButtons = new bool[]
-            {
+            AuxButtons =
+            [
                 report[2] != 0,
                 report[3] != 0,
                 report[4] != 0,
@@ -19,7 +19,7 @@ namespace OpenTabletDriver.Configurations.Parsers.XENX
                 report[9] != 0,
                 report[10] != 0,
                 report[11] != 0,
-            };
+            ];
         }
 
         public byte[] Raw { get; set; }

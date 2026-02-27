@@ -67,7 +67,7 @@ namespace OpenTabletDriver.UX.Controls
             return Array.Empty<Control>();
         }
 
-        private IEnumerable<Control> GetControlsForStore(PluginSettingStore store)
+        private static IEnumerable<Control> GetControlsForStore(PluginSettingStore store)
         {
             if (store != null)
             {
@@ -85,7 +85,7 @@ namespace OpenTabletDriver.UX.Controls
             return Array.Empty<Control>();
         }
 
-        private IEnumerable<Control> GetControlsForType(PluginSettingStore store, Type type)
+        private static IEnumerable<Control> GetControlsForType(PluginSettingStore store, Type type)
         {
             var properties = from property in type.GetProperties()
                              let attrs = property.GetCustomAttributes(true)

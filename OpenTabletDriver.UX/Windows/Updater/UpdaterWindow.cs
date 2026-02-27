@@ -29,7 +29,8 @@ namespace OpenTabletDriver.UX.Windows.Updater
                 }
             };
 
-            _ = InitializeAsync();
+            // ReSharper disable once AsyncVoidMethod
+            Application.Instance.AsyncInvoke(async void () => await InitializeAsync());
         }
 
         public const string LATEST_RELEASE_URL = "https://github.com/OpenTabletDriver/OpenTabletDriver/releases/latest";

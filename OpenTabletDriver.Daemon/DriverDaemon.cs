@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -49,10 +49,17 @@ namespace OpenTabletDriver.Daemon
             Driver.TabletsChanged += (sender, e) => TabletsChanged?.Invoke(sender, e);
             Driver.CompositeDeviceHub.DevicesChanged += async (sender, args) =>
             {
-                if (args.Additions.Any())
+                if (!args.Additions.Any()) return;
+
+                // only re-initialize pipeline if a relevant device is plugged in
+                if (args.Additions.Any(x => Driver.KnownVendorIDs.Contains(x.VendorID)))
                 {
                     await DetectTablets();
                     await SetSettings(Settings);
+                }
+                else
+                {
+                    Log.Write(nameof(DriverDaemon), "No known tablets added, skipping detect", LogLevel.Debug);
                 }
             };
 
@@ -93,13 +100,13 @@ namespace OpenTabletDriver.Daemon
                 if (System.Diagnostics.Debugger.IsAttached)
                     return;
 
-                Log.Write(nameof(DriverDaemon), "Sleep detected...", LogLevel.Info);
+                Log.Write(nameof(DriverDaemon), "Sleep detected...");
                 await DetectTablets();
                 await SetSettings(Settings);
             };
         }
 
-        private IEnumerable<string> safeGetProcessDetails(Process[] processes)
+        private static IEnumerable<string> safeGetProcessDetails(Process[] processes)
         {
             foreach (var driverProcess in processes)
             {
@@ -379,7 +386,7 @@ namespace OpenTabletDriver.Daemon
             }
         }
 
-        private void MoveSettingsFile()
+        private static void MoveSettingsFile()
         {
             var src = AppInfo.Current.SettingsFile;
 
@@ -391,23 +398,28 @@ namespace OpenTabletDriver.Daemon
             File.Move(src, dst);
         }
 
-        private void SetOutputModeElements(InputDeviceTree dev, IOutputMode outputMode, Profile profile, BindingHandler bindingHandler)
+        private static void SetOutputModeElements(InputDeviceTree dev, IOutputMode outputMode, Profile profile, BindingHandler bindingHandler)
         {
             string group = dev.Properties.Name;
 
-            var elements = from store in profile.Filters
-                           where store.Enable
-                           let filter = store.Construct<IPositionedPipelineElement<IDeviceReport>>(outputMode.Tablet)
-                           where filter != null
-                           select filter;
+            var elements = (from store in profile.Filters
+                            where store.Enable
+                            let filter = store.Construct<IPositionedPipelineElement<IDeviceReport>>(outputMode.Tablet)
+                            where filter != null
+                            select filter!).ToArray();
+
             outputMode.Elements = elements.Append(bindingHandler).ToList();
 
-            var activeFilters = outputMode.Elements.Where(e => e != bindingHandler).ToList();
-            if (activeFilters.Count != 0)
-                Log.Write(group, $"Filters: {string.Join(", ", activeFilters)}");
+            foreach (var filter in elements)
+            {
+                var pluginSettings = profile.Filters.First(x => x.Path == filter.GetType().FullName);
+                if (pluginSettings == null) continue;
+
+                Log.Write(group, $"Filter Settings {pluginSettings.GetHumanReadableString()}");
+            }
         }
 
-        private void SetAbsoluteModeSettings(InputDeviceTree dev, AbsoluteOutputMode absoluteMode, AbsoluteModeSettings settings)
+        private static void SetAbsoluteModeSettings(InputDeviceTree dev, AbsoluteOutputMode absoluteMode, AbsoluteModeSettings settings)
         {
             string group = dev.Properties.Name;
             absoluteMode.Output = settings.Display.Area;
@@ -424,7 +436,7 @@ namespace OpenTabletDriver.Daemon
             Log.Write(group, $"Ignoring reports outside area: {(absoluteMode.AreaLimiting ? "Enabled" : "Disabled")}");
         }
 
-        private void SetRelativeModeSettings(InputDeviceTree dev, RelativeOutputMode relativeMode, RelativeModeSettings settings)
+        private static void SetRelativeModeSettings(InputDeviceTree dev, RelativeOutputMode relativeMode, RelativeModeSettings settings)
         {
             string group = dev.Properties.Name;
             relativeMode.Sensitivity = settings.Sensitivity;
@@ -511,16 +523,49 @@ namespace OpenTabletDriver.Daemon
                 Log.Write(group, $"Express Key Bindings: " + string.Join(", ", bindingHandler.AuxButtons.Select(b => b.Value?.Binding)));
             }
 
+            for (int wheelIndex = 0; wheelIndex < settings.WheelBindings.Count; wheelIndex++)
+            {
+                var wheelBindingSetting = settings.WheelBindings[wheelIndex];
+                var wheelBindingHandler = bindingHandler.Wheels[wheelIndex];
+
+                if (wheelBindingSetting.WheelButtons.Any(b => b?.Path != null))
+                {
+                    SetBindingHandlerCollectionSettings(bindingServiceProvider, wheelBindingSetting.WheelButtons,
+                        wheelBindingHandler.WheelButtons, tabletReference);
+
+                    Log.Write(group,
+                        $"Wheel {wheelIndex + 1} Button Bindings: [" + string.Join("], [",
+                            wheelBindingHandler.WheelButtons.Select(b => b.Value?.Binding)) + "]");
+                }
+
+                var clockwiseRotation = wheelBindingHandler.ClockwiseRotation = new DeltaThresholdBindingState
+                {
+                    Binding = wheelBindingSetting.ClockwiseRotation?.Construct<IBinding>(bindingServiceProvider,
+                        tabletReference),
+                    ActivationThreshold = wheelBindingSetting.ClockwiseActivationThreshold,
+                    IsNegativeThreshold = false
+                };
+
+                var counterClockwiseRotation = wheelBindingHandler.CounterClockwiseRotation =
+                    new DeltaThresholdBindingState
+                    {
+                        Binding = wheelBindingSetting.CounterClockwiseRotation?.Construct<IBinding>(
+                            bindingServiceProvider, tabletReference),
+                        ActivationThreshold = wheelBindingSetting.CounterClockwiseActivationThreshold,
+                        IsNegativeThreshold = true
+                    };
+
+                if (clockwiseRotation.Binding != null)
+                    Log.Write(group, $"Wheel {wheelIndex + 1} Clockwise Rotation: [{clockwiseRotation.Binding}]@{clockwiseRotation.ActivationThreshold}°");
+
+                if (counterClockwiseRotation.Binding != null)
+                    Log.Write(group, $"Wheel {wheelIndex + 1} Counter-Clockwise Rotation: [{counterClockwiseRotation.Binding}]@{counterClockwiseRotation.ActivationThreshold}°");
+            }
+
             if (settings.MouseButtons != null && settings.MouseButtons.Any(b => b?.Path != null))
             {
                 SetBindingHandlerCollectionSettings(bindingServiceProvider, settings.MouseButtons, bindingHandler.MouseButtons, tabletReference);
                 Log.Write(group, $"Mouse Button Bindings: [" + string.Join("], [", bindingHandler.MouseButtons.Select(b => b.Value?.Binding)) + "]");
-            }
-
-            if (settings.WheelButtons != null && settings.WheelButtons.Any(b => b?.Path != null))
-            {
-                SetBindingHandlerCollectionSettings(bindingServiceProvider, settings.WheelButtons, bindingHandler.WheelButtons, tabletReference);
-                Log.Write(group, $"Wheel Button Bindings: [" + string.Join("], [", bindingHandler.WheelButtons.Select(b => b.Value?.Binding)) + "]");
             }
 
             var scrollUp = bindingHandler.MouseScrollUp = new BindingState
@@ -538,27 +583,6 @@ namespace OpenTabletDriver.Daemon
                 Log.Write(group, $"Mouse Scroll: Up: [{scrollUp?.Binding}] Down: [{scrollDown?.Binding}]");
             }
 
-            var clockwiseRotation = bindingHandler.ClockwiseRotation = new DeltaThresholdBindingState
-            {
-                Binding = settings.ClockwiseRotation?.Construct<IBinding>(bindingServiceProvider, tabletReference),
-                ActivationThreshold = settings.ClockwiseActivationThreshold
-                    * (tabletReference.Properties.Specifications.Wheel?.StepCount ?? 1) / 100,
-                IsNegativeThreshold = false
-            };
-
-            var counterClockwiseRotation = bindingHandler.CounterClockwiseRotation = new DeltaThresholdBindingState
-            {
-                Binding = settings.CounterClockwiseRotation?.Construct<IBinding>(bindingServiceProvider, tabletReference),
-                ActivationThreshold = -settings.CounterClockwiseActivationThreshold
-                    * (tabletReference.Properties.Specifications.Wheel?.StepCount ?? 1) / 100,
-                IsNegativeThreshold = true
-            };
-
-            if (clockwiseRotation.Binding != null || counterClockwiseRotation.Binding != null)
-            {
-                Log.Write(group, $"Wheel: Clockwise Rotation: [{clockwiseRotation?.Binding}] Counter-Clockwise Rotation: [{counterClockwiseRotation?.Binding}]");
-            }
-
             return bindingHandler;
         }
 
@@ -570,26 +594,6 @@ namespace OpenTabletDriver.Daemon
                 var state = binding == null ? null : new BindingState
                 {
                     Binding = binding
-                };
-
-                if (!targetDict.TryAdd(index, state))
-                    targetDict[index] = state;
-            }
-        }
-
-        private static void SetBindingHandlerRangeCollectionSettings(IServiceManager serviceManager, PluginSettingStoreCollection collection, float[] ends, Dictionary<int, RangeBindingState?> targetDict, TabletReference tabletReference)
-        {
-            var start = 0;
-
-            for (int index = 0; index < collection.Count; index++)
-            {
-                var binding = collection[index]?.Construct<IBinding>(serviceManager, tabletReference);
-                var end = ends[index];
-                var state = binding == null ? null : new RangeBindingState
-                {
-                    Binding = binding,
-                    StartThreshold = start,
-                    EndThreshold = end >= start ? end : start
                 };
 
                 if (!targetDict.TryAdd(index, state))
@@ -684,10 +688,6 @@ namespace OpenTabletDriver.Daemon
             {
                 var update = await _updateInfo.GetUpdate();
                 Updater?.Install(update);
-            }
-            catch
-            {
-                throw;
             }
             finally
             {

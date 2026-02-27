@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using OpenTabletDriver.Plugin.Tablet;
 
 namespace OpenTabletDriver.Configurations.Parsers.Veikk
 {
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public class VeikkA15ReportParser : IReportParser<IDeviceReport>
     {
         public IDeviceReport Parse(byte[] report)

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using OpenTabletDriver.Desktop.Reflection;
@@ -20,6 +21,17 @@ namespace OpenTabletDriver.Desktop
             cacheDirectory,
             backupDirectory,
             trashDirectory;
+
+        public AppInfo()
+        {
+            // on Linux, verify presence of necessary environment variables (as '~' expands to $HOME environment variable)
+            if (SystemInterop.CurrentPlatform == PluginPlatform.Linux && IsEnvVarUnset("HOME") && IsEnvVarUnset("XDG_DATA_HOME"))
+            {
+                Log.Write(nameof(AppInfo),
+                    "Unable to look up environment variable 'HOME' or 'XDG_DATA_HOME'. '~/.local/share/OpenTabletDriver' paths will not detect (such as configuration overrides).",
+                    LogLevel.Warning);
+            }
+        }
 
         private static AppInfo current;
         public static AppInfo Current
@@ -44,7 +56,7 @@ namespace OpenTabletDriver.Desktop
                     TemporaryDirectory = GetPath("$TMPDIR/OpenTabletDriver"),
                     CacheDirectory = GetPath("~/Library/Caches/OpenTabletDriver")
                 },
-                _ => null
+                _ => throw new InvalidOperationException($"Unsupported platform {SystemInterop.CurrentPlatform}"),
             };
         }
 
@@ -52,7 +64,7 @@ namespace OpenTabletDriver.Desktop
 
         public static PresetManager PresetManager { set; get; } = new PresetManager();
 
-        public string AppDataDirectory { set; get; }
+        public required string AppDataDirectory { set; get; }
 
         public string ConfigurationDirectory
         {
@@ -110,24 +122,6 @@ namespace OpenTabletDriver.Desktop
 
         public static string ProgramDirectory => AppContext.BaseDirectory;
 
-        private static string GetDirectory(params string[] directories)
-        {
-            foreach (var dir in directories.Select(InjectEnvironmentVariables))
-                if (Path.IsPathRooted(dir))
-                    return dir;
-
-            return null;
-        }
-
-        private static string GetDirectoryIfExists(params string[] directories)
-        {
-            foreach (var dir in directories.Select(InjectEnvironmentVariables))
-                if (Directory.Exists(dir))
-                    return dir;
-
-            return InjectEnvironmentVariables(directories.Last());
-        }
-
         private string GetDefaultConfigurationDirectory() => GetExistingPathOrLast(
             Path.Join(AppDataDirectory, "Configurations"),
             Path.Join(ProgramDirectory, "Configurations"),
@@ -142,5 +136,8 @@ namespace OpenTabletDriver.Desktop
         private string GetDefaultCacheDirectory() => Path.Join(AppDataDirectory, "Cache");
         private string GetDefaultBackupDirectory() => Path.Join(AppDataDirectory, "Backup");
         private string GetDefaultTrashDirectory() => Path.Join(AppDataDirectory, "Trash");
+
+        private static bool IsEnvVarUnset([DisallowNull] string envVar) =>
+            string.IsNullOrEmpty(Environment.GetEnvironmentVariable(envVar));
     }
 }

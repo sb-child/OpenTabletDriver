@@ -39,7 +39,7 @@ namespace OpenTabletDriver.Configurations
                 .Where(t => t.IsAssignableTo(typeof(IReportParser<IDeviceReport>)))
                 .ToDictionary(
                     t => t.FullName,
-                    t => GetConstructor(t)
+                    GetConstructor
                 );
         }
     }

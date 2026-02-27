@@ -10,12 +10,12 @@ namespace OpenTabletDriver.SystemDrivers.InfoProviders
 
         protected override string LinuxModuleName => "wacom";
 
-        protected override string[] WinProcessNames { get; } = Array.Empty<string>();
+        protected override string[] WinProcessNames { get; } = [];
 
-        protected override string[] Heuristics { get; } = new string[]
-        {
-            "Wacom"
-        };
+        protected override string[] Heuristics { get; } =
+        [
+            "Wacom",
+        ];
 
         protected override DriverInfo GetWinDriverInfo()
         {

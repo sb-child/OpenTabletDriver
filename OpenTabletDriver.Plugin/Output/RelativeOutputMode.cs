@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Numerics;
 using OpenTabletDriver.Plugin.Attributes;
 using OpenTabletDriver.Plugin.Platform.Pointer;
@@ -13,14 +13,14 @@ namespace OpenTabletDriver.Plugin.Output
     [PluginIgnore]
     public abstract class RelativeOutputMode : OutputMode
     {
-        private HPETDeltaStopwatch stopwatch = new HPETDeltaStopwatch(true);
+        private HPETDeltaStopwatch stopwatch = new HPETDeltaStopwatch();
         private Vector2? lastTransformedPos;
         private Vector2 lastReadPos;
         private bool outOfRange;
 
         // for handling detection of low resetTimes
         private uint _resets;
-        private bool _warnedBadResets = false;
+        private bool _warnedBadResets;
 
         /// <summary>
         /// The class in which the final relative positioned output is handled.

@@ -8,15 +8,15 @@ namespace OpenTabletDriver.SystemDrivers.InfoProviders
 
         protected override string LinuxModuleName => "hid_uclogic";
 
-        protected override string[] WinProcessNames { get; } = new string[]
-        {
+        protected override string[] WinProcessNames { get; } =
+        [
             "TabletDriverCenter",
-            "TabletDriverSetting"
-        };
+            "TabletDriverSetting",
+        ];
 
-        protected override string[] Heuristics { get; } = new string[]
-        {
-            "Veikk"
-        };
+        protected override string[] Heuristics { get; } =
+        [
+            "Veikk",
+        ];
     }
 }

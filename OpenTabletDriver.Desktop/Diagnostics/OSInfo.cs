@@ -56,7 +56,7 @@ namespace OpenTabletDriver.Desktop
             };
 
             // search for valid path
-            var osReleasePath = osReleasePaths.First(x => File.Exists(x));
+            var osReleasePath = osReleasePaths.First(File.Exists);
             if (osReleasePath == null)
             {
                 // fallback

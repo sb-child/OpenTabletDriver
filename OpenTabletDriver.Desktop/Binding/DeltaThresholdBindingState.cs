@@ -1,20 +1,37 @@
 using OpenTabletDriver.Plugin.Tablet;
 
+#nullable enable
+
 namespace OpenTabletDriver.Desktop.Binding
 {
+    /// <summary>
+    /// A <see cref="BindingState"/> type for handling directional gadgets (wheels/strips).
+    /// <para/>
+    /// Call <see cref="Invoke"/> with your deltas, and call <see cref="Reset"/> to reset saved deltas as necessary.
+    /// </summary>
     public class DeltaThresholdBindingState : BindingState
     {
         public float ActivationThreshold { set; get; }
         public bool IsNegativeThreshold { set; get; }
 
-        public void Invoke(TabletReference tablet, IDeviceReport report, ref float delta)
+        private double _accumulatedDelta;
+
+        public void Invoke(TabletReference tablet, IDeviceReport report, double delta)
         {
-            bool newState = IsNegativeThreshold ? delta < ActivationThreshold : delta > ActivationThreshold;
+            _accumulatedDelta += delta;
 
-            if (newState)
-                delta -= ActivationThreshold;
+            while (IsNegativeThreshold ? _accumulatedDelta <= -ActivationThreshold : _accumulatedDelta >= ActivationThreshold)
+            {
+                _accumulatedDelta -= IsNegativeThreshold ? -ActivationThreshold : ActivationThreshold;
 
-            base.Invoke(tablet, report, newState);
+                base.Invoke(tablet, report, true);
+                base.Invoke(tablet, report, false);
+            }
+        }
+
+        public void Reset()
+        {
+            _accumulatedDelta = 0;
         }
     }
 }

@@ -9,11 +9,11 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom.Graphire
             Raw = report;
 
             var auxByte = report[7];
-            AuxButtons = new bool[]
-            {
+            AuxButtons =
+            [
                 auxByte.IsBitSet(6),
                 auxByte.IsBitSet(7),
-            };
+            ];
 
             // wheel = report[7][5:3]
         }

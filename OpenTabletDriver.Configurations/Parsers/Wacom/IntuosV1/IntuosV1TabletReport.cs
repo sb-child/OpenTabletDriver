@@ -23,11 +23,11 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom.IntuosV1
             Pressure = (uint)((report[6] << 3) | ((report[7] & 0xC0) >> 5) | (report[1] & 1));
 
             var penByte = report[1];
-            PenButtons = new bool[]
-            {
+            PenButtons =
+            [
                 penByte.IsBitSet(1),
-                penByte.IsBitSet(2)
-            };
+                penByte.IsBitSet(2),
+            ];
 
             NearProximity = penByte.IsBitSet(6);
             HoverDistance = (uint)report[9];

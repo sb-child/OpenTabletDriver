@@ -1,4 +1,4 @@
-﻿namespace OpenTabletDriver.Plugin.Tablet.Touch
+namespace OpenTabletDriver.Plugin.Tablet.Touch
 {
     public interface ITouchReport : IDeviceReport
     {

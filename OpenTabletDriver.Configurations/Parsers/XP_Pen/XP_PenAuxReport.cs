@@ -8,8 +8,8 @@ namespace OpenTabletDriver.Configurations.Parsers.XP_Pen
         {
             Raw = report;
 
-            AuxButtons = new bool[]
-            {
+            AuxButtons =
+            [
                 report[auxIndex].IsBitSet(0),
                 report[auxIndex].IsBitSet(1),
                 report[auxIndex].IsBitSet(2),
@@ -35,5 +35,6 @@ namespace OpenTabletDriver.Configurations.Parsers.XP_Pen
 
         public bool[] AuxButtons { set; get; }
         public byte[] Raw { set; get; }
+        public int[] AnalogDeltas { get; set; }
     }
 }

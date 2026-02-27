@@ -17,11 +17,11 @@ namespace OpenTabletDriver.Configurations.Parsers.Acepen
             };
             Pressure = Unsafe.ReadUnaligned<ushort>(ref report[7]);
 
-            PenButtons = new bool[]
-            {
+            PenButtons =
+            [
                 report[2].IsBitSet(1),
-                report[2].IsBitSet(2)
-            };
+                report[2].IsBitSet(2),
+            ];
 
             Tilt = new Vector2
             {

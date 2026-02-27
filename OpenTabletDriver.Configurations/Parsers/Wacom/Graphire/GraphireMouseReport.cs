@@ -21,19 +21,19 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom.Graphire
                 Y = report[7].IsBitSet(1) ? -(report[7] & 1) : report[7] & 1
             };
 
-            MouseButtons = new bool[]
-            {
+            MouseButtons =
+            [
                 report[1].IsBitSet(0), // LEFT
                 report[1].IsBitSet(1), // RIGHT
-                report[1].IsBitSet(2)  // MIDDLE
-            };
+                report[1].IsBitSet(2), // MIDDLE
+            ];
 
             var auxByte = report[7];
-            AuxButtons = new bool[]
-            {
+            AuxButtons =
+            [
                 auxByte.IsBitSet(6),
                 auxByte.IsBitSet(7),
-            };
+            ];
 
             // wheel = report[7][5:3]
 

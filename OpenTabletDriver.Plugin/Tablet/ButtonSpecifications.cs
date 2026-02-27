@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OpenTabletDriver.Plugin.Tablet
 {
+    // TODO: On API bump, get rid of this
     public class ButtonSpecifications
     {
         /// <summary>

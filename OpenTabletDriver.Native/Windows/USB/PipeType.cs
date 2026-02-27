@@ -1,6 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace OpenTabletDriver.Native.Windows.USB
 {
-    public enum PipeType : int
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    public enum PipeType
     {
         Control,
         Isochronous,

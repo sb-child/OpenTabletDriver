@@ -9,8 +9,8 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom.IntuosV1
             Raw = report;
 
             var auxByte = report[4];
-            AuxButtons = new bool[]
-            {
+            AuxButtons =
+            [
                 auxByte.IsBitSet(0),
                 auxByte.IsBitSet(1),
                 auxByte.IsBitSet(2),
@@ -19,7 +19,7 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom.IntuosV1
                 auxByte.IsBitSet(5),
                 auxByte.IsBitSet(6),
                 auxByte.IsBitSet(7),
-            };
+            ];
         }
 
         public byte[] Raw { set; get; }

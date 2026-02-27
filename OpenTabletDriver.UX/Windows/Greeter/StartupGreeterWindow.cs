@@ -69,7 +69,7 @@ namespace OpenTabletDriver.UX.Windows.Greeter
             };
         }
 
-        private IEnumerable<DocumentPage> GetGreeterPages()
+        private static IEnumerable<DocumentPage> GetGreeterPages()
         {
             yield return new WelcomePage();
             yield return new AreaEditorPage();

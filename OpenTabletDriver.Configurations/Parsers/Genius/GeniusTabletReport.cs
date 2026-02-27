@@ -17,11 +17,11 @@ namespace OpenTabletDriver.Configurations.Parsers.Genius
             };
             Pressure = report[5].IsBitSet(2) ? Unsafe.ReadUnaligned<ushort>(ref report[6]) : 0u;
 
-            PenButtons = new bool[]
-            {
+            PenButtons =
+            [
                report[5].IsBitSet(3),
-               report[5].IsBitSet(4)
-            };
+               report[5].IsBitSet(4),
+            ];
         }
 
         public byte[] Raw { set; get; }

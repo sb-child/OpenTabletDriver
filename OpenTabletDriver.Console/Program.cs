@@ -57,28 +57,29 @@ namespace OpenTabletDriver.Console
             return root;
         }
 
-        private static readonly IEnumerable<Command> IOCommands = new Command[]
-        {
+        private static readonly IEnumerable<Command> IOCommands =
+        [
             CreateCommand<FileInfo>(LoadSettings, "Load settings from a file", "load"),
             CreateCommand<FileInfo>(SaveSettings, "Save settings to a file", "save"),
+            CreateCommand(SaveDefaultSettings, "Save settings to the default settings file", "save-defaults"),
             CreateCommand<string>(ApplyPreset, "Apply a preset from the Presets directory", "preset"),
-            CreateCommand<string>(SavePreset, "Save the current settings to the Presets directory")
-        };
+            CreateCommand<string>(SavePreset, "Save the current settings to the Presets directory"),
+        ];
 
-        private static readonly IEnumerable<Command> ActionCommands = new Command[]
-        {
+        private static readonly IEnumerable<Command> ActionCommands =
+        [
             CreateCommand(Detect, "Detects tablets"),
             CreateCommand<string>(InstallPlugin, "Install plugin from specified file path"),
             CreateCommand<string>(UninstallPlugin, "Install plugin with specified folder name"),
-        };
+        ];
 
-        private static readonly IEnumerable<Command> DebugCommands = new Command[]
-        {
-            CreateCommand<int, int, int>(GetString, "Requests a device string")
-        };
+        private static readonly IEnumerable<Command> DebugCommands =
+        [
+            CreateCommand<int, int, int>(GetString, "Requests a device string"),
+        ];
 
-        private static readonly IEnumerable<Command> ModifyCommands = new Command[]
-        {
+        private static readonly IEnumerable<Command> ModifyCommands =
+        [
             CreateCommand<string, string>(SetOutputMode, "Sets the output mode"),
             CreateCommand<string, string[]>(EnableTabletFilters, "Enables the specified filters on the specified tablet"),
             CreateCommand<string, string[]>(DisableTabletFilters, "Disables the specified filters on the specified tablet"),
@@ -96,10 +97,10 @@ namespace OpenTabletDriver.Console
             CreateCommand<string, bool>(SetEnableClipping, "Sets whether inputs should be limited to the specified areas"),
             CreateCommand<string, bool>(SetEnableAreaLimiting, "Sets whether inputs outside of the tablet area should be ignored"),
             CreateCommand<string, bool>(SetLockAspectRatio, "Sets whether to lock tablet width/height to display width/height ratio"),
-        };
+        ];
 
-        private static readonly IEnumerable<Command> RequestCommands = new Command[]
-        {
+        private static readonly IEnumerable<Command> RequestCommands =
+        [
             CreateCommand(GetCurrentLog, "Gets the current log", "log"),
             CreateCommand(GetAllSettings, "Gets all current settings"),
             CreateCommand<string>(GetOutputMode, "Gets the current output mode"),
@@ -109,30 +110,30 @@ namespace OpenTabletDriver.Console
             CreateCommand<string>(GetMiscSettings, "Gets other uncategorized settings"),
             CreateCommand<string>(GetFilters, "Gets the currently enabled filters"),
             CreateCommand(GetTools, "Gets the currently enabled tools"),
-            CreateCommand(ListPlugins, $"Gets the folder names of installed plugins for use in {nameof(UninstallPlugin)}")
-        };
+            CreateCommand(ListPlugins, $"Gets the folder names of installed plugins for use in {nameof(UninstallPlugin)}"),
+        ];
 
-        private static readonly IEnumerable<Command> UpdateCommands = new Command[]
-        {
+        private static readonly IEnumerable<Command> UpdateCommands =
+        [
             CreateCommand(HasUpdate, "Check for any updates"),
-            CreateCommand(InstallUpdate, "Install update")
-        };
+            CreateCommand(InstallUpdate, "Install update"),
+        ];
 
-        private static readonly IEnumerable<Command> ListCommands = new Command[]
-        {
+        private static readonly IEnumerable<Command> ListCommands =
+        [
             CreateCommand(ListOutputModes, "Lists all available output modes"),
             CreateCommand(ListFilters, "Lists all available filters"),
             CreateCommand(ListTools, "Lists all available tools"),
             CreateCommand(ListBindings, "Lists all available binding types"),
             CreateCommand(ListPresets, "Lists all available presets"),
             CreateCommand(ListDisplays, "Lists all available displays"),
-        };
+        ];
 
-        private static readonly IEnumerable<Command> ScriptingCommands = new Command[]
-        {
+        private static readonly IEnumerable<Command> ScriptingCommands =
+        [
             CreateCommand(GetDiagnostics, "Gets diagnostic information"),
             CreateCommand(STDIO, "Open with standard input and output", "stdio"),
-            CreateCommand(EditSettings, "Opens the settings file with the editor defined in the EDITOR environment variable.", "edit")
-        };
+            CreateCommand(EditSettings, "Opens the settings file with the editor defined in the EDITOR environment variable.", "edit"),
+        ];
     }
 }

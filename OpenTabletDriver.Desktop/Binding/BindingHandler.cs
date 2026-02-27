@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using OpenTabletDriver.Configurations.Parsers.Wacom.Intuos4;
+using OpenTabletDriver.Plugin;
 using OpenTabletDriver.Plugin.Attributes;
 using OpenTabletDriver.Plugin.Output;
 using OpenTabletDriver.Plugin.Tablet;
@@ -16,9 +16,10 @@ namespace OpenTabletDriver.Desktop.Binding
         public BindingHandler(TabletReference tablet)
         {
             this.tablet = tablet;
-            this.wheelSteps = tablet.Properties.Specifications.Wheel?.StepCount ?? 0;
-            this.halfWheelSteps = tablet.Properties.Specifications.Wheel?.StepCount / 2d;
-            this.threeHalfWheelSteps = this.halfWheelSteps * 3d;
+
+            int wheelIndex = 0;
+            foreach (var wheel in tablet.Properties.Specifications.Wheels ?? [])
+                Wheels.Add(wheelIndex++, new WheelBindings(wheel));
         }
 
         public ThresholdBindingState? Tip { set; get; }
@@ -28,23 +29,15 @@ namespace OpenTabletDriver.Desktop.Binding
         public Dictionary<int, BindingState?> PenButtons { set; get; } = new Dictionary<int, BindingState?>();
         public Dictionary<int, BindingState?> AuxButtons { set; get; } = new Dictionary<int, BindingState?>();
         public Dictionary<int, BindingState?> MouseButtons { set; get; } = new Dictionary<int, BindingState?>();
-        public Dictionary<int, BindingState?> WheelButtons { set; get; } = new Dictionary<int, BindingState?>();
 
         public BindingState? MouseScrollDown { set; get; }
         public BindingState? MouseScrollUp { set; get; }
 
-        public DeltaThresholdBindingState? ClockwiseRotation { set; get; }
-        public DeltaThresholdBindingState? CounterClockwiseRotation { set; get; }
+        public Dictionary<int, WheelBindings> Wheels { get; } = new Dictionary<int, WheelBindings>();
 
         public PipelinePosition Position => PipelinePosition.PostTransform;
 
         private readonly TabletReference tablet;
-        private readonly uint? wheelSteps;
-        private readonly double? halfWheelSteps;
-        private readonly double? threeHalfWheelSteps;
-
-        private uint? lastWheelPosition;
-        private float currentWheelDelta;
 
         public event Action<IDeviceReport>? Emit;
 
@@ -69,9 +62,67 @@ namespace OpenTabletDriver.Desktop.Binding
             if (report is IAbsoluteWheelReport absoluteWheelReport)
                 HandleAbsoluteWheelReport(tablet, absoluteWheelReport);
             if (report is IRelativeWheelReport relativeWheelReport)
-                HandleRelativeWheelReport(tablet, relativeWheelReport, relativeWheelReport.Delta);
+                HandleRelativeWheelReport(tablet, relativeWheelReport);
             if (report is OutOfRangeReport)
                 HandleOutOfRangeReport(tablet, report);
+        }
+
+        private readonly HashSet<int> _triedRelativeWheels = [];
+
+        private void HandleRelativeWheelReport(TabletReference tabletReference, IRelativeWheelReport relativeWheelReport)
+        {
+            for (int i = 0; i < relativeWheelReport.AnalogDeltas.Length; i++)
+            {
+                int reportDelta = relativeWheelReport.AnalogDeltas[i];
+
+                if (Wheels.TryGetValue(i, out var wheelBinding))
+                    wheelBinding.HandleRelativeWheel(tabletReference, relativeWheelReport, reportDelta);
+                else if (reportDelta != 0 && _triedRelativeWheels.Add(i))
+                {
+                    Log.Write(nameof(BindingHandler),
+                        $"Tablet '{tablet.Properties.Name}' is missing wheel declarations for wheel '{i}' to handle its wheel bindings",
+                        LogLevel.Warning);
+                }
+            }
+        }
+
+        private readonly HashSet<int> _triedAbsoluteWheels = [];
+
+        private void HandleAbsoluteWheelReport(TabletReference tabletReference, IAbsoluteWheelReport absoluteWheelReport)
+        {
+            for (int i = 0; i < absoluteWheelReport.AnalogPositions.Length; i++)
+            {
+                uint? reportPosition = absoluteWheelReport.AnalogPositions[i];
+
+                if (Wheels.TryGetValue(i, out var wheelBinding))
+                    wheelBinding.HandleAbsoluteWheel(tabletReference, absoluteWheelReport, reportPosition);
+                else if (reportPosition != null && _triedAbsoluteWheels.Add(i))
+                {
+                    Log.Write(nameof(BindingHandler),
+                        $"Tablet '{tablet.Properties.Name}' is missing wheel declarations for wheel '{i}' to handle its wheel bindings",
+                        LogLevel.Warning);
+                }
+            }
+        }
+
+        private readonly HashSet<int> _triedWheelButtons = [];
+
+        private void HandleWheelButtonReport(TabletReference tabletReference, IWheelButtonReport wheelButtonReport)
+        {
+            for (int i = 0; i < wheelButtonReport.WheelButtons.Length; i++)
+            {
+                if (Wheels.TryGetValue(i, out var wheelBinding))
+                {
+                    bool[] wheelButton = wheelButtonReport.WheelButtons[i];
+                    HandleBindingCollection(tabletReference, wheelButtonReport, wheelBinding.WheelButtons, wheelButton);
+                }
+                else if (_triedWheelButtons.Add(i))
+                {
+                    Log.Write(nameof(BindingHandler),
+                        $"Tablet '{tablet.Properties.Name}' is missing wheel declarations for wheel '{i}' to handle its wheel button bindings",
+                        LogLevel.Warning);
+                }
+            }
         }
 
         private void HandleOutOfRangeReport(TabletReference tablet, IDeviceReport report)
@@ -107,51 +158,12 @@ namespace OpenTabletDriver.Desktop.Binding
             MouseScrollUp?.Invoke(tablet, report, report.Scroll.Y > 0);
         }
 
-        private void HandleWheelButtonReport(TabletReference tablet, IWheelButtonReport report)
-        {
-            HandleBindingCollection(tablet, report, WheelButtons, report.WheelButtons);
-        }
-
-        private void HandleAbsoluteWheelReport(TabletReference tablet, IAbsoluteWheelReport report)
-        {
-            int? delta = ComputeWheelDelta(lastWheelPosition, report.Position);
-            HandleRelativeWheelReport(tablet, report, delta);
-            lastWheelPosition = report.Position;
-        }
-
-        private void HandleRelativeWheelReport(TabletReference tablet, IDeviceReport report, int? delta)
-        {
-            currentWheelDelta += delta ?? 0;
-
-            ClockwiseRotation?.Invoke(tablet, report, ref currentWheelDelta);
-            CounterClockwiseRotation?.Invoke(tablet, report, ref currentWheelDelta);
-
-            // Some issues with keys staying pressed when holding on specific tablets
-            // This will cause consistency issues on higher end machines
-            ClockwiseRotation?.Invoke(tablet, report, false);
-            CounterClockwiseRotation?.Invoke(tablet, report, false);
-        }
-
-        private int? ComputeWheelDelta(uint? from, uint? to)
-        {
-            return (int?)((((int?)to - from + threeHalfWheelSteps) % wheelSteps) - halfWheelSteps);
-        }
-
         private static void HandleBindingCollection(TabletReference tablet, IDeviceReport report, IDictionary<int, BindingState?> bindings, IList<bool> newStates)
         {
             for (int i = 0; i < newStates.Count; i++)
             {
                 if (bindings.TryGetValue(i, out var binding))
                     binding?.Invoke(tablet, report, newStates[i]);
-            }
-        }
-
-        private static void HandleRangeBindingCollection(TabletReference tablet, IDeviceReport report, IDictionary<int, RangeBindingState?> bindings, float value)
-        {
-            for (int i = 0; i < bindings.Count; i++)
-            {
-                if (bindings.TryGetValue(i, out var binding))
-                    binding?.Invoke(tablet, report, value);
             }
         }
     }

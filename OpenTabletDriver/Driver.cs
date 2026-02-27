@@ -42,6 +42,12 @@ namespace OpenTabletDriver
             return _reportParserProvider.GetReportParser(identifier.ReportParser);
         }
 
+        public IEnumerable<int> KnownVendorIDs => (
+            from configuration in _deviceConfigurationProvider.TabletConfigurations
+            from identifier in configuration.DigitizerIdentifiers.Concat(configuration.AuxiliaryDeviceIdentifiers ??
+                                                                         Enumerable.Empty<DeviceIdentifier>())
+            select identifier.VendorID).Distinct();
+
         public virtual bool Detect()
         {
             lock (_detectSync)
@@ -158,7 +164,6 @@ namespace OpenTabletDriver
                     catch (Exception ex)
                     {
                         Log.Exception(ex, LogLevel.Warning);
-                        continue;
                     }
                 }
             }
@@ -254,7 +259,22 @@ namespace OpenTabletDriver
 
         public void Dispose()
         {
-            DisposeDevices(_inputDeviceTrees);
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private bool _isDisposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed) return;
+
+            if (disposing)
+            {
+                DisposeDevices(_inputDeviceTrees);
+            }
+
+            _isDisposed = true;
         }
     }
 }

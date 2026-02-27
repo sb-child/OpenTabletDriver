@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
 using OpenTabletDriver.Native.Windows.USB;
@@ -11,13 +12,15 @@ namespace OpenTabletDriver.Devices.WinUSB
     {
         private readonly WeakReference<WinUSBInterface> parentInterface;
         private readonly int interfaceNum;
-        private readonly SafeWinUsbInterfaceHandle winUsbHandle;
         private readonly byte readPipe;
         private readonly byte writePipe;
         private readonly byte[] readBuffer;
         private readonly byte* readPtr;
         private readonly byte[] writeBuffer;
         private readonly byte* writePtr;
+
+        [SuppressMessage("Usage", "CA2213:Disposable fields should be disposed")]
+        private readonly SafeWinUsbInterfaceHandle winUsbHandle;
 
         public WinUSBInterfaceStream(WeakReference<WinUSBInterface> parentInterface)
         {
@@ -70,7 +73,7 @@ namespace OpenTabletDriver.Devices.WinUSB
             }
         }
 
-        public unsafe void GetFeature(byte[] buffer)
+        public void GetFeature(byte[] buffer)
         {
             var length = buffer.Length; // requires HID report descriptor parsing to implement properly, assume caller is correct for now
             var packet = new SetupPacket()
@@ -108,8 +111,23 @@ namespace OpenTabletDriver.Devices.WinUSB
 
         public void Dispose()
         {
-            if (parentInterface.TryGetTarget(out var usbInterface))
-                usbInterface.ReturnHandle(winUsbHandle);
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private bool _isDisposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed) return;
+
+            if (disposing)
+            {
+                if (parentInterface.TryGetTarget(out var usbInterface))
+                    usbInterface.ReturnHandle(winUsbHandle);
+            }
+
+            _isDisposed = true;
         }
     }
 }

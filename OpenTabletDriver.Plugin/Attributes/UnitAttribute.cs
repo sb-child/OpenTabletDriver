@@ -1,4 +1,4 @@
-﻿namespace OpenTabletDriver.Plugin.Attributes
+namespace OpenTabletDriver.Plugin.Attributes
 {
     /// <summary>
     /// Applies a unit suffix to a property on the client.

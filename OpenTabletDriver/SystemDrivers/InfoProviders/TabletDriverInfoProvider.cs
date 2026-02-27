@@ -6,11 +6,11 @@ namespace OpenTabletDriver.SystemDrivers.InfoProviders
 {
     internal class TabletDriverInfoProvider : IDriverInfoProvider
     {
-        private readonly string[] ProcessNames = new string[]
-        {
+        private readonly string[] ProcessNames =
+        [
             "TabletDriverGUI",
-            "TabletDriverService"
-        };
+            "TabletDriverService",
+        ];
 
         public DriverInfo GetDriverInfo()
         {

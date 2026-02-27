@@ -19,7 +19,7 @@
       "InputReportLength": 12,
       "ReportParser": "OpenTabletDriver.Configurations.Parsers.Huion.GianoReportParser",
       "DeviceStrings": {
-        "201": "HUION_M168_\\d{6}$"
+        "201": "HUION_M(168|18a)_\\d{6}$"
       },
       "InitializationStrings": [
         200

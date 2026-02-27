@@ -1,5 +1,9 @@
-﻿namespace OpenTabletDriver.Native.Windows
+using System.Diagnostics.CodeAnalysis;
+
+namespace OpenTabletDriver.Native.Windows
 {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public enum XBUTTON : uint
     {
         NONE = 0x0000,

@@ -10,8 +10,8 @@ namespace OpenTabletDriver.Configurations.Parsers.TenMoon
         {
             Raw = report;
 
-            AuxButtons = new bool[]
-            {
+            AuxButtons =
+            [
                 report[12] == 0x31, // First
                 report[12] == 0x33 && !report[11].IsBitSet(7), // Second
                 report[12] == 0x33 && !report[11].IsBitSet(6), // Third
@@ -23,8 +23,8 @@ namespace OpenTabletDriver.Configurations.Parsers.TenMoon
                 report[12] == 0x13, // Nineth
                 report[12] == 0x33 && !report[11].IsBitSet(0), // Tenth
                 report[12] == 0x33 && !report[11].IsBitSet(1), // Eleventh
-                report[12] == 0x33 && !report[11].IsBitSet(2) // Twelveth
-            };
+                report[12] == 0x33 && !report[11].IsBitSet(2), // Twelveth
+            ];
         }
 
         public bool[] AuxButtons { set; get; }

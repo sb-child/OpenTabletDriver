@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.CommandLine;
 using System.IO;
@@ -10,6 +10,7 @@ using Eto.Drawing;
 using Eto.Forms;
 using OpenTabletDriver.Desktop;
 using OpenTabletDriver.Desktop.Interop;
+using OpenTabletDriver.Interop;
 using OpenTabletDriver.Plugin;
 using OpenTabletDriver.UX.RPC;
 using OpenTabletDriver.UX.Windows;
@@ -49,7 +50,6 @@ namespace OpenTabletDriver.UX
                 {
                     using var client = new NamedPipeClientStream(".", APPNAME + ".Singleton", PipeDirection.InOut);
                     client.Connect();
-                    return;
                 }
             }
         }
@@ -161,8 +161,8 @@ namespace OpenTabletDriver.UX
         }
 
         private const string APPNAME = "OpenTabletDriver.UX";
-        public readonly static bool EnableTrayIcon = (PluginPlatform.Windows | PluginPlatform.MacOS).HasFlag(DesktopInterop.CurrentPlatform);
-        public readonly static bool EnableDaemonWatchdog = (PluginPlatform.Windows | PluginPlatform.MacOS).HasFlag(DesktopInterop.CurrentPlatform);
+        public readonly static bool EnableTrayIcon = (PluginPlatform.Windows | PluginPlatform.MacOS).HasFlag(SystemInterop.CurrentPlatform);
+        public readonly static bool EnableDaemonWatchdog = (PluginPlatform.Windows | PluginPlatform.MacOS).HasFlag(SystemInterop.CurrentPlatform);
         public static DaemonWatchdog DaemonWatchdog;
 
         public WindowSingleton<StartupGreeterWindow> StartupGreeterWindow { get; } = new WindowSingleton<StartupGreeterWindow>();
@@ -172,11 +172,6 @@ namespace OpenTabletDriver.UX
         public WindowSingleton<UpdaterWindow> UpdaterWindow { get; } = new WindowSingleton<UpdaterWindow>();
 
         public WindowSingleton<AboutWindow> AboutWindow { get; } = new WindowSingleton<AboutWindow>();
-
-        public void AddNotificationHandler(string identifier, Action handler)
-        {
-            NotificationHandlers.Add(identifier, handler);
-        }
 
         private void HandleNotification(object sender, NotificationEventArgs e)
         {

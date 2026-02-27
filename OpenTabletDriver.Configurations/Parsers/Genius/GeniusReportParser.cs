@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using OpenTabletDriver.Plugin.Tablet;
 
 namespace OpenTabletDriver.Configurations.Parsers.Genius
 {
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public class GeniusReportParser : IReportParser<IDeviceReport>
     {
         public IDeviceReport Parse(byte[] data)

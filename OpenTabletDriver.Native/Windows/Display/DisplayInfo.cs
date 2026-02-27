@@ -1,4 +1,4 @@
-﻿using OpenTabletDriver.Native.Windows.Display;
+using OpenTabletDriver.Native.Windows.Display;
 
 namespace OpenTabletDriver.Native.Windows
 {

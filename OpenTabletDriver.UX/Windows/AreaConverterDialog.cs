@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Eto.Forms;
@@ -114,7 +114,8 @@ namespace OpenTabletDriver.UX.Windows
 
             converterList.SelectedIndexChanged += (sender, e) => OnSelectionChanged();
 
-            Application.Instance.AsyncInvoke(async () =>
+            // ReSharper disable once AsyncVoidMethod
+            Application.Instance.AsyncInvoke(async void () =>
             {
                 var tablets = await App.Driver.Instance.GetTablets();
                 var targetProfile = App.Current.Settings.Profiles.FirstOrDefault(p => p.AbsoluteModeSettings.Tablet == this.DataContext);

@@ -18,11 +18,11 @@ namespace OpenTabletDriver.Configurations.Parsers.XENX
             Pressure = Unsafe.ReadUnaligned<ushort>(ref report[6]);
             Eraser = report[1].IsBitSet(6);
 
-            PenButtons = new bool[]
-            {
+            PenButtons =
+            [
                 report[1].IsBitSet(1),
                 report[1].IsBitSet(2),
-            };
+            ];
         }
 
         public byte[] Raw { set; get; }

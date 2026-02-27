@@ -44,7 +44,8 @@ namespace OpenTabletDriver.UX.Controls.Output
             UpdateTablet();
         }
 
-        private void UpdateTablet(IEnumerable<TabletReference> tablets = null) => Application.Instance.AsyncInvoke(async () =>
+        // ReSharper disable once AsyncVoidMethod
+        private void UpdateTablet(IEnumerable<TabletReference> tablets = null) => Application.Instance.AsyncInvoke(async void () =>
         {
             tablets ??= await App.Driver.Instance.GetTablets();
             var selectedTablet = tablets.FirstOrDefault(t => t.Properties.Name == Profile?.Tablet);
@@ -99,10 +100,10 @@ namespace OpenTabletDriver.UX.Controls.Output
             var tabletAreaEditor = absoluteModeEditor.tabletAreaEditor;
             if (tablet?.Properties?.Specifications?.Digitizer is DigitizerSpecifications digitizer)
             {
-                tabletAreaEditor.AreaBounds = new RectangleF[]
-                {
-                    new RectangleF(0, 0, digitizer.Width, digitizer.Height)
-                };
+                tabletAreaEditor.AreaBounds =
+                [
+                    new RectangleF(0, 0, digitizer.Width, digitizer.Height),
+                ];
             }
             else
             {

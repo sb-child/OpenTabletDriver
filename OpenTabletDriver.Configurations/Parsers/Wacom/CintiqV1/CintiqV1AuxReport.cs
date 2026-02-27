@@ -14,8 +14,8 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom.CintiqV1
             var rightRadialButton = report[7];
             var rightButtons = report[8];
             var topButtons = report[9];
-            AuxButtons = new bool[]
-            {
+            AuxButtons =
+            [
                 leftRadialButton.IsBitSet(0),
                 leftButtons.IsBitSet(0),
                 leftButtons.IsBitSet(1),
@@ -38,7 +38,7 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom.CintiqV1
                 rightButtons.IsBitSet(8),
                 topButtons.IsBitSet(0), // i-button
                 topButtons.IsBitSet(1), // wrench-button
-            };
+            ];
         }
 
         public byte[] Raw { set; get; }

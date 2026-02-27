@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -41,8 +41,23 @@ namespace OpenTabletDriver
 
         public void Dispose()
         {
-            mutex.Close();
-            mutex.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private bool _isDisposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed) return;
+
+            if (disposing)
+            {
+                mutex.Close();
+                mutex.Dispose();
+            }
+
+            _isDisposed = true;
         }
     }
 }

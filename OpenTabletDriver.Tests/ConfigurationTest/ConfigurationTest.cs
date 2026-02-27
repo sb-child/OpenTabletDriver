@@ -215,6 +215,22 @@ namespace OpenTabletDriver.Tests.ConfigurationTest
             }
         }
 
+        [Theory]
+        [MemberData(nameof(TestData.RelativeWheelsFromConfigs), MemberType = typeof(TestData))]
+        public void Configurations_With_Relative_Wheels_Dont_Define_AngleOfZero(TestData.TabletWithWheel tabletWithWheel)
+        {
+            Assert.False(tabletWithWheel.WheelSpecifications.AngleOfZeroReading.HasValue, $"{nameof(WheelSpecifications.AngleOfZeroReading)} should remain undefined for relative wheels");
+        }
+
+        [Theory]
+        [MemberData(nameof(TestData.WheelsFromConfigs), MemberType = typeof(TestData))]
+        public void Configurations_With_Wheels_Can_Get_StepSize(TestData.TabletWithWheel tabletWithWheel)
+        {
+            var wheelSpec = tabletWithWheel.WheelSpecifications;
+            Assert.True(wheelSpec.AbsoluteWheelMax.HasValue ^ wheelSpec.RelativeWheelSteps.HasValue, $"Exactly 1 wheel step type of either '{nameof(WheelSpecifications.RelativeWheelSteps)}' or '{nameof(WheelSpecifications.AbsoluteWheelMax)}' must be defined");
+        }
+
+
         private static void PrintDiff(ITestOutputHelper outputHelper, DiffPaneModel diff)
         {
             foreach (var line in diff.Lines)

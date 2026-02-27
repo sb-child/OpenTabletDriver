@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using OpenTabletDriver.Desktop.Interop;
 using OpenTabletDriver.Desktop.Reflection.Metadata;
+using OpenTabletDriver.Interop;
 using OpenTabletDriver.Plugin;
 
 namespace OpenTabletDriver.Desktop.Reflection
@@ -115,7 +116,7 @@ namespace OpenTabletDriver.Desktop.Reflection
             {
                 if (!IsPlatformSupported(type))
                 {
-                    Log.Write("Plugin", $"Plugin '{type.FullName}' is not supported on {DesktopInterop.CurrentPlatform}", LogLevel.Info);
+                    Log.Write("Plugin", $"Plugin '{type.FullName}' is not supported on {SystemInterop.CurrentPlatform}");
                     return;
                 }
                 if (IsPluginIgnored(type))
@@ -196,7 +197,7 @@ namespace OpenTabletDriver.Desktop.Reflection
             var context = Plugins.FirstOrDefault(ctx => ctx.Directory.FullName == targetDir.FullName);
             var result = targetDir.Exists ? UpdatePlugin(context, sourceDir) : InstallPlugin(targetDir, sourceDir);
 
-            using (var fs = File.Create(metadataPath))
+            await using (var fs = File.Create(metadataPath))
                 Serialization.Serialize(fs, metadata);
 
             if (!TemporaryDirectory.GetFileSystemInfos().Any())
@@ -242,7 +243,7 @@ namespace OpenTabletDriver.Desktop.Reflection
             Log.Write("Plugin", $"Unloading plugin '{context.FriendlyName}'", LogLevel.Debug);
             Plugins.Remove(context);
             AssembliesChanged?.Invoke(this, EventArgs.Empty);
-            return context.Assemblies.All(p => RemoveAllTypesForAssembly(p));
+            return context.Assemblies.All(RemoveAllTypesForAssembly);
         }
 
         public bool RemoveAllTypesForAssembly(Assembly asm)

@@ -55,6 +55,11 @@ namespace OpenTabletDriver.Console
             settings.Serialize(file);
         }
 
+        private static async Task SaveDefaultSettings()
+        {
+            await SaveSettings(new FileInfo(AppInfo.Current.SettingsFile));
+        }
+
         private static async Task ApplyPreset(string name)
         {
             if (!await EnsureDaemonReady()) return;
@@ -459,7 +464,7 @@ namespace OpenTabletDriver.Console
                 if (!Directory.Exists(tempDir))
                     Directory.CreateDirectory(tempDir);
 
-                using (var fs = File.Create(path))
+                await using (var fs = File.Create(path))
                     Serialization.Serialize(fs, settings);
 
                 var oldHash = GetSHA256(path);
@@ -469,7 +474,7 @@ namespace OpenTabletDriver.Console
 
                 var newHash = GetSHA256(path);
 
-                using (var fs = File.OpenRead(path))
+                await using (var fs = File.OpenRead(path))
                     settings = Serialization.Deserialize<Settings>(fs);
 
                 if (oldHash.Equals(newHash))

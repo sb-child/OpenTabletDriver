@@ -28,7 +28,7 @@ namespace OpenTabletDriver.Tests
             var expectedFires = (int)(interval * 1000 / interval * duration);
             var timer = DesktopInterop.Timer;
             var list = new List<double>(expectedFires);
-            var watch = new HPETDeltaStopwatch(true);
+            var watch = new HPETDeltaStopwatch();
 
             timer.Interval = interval;
             timer.Elapsed += () =>

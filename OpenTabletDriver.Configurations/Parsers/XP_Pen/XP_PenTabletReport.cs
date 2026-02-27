@@ -18,11 +18,11 @@ namespace OpenTabletDriver.Configurations.Parsers.XP_Pen
             Pressure = Unsafe.ReadUnaligned<ushort>(ref report[6]);
             Eraser = report[1].IsBitSet(3);
 
-            PenButtons = new bool[]
-            {
+            PenButtons =
+            [
                 report[1].IsBitSet(1),
-                report[1].IsBitSet(2)
-            };
+                report[1].IsBitSet(2),
+            ];
 
             Tilt = new Vector2
             {

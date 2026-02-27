@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading;
 using OpenTabletDriver.Plugin;
@@ -40,7 +40,7 @@ namespace OpenTabletDriver.Devices
         public IReportParser<T> Parser { private set; get; }
 
         /// <summary>
-        /// Whether or not to make an extra cloned report with data left unmodified.
+        /// Whether to make an extra cloned report with data left unmodified.
         /// </summary>
         public bool RawClone { set; get; }
 
@@ -59,7 +59,7 @@ namespace OpenTabletDriver.Devices
         public event EventHandler<T> RawReport;
 
         /// <summary>
-        /// Whether or not the device is actively emitting reports and being parsed.
+        /// Whether the device is actively emitting reports and being parsed.
         /// </summary>
         public bool Connected
         {
@@ -142,8 +142,23 @@ namespace OpenTabletDriver.Devices
 
         public void Dispose()
         {
-            Connected = false;
-            ReportStream?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private bool _isDisposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed) return;
+
+            if (disposing)
+            {
+                Connected = false;
+                ReportStream?.Dispose();
+            }
+
+            _isDisposed = true;
         }
     }
 }

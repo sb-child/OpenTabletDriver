@@ -14,7 +14,7 @@ namespace OpenTabletDriver.UX
 {
     public static class Extensions
     {
-        private static bool MessageBoxActive = false;
+        private static bool MessageBoxActive;
 
         public static void ShowMessageBox(this Exception exception)
         {

@@ -26,11 +26,11 @@ namespace OpenTabletDriver.Configurations.Parsers.FlooGoo
 
             var penByte = report[1];
 
-            PenButtons = new bool[]
-            {
+            PenButtons =
+            [
                 penByte.IsBitSet(1),
-                penByte.IsBitSet(2)
-            };
+                penByte.IsBitSet(2),
+            ];
 
             Eraser = penByte.IsBitSet(3);
         }

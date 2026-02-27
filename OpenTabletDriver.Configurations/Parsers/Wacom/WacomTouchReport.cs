@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Numerics;
 using OpenTabletDriver.Plugin.Tablet;
 using OpenTabletDriver.Plugin.Tablet.Touch;
@@ -10,7 +10,7 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom
         public WacomTouchReport(byte[] report, ref TouchPoint[] prevTouches)
         {
             Raw = report;
-            AuxButtons = Array.Empty<bool>();
+            AuxButtons = [];
             Touches = prevTouches ?? new TouchPoint[MAX_POINTS];
             if (report[2] == 0x81)
             {
@@ -27,13 +27,13 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom
                 if (touchID == 0x80)
                 {
                     var auxByte = report[1 + offset];
-                    AuxButtons = new bool[]
-                    {
+                    AuxButtons =
+                    [
                         auxByte.IsBitSet(0),
                         auxByte.IsBitSet(1),
                         auxByte.IsBitSet(2),
                         auxByte.IsBitSet(3),
-                    };
+                    ];
                     continue;
                 }
                 touchID -= 2;
@@ -73,6 +73,5 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom
         public byte[] Raw { set; get; }
         public bool[] AuxButtons { set; get; }
         public TouchPoint[] Touches { set; get; }
-        public bool ShouldSerializeTouches() => true;
     }
 }

@@ -18,10 +18,10 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom.BambooPad
 
             Pressure = Unsafe.ReadUnaligned<ushort>(ref report[7]);
 
-            PenButtons = new bool[]
-            {
-                report[2].IsBitSet(1)
-            };
+            PenButtons =
+            [
+                report[2].IsBitSet(1),
+            ];
 
             Eraser = report[2].IsBitSet(3);
         }

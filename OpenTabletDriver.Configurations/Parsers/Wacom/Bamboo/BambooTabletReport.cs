@@ -19,19 +19,19 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom.Bamboo
             Pressure = report[1].IsBitSet(0) ? (uint)(report[6] | ((report[7] & 0x03) << 8)) : 0;
             Eraser = report[1].IsBitSet(5);
 
-            PenButtons = new bool[]
-            {
+            PenButtons =
+            [
                 report[1].IsBitSet(1),
-                report[1].IsBitSet(2)
-            };
+                report[1].IsBitSet(2),
+            ];
 
-            AuxButtons = new bool[]
-            {
+            AuxButtons =
+            [
                 report[7].IsBitSet(3),
                 report[7].IsBitSet(4),
                 report[7].IsBitSet(5),
                 report[7].IsBitSet(6),
-            };
+            ];
 
             HoverDistance = 0;
             NearProximity = report[1].IsBitSet(7);

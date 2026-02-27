@@ -16,11 +16,11 @@ namespace OpenTabletDriver.Configurations.Parsers.Veikk
                 Y = Unsafe.ReadUnaligned<ushort>(ref report[6]) | (report[8] << 16)
             };
             Pressure = Unsafe.ReadUnaligned<ushort>(ref report[9]);
-            PenButtons = new bool[]
-            {
+            PenButtons =
+            [
                 (report[2] & (1 << 1)) != 0,
-                (report[2] & (1 << 2)) != 0
-            };
+                (report[2] & (1 << 2)) != 0,
+            ];
         }
 
         public byte[] Raw { set; get; }

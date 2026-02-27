@@ -84,7 +84,6 @@ namespace OpenTabletDriver.Plugin.Output
         /// <remarks>
         /// This is called by <see cref="Consume"/> whenever a report is received from a linked upstream element.
         /// </remarks>
-        /// <param name="value"></param>
         protected abstract void ConsumeState();
 
         /// <summary>
@@ -122,10 +121,23 @@ namespace OpenTabletDriver.Plugin.Output
 
         public void Dispose()
         {
-            Scheduler?.Dispose();
-            Scheduler = null;
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        ~AsyncPositionedPipelineElement() => Dispose();
+        private bool _isDisposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed) return;
+
+            if (disposing)
+            {
+                Scheduler?.Dispose();
+                Scheduler = null;
+            }
+
+            _isDisposed = true;
+        }
     }
 }

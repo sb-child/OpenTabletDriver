@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
@@ -7,6 +7,9 @@ using Newtonsoft.Json;
 
 namespace OpenTabletDriver.Plugin.Tablet
 {
+    /// <summary>
+    /// Specifications and identifiers for a full tablet configuration
+    /// </summary>
     public class TabletConfiguration
     {
         /// <summary>
@@ -52,8 +55,8 @@ namespace OpenTabletDriver.Plugin.Tablet
         }
 
         // hack which allows us to deserialize the object for backwards compatibility, but not emit it in serialization
-        [JsonProperty("AuxilaryDeviceIdentifiers")]
 #pragma warning disable CS0618 // Type or member is obsolete
+        [JsonProperty(nameof(AuxilaryDeviceIdentifiers))]
         private List<DeviceIdentifier>? AuxilaryDeviceIdentifiers2
         {
             set => AuxilaryDeviceIdentifiers = value;

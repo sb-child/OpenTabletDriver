@@ -38,6 +38,7 @@
 | Huion Kamvas 13                    |     Supported     |
 | Huion Kamvas 16                    |     Supported     |
 | Huion Kamvas 16 (2021)             |     Supported     |
+| Huion Kamvas 16 (Gen 3)            |     Supported     |
 | Huion Kamvas 20                    |     Supported     |
 | Huion Kamvas 22                    |     Supported     |
 | Huion Kamvas 22 Plus               |     Supported     |
@@ -57,10 +58,12 @@
 | Huion Q11K                         |     Supported     |
 | Huion Q11K V2                      |     Supported     |
 | Huion RDS-160                      |     Supported     |
+| Huion RDS-220                      |     Supported     |
 | Huion RTS-300                      |     Supported     | Uses the same configuration as the Huion H642.
 | Huion RTE-100                      |     Supported     |
 | Huion WH1409                       |     Supported     |
 | Huion WH1409 V2                    |     Supported     |
+| LetSketch WP9620C                  |     Supported     |
 | Parblo A609                        |     Supported     |
 | Parblo A610 Pro (Variant 2)        |     Supported     |
 | Parblo A640 V2                     |     Supported     |
@@ -69,7 +72,6 @@
 | RobotPen T9A                       |     Supported     |
 | UC-Logic 1060N                     |     Supported     |
 | UC-Logic PF1209                    |     Supported     |
-| UC-Logic TWMNA62                   |     Supported     |
 | UGEE EX08                          |     Supported     | Uses the same configuration as the XP-Pen Deco 01 V2.
 | UGEE M708 V2                       |     Supported     |
 | UGEE M708 V3                       |     Supported     |
@@ -119,6 +121,7 @@
 | Wacom CTL-672                      |     Supported     |
 | Wacom CTL-680                      |     Supported     |
 | Wacom CTL-690                      |     Supported     |
+| Wacom DTC-121                      |     Supported     |
 | Wacom DTC-133                      |     Supported     |
 | Wacom Cintiq 16 (DTK-1660)         |     Supported     |
 | Wacom Cintiq 21UX (DTK-2100)       |     Supported     |
@@ -138,7 +141,9 @@
 | Wacom PTK-470                      |     Supported     |
 | Wacom PTK-540WL                    |     Supported     |
 | Wacom PTK-640                      |     Supported     |
+| Wacom PTK-670                      |     Supported     |
 | Wacom PTK-840                      |     Supported     |
+| Wacom PTK-870                      |     Supported     |
 | Wacom PTK-1240                     |     Supported     |
 | Wacom XD-0405-U                    |     Supported     |
 | Wacom XD-0608-U                    |     Supported     |
@@ -208,6 +213,7 @@
 | Huion H420                         |    Has Quirks     | Windows: Requires Zadig's WinUSB to be installed on interface 0
 | Huion H580X                        |    Has Quirks     | User may have to replug their tablet until it is detected.
 | Huion H690                         |    Has Quirks     | Windows: Requires Zadig's WinUSB to be installed on interface 0
+| Huion Kamvas 13 (Gen 3)            |    Has Quirks     | Function-switch buttons act as regular auxiliary keys.
 | Huion New 1060 Plus (2048)         |    Has Quirks     | Windows: Requires Zadig's WinUSB to be installed on interface 1
 | Huion osu! Tablet                  |    Has Quirks     | Windows: Requires Zadig's WinUSB to be installed on interface 0. Uses the same configuration as the Huion 420.
 | Huion WH1409 V2 (Variant 2)        |    Has Quirks     | Windows: Requires Zadig's WinUSB to be installed on interface 0
@@ -219,6 +225,7 @@
 | Parblo Ninos S                     |    Has Quirks     | Aux buttons are not in order.
 | Trust Flex Design Tablet           |    Has Quirks     | Windows: Requires Zadig's WinUSB to be installed
 | Turcom TS-6580                     |    Has Quirks     | Windows: Requires Zadig's WinUSB to be installed on interface 0
+| UC-Logic TWMNA62                   |    Has Quirks     | Windows: Requires Zadig's WinUSB to be installed on interface 0
 | UGEE M708                          |    Has Quirks     | Windows: Might need Zadig's WinUSB to be installed on interface 0
 | Wacom PTH-460                      |    Has Quirks     | Wheel reports in reverse direction.
 | Wacom PTH-660                      |    Has Quirks     | Wheel reports in reverse direction.
@@ -253,11 +260,10 @@
 | Huion HC16                         |  Missing Features | Wheel is not yet supported.
 | Huion HC16 (Variant 2)             |  Missing Features | Wheel is not yet supported.
 | Huion HS611                        |  Missing Features | Touch bar is not yet supported.
-| Huion Kamvas 13 (Gen 3)            |  Missing Features | Both wheels function as a single wheel, function-switch buttons act as regular auxiliary keys.
-| Huion Kamvas 16 (Gen 3)            |  Missing Features | Both wheels function as a single wheel.
 | Huion Kamvas Pro 12                |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 13                |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 16                |  Missing Features | Touch bar is not yet supported.
+| Huion Kamvas Pro 16 V2             |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 20                |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 22 (2019)         |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 24                |  Missing Features | Touch bar is not yet supported.
@@ -301,8 +307,6 @@
 | Wacom PTH-850                      |  Missing Features | Wheel is not yet supported.
 | Wacom PTK-450                      |  Missing Features | Wheel is not yet supported.
 | Wacom PTK-650                      |  Missing Features | Wheel is not yet supported.
-| Wacom PTK-670                      |  Missing Features | Left and right wheels map to the same control.
-| Wacom PTK-870                      |  Missing Features | Left and right wheels map to the same control.
 | Wacom PTZ-1230                     |  Missing Features | Touch bars are not yet supported.
 | Wacom PTZ-1231W                    |  Missing Features | Touch bars are not yet supported.
 | Wacom PTZ-431W                     |  Missing Features | Touch bars are not yet supported.

@@ -17,11 +17,11 @@ namespace OpenTabletDriver.Configurations.Parsers.Lifetec
             };
             Pressure = Unsafe.ReadUnaligned<ushort>(ref report[6]);
 
-            PenButtons = new bool[]
-            {
+            PenButtons =
+            [
                 report[5].IsBitSet(3),
-                report[5].IsBitSet(4)
-            };
+                report[5].IsBitSet(4),
+            ];
 
             // Tilt is given as azimuth and altitude
         }

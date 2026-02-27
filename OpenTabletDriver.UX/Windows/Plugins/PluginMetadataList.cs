@@ -28,7 +28,8 @@ namespace OpenTabletDriver.UX.Windows.Plugins
         private static readonly TimeSpan DOWNLOAD_TIMEOUT = TimeSpan.FromSeconds(5);
         private static readonly Version AppVersion = Assembly.GetEntryAssembly().GetName().Version;
 
-        public void Refresh() => Application.Instance.AsyncInvoke(async () =>
+        // ReSharper disable once AsyncVoidMethod
+        public void Refresh() => Application.Instance.AsyncInvoke(async void () =>
         {
             this.Enabled = false;
 
@@ -69,13 +70,13 @@ namespace OpenTabletDriver.UX.Windows.Plugins
 
         public void SelectFirstOrDefault(Func<PluginMetadata, bool> predicate)
         {
-            if ((this.DataStore as IEnumerable<PluginMetadata>)?.FirstOrDefault(m => predicate(m)) is PluginMetadata existingMeta)
+            if ((this.DataStore as IEnumerable<PluginMetadata>)?.FirstOrDefault(predicate) is PluginMetadata existingMeta)
             {
                 this.SelectedValue = existingMeta;
             }
         }
 
-        protected async Task<PluginMetadataCollection> DownloadMetadataAsync()
+        protected static async Task<PluginMetadataCollection> DownloadMetadataAsync()
         {
             var repoFetch = PluginMetadataCollection.DownloadAsync();
             var timeoutTask = Task.Delay(DOWNLOAD_TIMEOUT);

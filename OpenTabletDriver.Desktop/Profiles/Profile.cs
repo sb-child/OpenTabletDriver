@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using OpenTabletDriver.Desktop.Interop;
 using OpenTabletDriver.Desktop.Output;
 using OpenTabletDriver.Desktop.Reflection;
+using OpenTabletDriver.Interop;
 using OpenTabletDriver.Plugin;
 using OpenTabletDriver.Plugin.Tablet;
 
@@ -17,35 +18,35 @@ namespace OpenTabletDriver.Desktop.Profiles
         private BindingSettings bindings = new BindingSettings();
         private PluginSettingStoreCollection filters = new PluginSettingStoreCollection();
 
-        [JsonProperty("Tablet")]
+        [JsonProperty(nameof(Tablet))]
         public string Tablet
         {
             set => this.RaiseAndSetIfChanged(ref tablet, value);
             get => tablet;
         }
 
-        [JsonProperty("OutputMode")]
+        [JsonProperty(nameof(OutputMode))]
         public PluginSettingStore OutputMode
         {
             set => RaiseAndSetIfChanged(ref outputMode, value);
             get => outputMode;
         }
 
-        [JsonProperty("Filters")]
+        [JsonProperty(nameof(Filters))]
         public PluginSettingStoreCollection Filters
         {
             set => RaiseAndSetIfChanged(ref filters, value);
             get => filters;
         }
 
-        [JsonProperty("AbsoluteModeSettings")]
+        [JsonProperty(nameof(AbsoluteModeSettings))]
         public AbsoluteModeSettings AbsoluteModeSettings
         {
             set => this.RaiseAndSetIfChanged(ref absoluteMode, value);
             get => absoluteMode;
         }
 
-        [JsonProperty("RelativeModeSettings")]
+        [JsonProperty(nameof(RelativeModeSettings))]
         public RelativeModeSettings RelativeModeSettings
         {
             set => this.RaiseAndSetIfChanged(ref relativeMode, value);
@@ -60,7 +61,7 @@ namespace OpenTabletDriver.Desktop.Profiles
         }
 
         private static Type DefaultOutputModeType =>
-            DesktopInterop.CurrentPlatform switch
+            SystemInterop.CurrentPlatform switch
             {
                 PluginPlatform.Linux => typeof(LinuxArtistMode),
                 _ => typeof(AbsoluteMode)

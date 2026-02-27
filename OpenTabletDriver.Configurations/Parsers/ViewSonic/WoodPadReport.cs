@@ -25,11 +25,11 @@ namespace OpenTabletDriver.Configurations.Parsers.ViewSonic
                 Y = report[13]
             };
 
-            PenButtons = new bool[]
-            {
+            PenButtons =
+            [
                 button.IsBitSet(3),
-                button.IsBitSet(4)
-            };
+                button.IsBitSet(4),
+            ];
         }
 
         public byte[] Raw { set; get; }

@@ -90,12 +90,12 @@ namespace OpenTabletDriver.Tests
             var oldFile = new FakeFile()
             {
                 Name = "test.bin",
-                Data = new byte[] { 0x00, 0x01, 0x02, 0x03 }
+                Data = [0x00, 0x01, 0x02, 0x03]
             };
             var updatedFile = new FakeFile()
             {
                 Name = "test.bin",
-                Data = new byte[] { 0x08, 0x09, 0x0A, 0x0B }
+                Data = [0x08, 0x09, 0x0A, 0x0B]
             };
 
             using var mockEnv = new UpdaterEnvironment(MockVersion)
@@ -119,17 +119,15 @@ namespace OpenTabletDriver.Tests
             await mockUpdater.Install(update);
 
             // verify that the old file was replaced
-            await FakeFileSystemEntry.VerifyFilesAsync(mockEnv.BinaryDir, new FakeFileSystemEntry[]
-            {
-                updatedFile
-            });
+            await FakeFileSystemEntry.VerifyFilesAsync(mockEnv.BinaryDir, [
+                updatedFile,
+            ]);
 
             // verify that the old file was backed up
             var binRollbackDir = Path.Join(mockEnv.VersionedRollbackDirectory, "bin");
-            await FakeFileSystemEntry.VerifyFilesAsync(binRollbackDir, new FakeFileSystemEntry[]
-            {
-                oldFile
-            });
+            await FakeFileSystemEntry.VerifyFilesAsync(binRollbackDir, [
+                oldFile,
+            ]);
         }
 
         [Fact]
@@ -138,17 +136,17 @@ namespace OpenTabletDriver.Tests
             var oldFile = new FakeFile()
             {
                 Name = "test.bin",
-                Data = new byte[] { 0x00, 0x01, 0x02, 0x03 }
+                Data = [0x00, 0x01, 0x02, 0x03]
             };
             var extraFile = new FakeFile()
             {
                 Name = "extra.bin",
-                Data = new byte[] { 0x04, 0x05, 0x06, 0x07 }
+                Data = [0x04, 0x05, 0x06, 0x07]
             };
             var updatedFile = new FakeFile()
             {
                 Name = "test.bin",
-                Data = new byte[] { 0x08, 0x09, 0x0A, 0x0B }
+                Data = [0x08, 0x09, 0x0A, 0x0B]
             };
 
             using var mockEnv = new UpdaterEnvironment(MockVersion)
@@ -173,18 +171,16 @@ namespace OpenTabletDriver.Tests
             await mockUpdater.Install(update);
 
             // verify that the old file was replaced and the extra file was not
-            await FakeFileSystemEntry.VerifyFilesAsync(mockEnv.BinaryDir, new FakeFileSystemEntry[]
-            {
+            await FakeFileSystemEntry.VerifyFilesAsync(mockEnv.BinaryDir, [
                 updatedFile,
-                extraFile
-            });
+                extraFile,
+            ]);
 
             // verify that the old file was backed up
             var binRollbackDir = Path.Join(mockEnv.VersionedRollbackDirectory, "bin");
-            await FakeFileSystemEntry.VerifyFilesAsync(binRollbackDir, new FakeFileSystemEntry[]
-            {
-                oldFile
-            });
+            await FakeFileSystemEntry.VerifyFilesAsync(binRollbackDir, [
+                oldFile,
+            ]);
         }
 
         [Fact]

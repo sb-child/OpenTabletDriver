@@ -1,4 +1,3 @@
-using OpenTabletDriver.Desktop.Reflection;
 using OpenTabletDriver.Plugin;
 using OpenTabletDriver.Plugin.Tablet;
 
@@ -7,7 +6,6 @@ namespace OpenTabletDriver.Desktop.Binding
     public class BindingState
     {
         public IBinding Binding { set; get; }
-        public bool State { protected set; get; }
 
         protected bool PreviousState { set; get; }
 

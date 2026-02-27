@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Numerics;
 using OpenTabletDriver.Native.Linux;
 using OpenTabletDriver.Native.Linux.Evdev;

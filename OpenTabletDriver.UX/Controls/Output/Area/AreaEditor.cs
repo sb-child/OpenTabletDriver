@@ -170,13 +170,13 @@ namespace OpenTabletDriver.UX.Controls.Output.Area
             float halfWidth = Area.Width / 2;
             float halfHeight = Area.Height / 2;
 
-            return new Vector2[]
-            {
+            return
+            [
                 Vector2.Transform(new Vector2(Area.X - halfWidth, Area.Y - halfHeight), matrix),
                 Vector2.Transform(new Vector2(Area.X - halfWidth, Area.Y + halfHeight), matrix),
                 Vector2.Transform(new Vector2(Area.X + halfWidth, Area.Y + halfHeight), matrix),
                 Vector2.Transform(new Vector2(Area.X + halfWidth, Area.Y - halfHeight), matrix),
-            };
+            ];
         }
 
         public Vector2 GetAreaCenterOffset()

@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using OpenTabletDriver.Plugin.Tablet;
 
 namespace OpenTabletDriver.Configurations.Parsers.Wacom.Bamboo
 {
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public class BambooReportParser : IReportParser<IDeviceReport>
     {
         public IDeviceReport Parse(byte[] report)

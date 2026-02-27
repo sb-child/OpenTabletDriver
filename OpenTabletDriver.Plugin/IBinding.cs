@@ -1,4 +1,4 @@
-﻿using OpenTabletDriver.Plugin.Tablet;
+using OpenTabletDriver.Plugin.Tablet;
 
 namespace OpenTabletDriver.Plugin
 {

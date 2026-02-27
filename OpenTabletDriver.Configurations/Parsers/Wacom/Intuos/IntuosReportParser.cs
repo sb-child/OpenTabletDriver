@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using OpenTabletDriver.Plugin.Tablet;
 
 namespace OpenTabletDriver.Configurations.Parsers.Wacom.Intuos
 {
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public class IntuosReportParser : IReportParser<IDeviceReport>
     {
         public virtual IDeviceReport Parse(byte[] report)
@@ -13,7 +15,7 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom.Intuos
             };
         }
 
-        private IDeviceReport GetToolReport(byte[] report)
+        private static IDeviceReport GetToolReport(byte[] report)
         {
             if (report[1].IsBitSet(6))
                 return new IntuosTabletReport(report);

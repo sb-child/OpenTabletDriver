@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 namespace OpenTabletDriver.Native.OSX.IOkit
 {
     public enum IOHIDAccessType

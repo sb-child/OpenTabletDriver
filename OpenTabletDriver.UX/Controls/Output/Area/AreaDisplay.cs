@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 using Eto.Drawing;
@@ -13,7 +13,7 @@ namespace OpenTabletDriver.UX.Controls.Output.Area
     public class AreaDisplay : Drawable
     {
         /// <summary>
-        /// Workaround for memory leaks on macos.
+        /// Workaround for memory leaks on macOS.
         /// Use shared FormattedText to draw text.
         /// </summary>
         private class TextDrawer

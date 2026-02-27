@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using OpenTabletDriver.Configurations.Parsers.UCLogic;
 using OpenTabletDriver.Plugin.Tablet;
 
 namespace OpenTabletDriver.Configurations.Parsers.Huion
 {
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public class InspiroyReportParser : IReportParser<IDeviceReport>
     {
         public IDeviceReport Parse(byte[] data)

@@ -52,7 +52,7 @@ namespace OpenTabletDriver.UX.Windows.Plugins
                 () =>
                 {
                     // Get the plugin's updated metadata from the repo
-                    updatedMetadata = GetUpdatedMetadatas(PluginMetadataList.Repository, Metadata, CurrentDriverVersion).FirstOrDefault() ?? Metadata;
+                    updatedMetadata = GetRepoMetadataForPlugin(PluginMetadataList.Repository, Metadata, CurrentDriverVersion).FirstOrDefault() ?? Metadata;
                     return updatedMetadata != Metadata;
                 },
                 addChangeEvent: (e) => MetadataChanged += e,
@@ -231,16 +231,16 @@ namespace OpenTabletDriver.UX.Windows.Plugins
             this.ParentWindow.Enabled = true;
         }
 
-        private static IEnumerable<PluginMetadata> GetUpdatedMetadatas(PluginMetadataCollection repo, PluginMetadata Metadata, Version CurrentDriverVersion)
+        private static IEnumerable<PluginMetadata> GetRepoMetadataForPlugin(PluginMetadataCollection repo, PluginMetadata metadata, Version currentDriverVersion)
         {
             if (repo == null)
                 return Enumerable.Empty<PluginMetadata>();
 
             return from meta in repo
-                   where PluginMetadata.Match(meta, Metadata)
-                   where meta.PluginVersion > Metadata.PluginVersion
-                   where CurrentDriverVersion >= meta.SupportedDriverVersion
-                   where meta.MaxSupportedDriverVersion == null || CurrentDriverVersion <= meta.MaxSupportedDriverVersion
+                   where PluginMetadata.Match(meta, metadata)
+                   where meta.PluginVersion > metadata.PluginVersion
+                   where currentDriverVersion >= meta.SupportedDriverVersion
+                   where meta.MaxSupportedDriverVersion == null || currentDriverVersion <= meta.MaxSupportedDriverVersion
                    orderby meta.PluginVersion descending
                    select meta;
         }
@@ -271,31 +271,6 @@ namespace OpenTabletDriver.UX.Windows.Plugins
             {
                 set => container.Content = value;
                 get => container.Content;
-            }
-        }
-
-        private class LinkButtonGroup : Group
-        {
-            public LinkButtonGroup(string header, string link, string text = null)
-            {
-                var linkButton = new Button
-                {
-                    Text = text ?? header,
-                    Width = 175,
-                    Enabled = !string.IsNullOrEmpty(link)
-                };
-                linkButton.Click += (sender, e) => DesktopInterop.Open(link);
-
-                this.Text = header;
-                this.Content = new StackLayout
-                {
-                    HorizontalContentAlignment = HorizontalAlignment.Right,
-                    Items =
-                    {
-                        linkButton
-                    }
-                };
-                this.Orientation = Orientation.Horizontal;
             }
         }
     }

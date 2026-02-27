@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using OpenTabletDriver.Plugin;
 using OpenTabletDriver.Plugin.Attributes;
@@ -6,6 +7,7 @@ using OpenTabletDriver.Plugin.Tablet;
 namespace OpenTabletDriver.Desktop.Conversion
 {
     [PluginName("Wacom, VEIKK")]
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public class ConversionFactorAreaConverter : IAreaConverter
     {
         public virtual DeviceVendor Vendor => DeviceVendor.Wacom & DeviceVendor.VEIKK;
@@ -15,7 +17,7 @@ namespace OpenTabletDriver.Desktop.Conversion
         public string Bottom => "Bottom";
         public string Right => "Right";
 
-        protected double GetConversionFactor(TabletReference tablet)
+        protected static double GetConversionFactor(TabletReference tablet)
         {
             var digitizer = tablet.Properties.Specifications.Digitizer;
             return digitizer.MaxX / digitizer.Width;

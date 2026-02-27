@@ -14,14 +14,13 @@
     "AuxiliaryButtons": {
       "ButtonCount": 12
     },
-    "Wheel": {
-      "StepCount": 12,
-      "IsRelative": false,
-      "AngleOfZeroReading": 90.0,
-      "Buttons": {
+    "Wheels": [
+      {
+        "AbsoluteWheelMax": 11,
+        "AngleOfZeroReading": 90.0,
         "ButtonCount": 1
       }
-    }
+    ]
   },
   "DigitizerIdentifiers": [
     {

@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using OpenTabletDriver.Plugin.Tablet;
 
 namespace OpenTabletDriver.Configurations.Parsers.FlooGoo
 {
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
     public class FmaReportParser : IReportParser<IDeviceReport>
     {
         public IDeviceReport Parse(byte[] report)

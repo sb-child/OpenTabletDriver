@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Eto.Forms;
-using OpenTabletDriver.Desktop;
 using OpenTabletDriver.Desktop.Interop;
 using OpenTabletDriver.Desktop.Profiles;
-using OpenTabletDriver.Interop;
 using OpenTabletDriver.Plugin;
 using OpenTabletDriver.Plugin.Output;
 using OpenTabletDriver.Plugin.Tablet;
@@ -18,69 +16,69 @@ namespace OpenTabletDriver.UX.Controls
     {
         public ControlPanel()
         {
-            this.Content = tabControl = new TabControl
+            var control = new TabControl();
+
+            control.Pages.Add(new TabPage
             {
-                Pages =
+                Text = "Output",
+                Content = outputModeEditor = new()
+            });
+
+            control.Pages.Add(new TabPage
+            {
+                Text = "Filters",
+                Padding = 5,
+                Content = filterEditor = new()
+            });
+
+            control.Pages.Add(new TabPage
+            {
+                Text = "Pen Settings",
+                Content = penBindingEditor = new PenBindingEditor()
+            });
+
+            control.Pages.Add(new TabPage
+            {
+                Text = "Auxiliary Settings",
+                Content = auxBindingEditor = new AuxiliaryBindingEditor()
+            });
+
+            control.Pages.Add(new TabPage
+            {
+                ID = "mouse",
+                Text = "Mouse Settings",
+                Content = mouseBindingEditor = new MouseBindingEditor()
+            });
+
+            control.Pages.Add(new TabPage
+            {
+                Text = "Tools",
+                Padding = 5,
+                Content = toolEditor = new()
+            });
+
+            control.Pages.Add(new TabPage
+            {
+                Text = "Info",
+                Padding = 5,
+                Content = placeholder = new Placeholder
                 {
-                    new TabPage
-                    {
-                        Text = "Output",
-                        Content = outputModeEditor = new()
-                    },
-                    new TabPage
-                    {
-                        Text = "Filters",
-                        Padding = 5,
-                        Content = filterEditor = new()
-                    },
-                    new TabPage
-                    {
-                        Text = "Pen Settings",
-                        Content = penBindingEditor = new PenBindingEditor()
-                    },
-                    new TabPage
-                    {
-                        Text = "Auxiliary Settings",
-                        Content = auxBindingEditor = new AuxiliaryBindingEditor()
-                    },
-                    new TabPage
-                    {
-                        Text = "Wheel Settings",
-                        Content = wheelBindingEditor = new WheelBindingEditor()
-                    },
-                    new TabPage
-                    {
-                        Text = "Mouse Settings",
-                        Content = mouseBindingEditor = new MouseBindingEditor()
-                    },
-                    new TabPage
-                    {
-                        Text = "Tools",
-                        Padding = 5,
-                        Content = toolEditor = new()
-                    },
-                    new TabPage
-                    {
-                        Text = "Info",
-                        Padding = 5,
-                        Content = placeholder = new Placeholder
-                        {
-                            Text = "No tablets are detected."
-                        }
-                    },
-                    new TabPage
-                    {
-                        Text = "Console",
-                        Padding = 5,
-                        Content = logView = new()
-                    }
+                    Text = "No tablets are detected."
                 }
-            };
+            });
+
+            control.Pages.Add(new TabPage
+            {
+                Text = "Console",
+                Padding = 5,
+                Content = logView = new()
+            });
+
+            this.Content = tabControl = control;
 
             outputModeEditor.ProfileBinding.Bind(ProfileBinding);
             penBindingEditor.ProfileBinding.Bind(ProfileBinding);
             auxBindingEditor.ProfileBinding.Bind(ProfileBinding);
-            wheelBindingEditor.ProfileBinding.Bind(ProfileBinding);
             mouseBindingEditor.ProfileBinding.Bind(ProfileBinding);
             filterEditor.StoreCollectionBinding.Bind(ProfileBinding.Child(p => p.Filters));
             toolEditor.StoreCollectionBinding.Bind(App.Current, a => a.Settings.Tools);
@@ -100,7 +98,8 @@ namespace OpenTabletDriver.UX.Controls
         private Placeholder placeholder;
         private LogView logView;
         private OutputModeEditor outputModeEditor;
-        private BindingEditor penBindingEditor, auxBindingEditor, wheelBindingEditor, mouseBindingEditor;
+        private BindingEditor penBindingEditor, auxBindingEditor, mouseBindingEditor;
+        private List<BindingEditor> wheelBindingEditors = [];
         private PluginSettingStoreCollectionEditor<IPositionedPipelineElement<IDeviceReport>> filterEditor;
         private PluginSettingStoreCollectionEditor<ITool> toolEditor;
 
@@ -117,7 +116,8 @@ namespace OpenTabletDriver.UX.Controls
 
         public event EventHandler<EventArgs> ProfileChanged;
 
-        protected virtual void OnProfileChanged() => Application.Instance.AsyncInvoke(async () =>
+        // ReSharper disable once AsyncVoidMethod
+        protected virtual void OnProfileChanged() => Application.Instance.AsyncInvoke(async void () =>
         {
             ProfileChanged?.Invoke(this, EventArgs.Empty);
 
@@ -137,7 +137,10 @@ namespace OpenTabletDriver.UX.Controls
                 SetPageVisibility(filterEditor, true);
                 SetPageVisibility(penBindingEditor, tablet.Properties.Specifications.Pen != null);
                 SetPageVisibility(auxBindingEditor, tablet.Properties.Specifications.AuxiliaryButtons != null);
-                SetPageVisibility(wheelBindingEditor, tablet.Properties.Specifications.Wheel != null);
+
+                for (int i = 0; i < wheelBindingEditors.Count; i++)
+                    SetPageVisibility(wheelBindingEditors[i], (tablet.Properties.Specifications.Wheels?.Count ?? 0) > i);
+
                 SetPageVisibility(mouseBindingEditor, tablet.Properties.Specifications.MouseButtons != null);
                 SetPageVisibility(toolEditor, true);
 
@@ -151,7 +154,8 @@ namespace OpenTabletDriver.UX.Controls
                 SetPageVisibility(filterEditor, false);
                 SetPageVisibility(penBindingEditor, false);
                 SetPageVisibility(auxBindingEditor, false);
-                SetPageVisibility(wheelBindingEditor, false);
+                foreach (var controlItem in wheelBindingEditors)
+                    SetPageVisibility(controlItem, false);
                 SetPageVisibility(mouseBindingEditor, false);
                 SetPageVisibility(toolEditor, false);
 
@@ -168,10 +172,19 @@ namespace OpenTabletDriver.UX.Controls
 
         public void OnTabletChanged(TabletReference tablet)
         {
-            penBindingEditor.Tablet = tablet;
-            auxBindingEditor.Tablet = tablet;
-            wheelBindingEditor.Tablet = tablet;
-            mouseBindingEditor.Tablet = tablet;
+            // ensure we have enough wheel binding editors
+            int tabletWheels = tablet?.Properties.Specifications.Wheels?.Count ?? 0;
+            if (tabletWheels > wheelBindingEditors.Count)
+            {
+                for (int i = wheelBindingEditors.Count; i < tabletWheels; i++)
+                {
+                    var wheelBindingEditor = new WheelBindingEditor(i);
+                    wheelBindingEditor.ProfileBinding.Bind(ProfileBinding);
+                    var pageIndex = tabControl.Pages.IndexOf(mouseBindingEditor.Parent as TabPage);
+                    wheelBindingEditors.Add(wheelBindingEditor);
+                    tabControl.Pages.Insert(pageIndex, new TabPage(wheelBindingEditor) { Text = $"Wheel {i + 1} Bindings" });
+                }
+            }
         }
 
         public BindableBinding<ControlPanel, Profile> ProfileBinding

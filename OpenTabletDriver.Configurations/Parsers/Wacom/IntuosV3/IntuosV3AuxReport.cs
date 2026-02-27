@@ -1,4 +1,4 @@
-﻿using OpenTabletDriver.Plugin.Tablet;
+using OpenTabletDriver.Plugin.Tablet;
 using OpenTabletDriver.Plugin.Tablet.Wheel;
 
 namespace OpenTabletDriver.Configurations.Parsers.Wacom.IntuosV3
@@ -11,8 +11,8 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom.IntuosV3
 
             var auxByte = report[1];
             var auxByte2 = report[3];
-            AuxButtons = new bool[]
-            {
+            AuxButtons =
+            [
                 auxByte.IsBitSet(0),
                 auxByte.IsBitSet(1),
                 auxByte.IsBitSet(2),
@@ -23,23 +23,21 @@ namespace OpenTabletDriver.Configurations.Parsers.Wacom.IntuosV3
                 auxByte.IsBitSet(6),
                 auxByte.IsBitSet(7),
                 auxByte2.IsBitSet(1),
-            };
+            ];
 
             // Wheel rotation is a signed 7-bit value in report[4] (left wheel)
             // and report[5] (right wheel)
             var wheelByte = report[4];
-            if ((wheelByte & 0x7F) != 0)
-                Delta = (sbyte)(wheelByte << 1) >> 1;
-
-            // TODO: once multiple wheels are supported by OpenTabletDriver,
-            // handle the second wheel separately
             var wheelByte2 = report[5];
-            if ((wheelByte2 & 0x7F) != 0)
-                Delta = (sbyte)(wheelByte2 << 1) >> 1;
+
+            AnalogDeltas = [
+                (wheelByte & 0x7F) != 0 ? (sbyte)(wheelByte << 1) >> 1 : 0,
+                (wheelByte2 & 0x7F) != 0 ? (sbyte)(wheelByte2 << 1) >> 1 : 0,
+            ];
         }
 
         public byte[] Raw { set; get; }
         public bool[] AuxButtons { set; get; }
-        public int? Delta { get; set; }
+        public int[] AnalogDeltas { get; set; }
     }
 }

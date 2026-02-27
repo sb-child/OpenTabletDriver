@@ -1,6 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace OpenTabletDriver.Native.Linux
 {
-    public enum ERRNO : int
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    public enum ERRNO
     {
         NONE = 0, /* No error has occurred */
         EPERM = 1, /* Operation not permitted */

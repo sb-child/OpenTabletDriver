@@ -42,7 +42,7 @@ namespace OpenTabletDriver.Tests.ConfigurationTest
                 }
                 else
                 {
-                    group = new List<DeviceIdentifierTest.IdentificationContext> { identificationContext };
+                    group = [identificationContext];
                 }
             }
 
