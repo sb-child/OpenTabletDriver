@@ -3,15 +3,9 @@ using System.Runtime.InteropServices;
 namespace OpenTabletDriver.Native.OSX.Generic
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct CGRect
+    public record struct CGRect(CGPoint origin, CGSize size)
     {
-        public CGPoint origin;
-        public CGSize size;
-
-        public CGRect(CGPoint origin, CGSize size)
-        {
-            this.origin = origin;
-            this.size = size;
-        }
+        public CGPoint origin = origin;
+        public CGSize size = size;
     }
 }

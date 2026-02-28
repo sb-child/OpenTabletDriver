@@ -5,16 +5,10 @@ using System.Runtime.InteropServices;
 namespace OpenTabletDriver.Native.OSX
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct CGPoint
+    public record struct CGPoint(double x, double y)
     {
-        public double x;
-        public double y;
-
-        public CGPoint(double x, double y)
-        {
-            this.x = x;
-            this.y = y;
-        }
+        public double x = x;
+        public double y = y;
 
         public static CGPoint operator +(CGPoint a, CGPoint b)
         {
