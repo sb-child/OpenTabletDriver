@@ -269,6 +269,7 @@
 | Huion Kamvas Pro 20                |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 22 (2019)         |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 24                |  Missing Features | Touch bar is not yet supported.
+| Huion Kamvas Pro 24 (Gen 3)        |  Missing Features | Touch is not yet supported.
 | Huion Q620M                        |  Missing Features | Wheel is not yet supported.
 | Huion Q630M                        |  Missing Features | Dials/Wheels are not yet supported.
 | Huion RTM-500                      |  Missing Features | Touch bar is not yet supported.
