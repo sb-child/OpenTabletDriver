@@ -358,6 +358,10 @@ namespace OpenTabletDriver.Daemon
                 appdataDir.Create();
                 Log.Write("Settings", $"Created OpenTabletDriver application data directory: {appdataDir.FullName}");
             }
+            else
+            {
+                Log.Write("Settings", $"Using OpenTabletDriver application data directory: {appdataDir.FullName}", LogLevel.Debug);
+            }
 
             var settingsFile = new FileInfo(AppInfo.Current.SettingsFile);
 
