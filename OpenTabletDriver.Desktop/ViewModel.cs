@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 
 namespace OpenTabletDriver.Desktop
 {
+    // TODO API Bump: Add INotifyCollectionChanged
     public class ViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

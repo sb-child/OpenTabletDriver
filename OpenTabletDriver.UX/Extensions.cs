@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Eto.Drawing;
 using Eto.Forms;
 using OpenTabletDriver.Desktop.Profiles;
 using OpenTabletDriver.Plugin;
@@ -119,5 +120,12 @@ namespace OpenTabletDriver.UX
             foreach (var filter in filters)
                 fileDialog.Filters.Add(filter);
         }
+
+        public static SizeF Measure(this Font font, string text, int repeats = 1) =>
+            font.MeasureString(
+                repeats > 1
+                    ? string.Concat(Enumerable.Repeat(text, repeats))
+                    : text);
+
     }
 }
