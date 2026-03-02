@@ -54,7 +54,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
         private readonly DebuggerGroup _tabletVisualizerGroup = new()
         {
             Text = "Visualizer",
-            MinimumSize = new Size(-1, 200),
+            MinimumSize = new Size(1, 200),
         };
         private readonly Group _additionalStatsGroup = new()
         {
@@ -142,7 +142,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                                 Control = new DebuggerGroup
                                 {
                                     ExpandContent = false,
-                                    MinimumSize = new Size(-1, _FONT_SIZE * 20),
+                                    MinimumSize = new Size(_FONT_SIZE * 22, _FONT_SIZE * 20),
                                     Text = "Tablet Report",
                                     Width = _FONT_SIZE * 22,
                                     Content = _tabletData,
@@ -156,7 +156,7 @@ namespace OpenTabletDriver.UX.Windows.Tablet
                             Padding = _SPACING,
                             Text = "Raw Tablet Data",
                             Width = GetWidthOfRawTabletDataGroupBox(),
-                            MinimumSize = new Size(_FONT_SIZE * 22, -1),
+                            MinimumSize = new Size(_FONT_SIZE * 22, _FONT_SIZE * 1),
                             ExpandContent = false,
                             Content = _rawTabletData,
                         }
