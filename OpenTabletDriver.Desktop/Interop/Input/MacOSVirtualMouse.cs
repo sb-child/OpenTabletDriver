@@ -143,9 +143,9 @@ namespace OpenTabletDriver.Desktop.Interop.Input
 
         private Vector2? DrainPendingPosition()
         {
-            if (_pendingX.HasValue)
+            if (_pendingX.HasValue && _pendingY.HasValue)
             {
-                var vector2 = new Vector2(_pendingX!.Value, _pendingY!.Value);
+                var vector2 = new Vector2(_pendingX.Value, _pendingY.Value);
                 _pendingX = null;
                 _pendingY = null;
                 return vector2;
