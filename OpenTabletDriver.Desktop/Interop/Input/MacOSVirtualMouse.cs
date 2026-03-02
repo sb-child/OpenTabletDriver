@@ -15,6 +15,23 @@ namespace OpenTabletDriver.Desktop.Interop.Input
         private const int DoubleClickMoveTolerance = 8;
         private const int ProximityExpiresDurationInMs = 200;
 
+        // The capabilityMask is essential for Adobe software to recognize tablet pressure sensitivity,
+        // a feature specific to Wacom devices.
+        private const WacomCapabilityMask TabletCapabilityMask = WacomCapabilityMask.absXBitMask |
+                                                                  WacomCapabilityMask.absYBitMask |
+                                                                  WacomCapabilityMask.buttonsBitMask |
+                                                                  WacomCapabilityMask.pressureBitMask |
+                                                                  WacomCapabilityMask.tiltXBitMask |
+                                                                  WacomCapabilityMask.tiltYBitMask |
+                                                                  WacomCapabilityMask.deviceIdBitMask;
+
+        // https://www.wacomeng.com/mac/Developers%20Guide.htm#vendorPointerType
+        private const long VendorPointerType = 0x802; // General Stylus
+
+        // A non-zero deviceId is essential for Adobe software to map tablet events to their
+        // corresponding capabilities. Randomly generated and hopefully do not conflict with another driver.
+        private const long DeviceId = 5303613955435230461;
+
         private int _currButtonStates;
         private int _prevButtonStates;
         private float? _pendingX;
@@ -111,7 +128,18 @@ namespace OpenTabletDriver.Desktop.Interop.Input
 
         public void SetEraser(bool isEraser)
         {
+            if (_isEraser.HasValue && _isEraser.Value == isEraser)
+                return;
+
             _isEraser = isEraser;
+
+            // Immediately post a proximity event to notify applications of the tool change,
+            // mirroring how Linux EvdevVirtualTablet sends the tool switch event right away.
+            PostProximityEvent();
+
+            // Reset the stopwatch so ApplyTabletValues doesn't redundantly re-send
+            // a proximity event on the next frame.
+            _stopWatch.Restart();
         }
 
         public void SetTilt(Vector2 tilt)
@@ -139,6 +167,24 @@ namespace OpenTabletDriver.Desktop.Interop.Input
         public void SetPressure(float percentage)
         {
             _pressure = percentage;
+        }
+
+        private void PostProximityEvent()
+        {
+            var pointerType = _isEraser ?? false
+                ? NSPointingDeviceType.Eraser
+                : NSPointingDeviceType.Pen;
+
+            var proximityEvent = CGEventCreate(_eventSource);
+            CGEventSetType(proximityEvent, CGEventType.kCGEventTabletProximity);
+            CGEventSetIntegerValueField(proximityEvent, CGEventField.tabletProximityEventEnterProximity, 1);
+            CGEventSetIntegerValueField(proximityEvent, CGEventField.tabletProximityEventPointerType, (long)pointerType);
+            CGEventSetIntegerValueField(proximityEvent, CGEventField.tabletProximityEventCapabilityMask, (long)TabletCapabilityMask);
+            CGEventSetIntegerValueField(proximityEvent, CGEventField.tabletProximityEventDeviceID, DeviceId);
+            CGEventSetIntegerValueField(proximityEvent, CGEventField.tabletProximityEventVendorPointerType, VendorPointerType);
+
+            CGEventPost(CGEventTapLocation.kCGHIDEventTap, proximityEvent);
+            CFRelease(proximityEvent);
         }
 
         private Vector2? DrainPendingPosition()
@@ -266,54 +312,25 @@ namespace OpenTabletDriver.Desktop.Interop.Input
 
         private void ApplyTabletValues()
         {
-            // The capabilityMask is essential for Adobe software to recognize tablet pressure sensitivity,
-            // a feature specific to Wacom devices.
-            // However, Adobe officially supports only Wacom tablets,
-            // while most other software tends to disregard these masks.
-
-            const WacomCapabilityMask capabilityMask = WacomCapabilityMask.absXBitMask |
-                                                       WacomCapabilityMask.absYBitMask |
-                                                       WacomCapabilityMask.buttonsBitMask |
-                                                       WacomCapabilityMask.pressureBitMask |
-                                                       WacomCapabilityMask.tiltXBitMask |
-                                                       WacomCapabilityMask.tiltYBitMask |
-                                                       WacomCapabilityMask.deviceIdBitMask;
-
-            // https://www.wacomeng.com/mac/Developers%20Guide.htm#vendorPointerType
-            const long vendorPointerType = 0x802; // General Stylus
-
-            // A non-zero deviceId is essential for Adobe software to map tablet events to their
-            // corresponding capabilities. Randomly generated and hopefully do not conflict with another driver.
-            const long deviceId = 5303613955435230461;
-
-            // send proximity events if there are no reports for a while.
+            // Send proximity events if there are no reports for a while.
             if (_currButtonStates == 0 && _prevButtonStates == 0)
             {
                 var elapsed = _stopWatch.ElapsedMilliseconds;
                 _stopWatch.Restart();
                 if (elapsed > ProximityExpiresDurationInMs)
                 {
-                    var pointerType = _isEraser ?? false ?
-                            NSPointingDeviceType.Eraser : NSPointingDeviceType.Pen;
+                    var pointerType = _isEraser ?? false
+                        ? NSPointingDeviceType.Eraser
+                        : NSPointingDeviceType.Pen;
 
-                    var proximityEvent = CGEventCreate(_eventSource);
-                    CGEventSetType(proximityEvent, CGEventType.kCGEventTabletProximity);
-                    CGEventSetIntegerValueField(proximityEvent, CGEventField.tabletProximityEventEnterProximity, 1);
-                    CGEventSetIntegerValueField(proximityEvent, CGEventField.tabletProximityEventPointerType, (long)(_isEraser ?? false ?
-                            NSPointingDeviceType.Eraser : NSPointingDeviceType.Pen));
-                    CGEventSetIntegerValueField(proximityEvent, CGEventField.tabletProximityEventCapabilityMask, (long)capabilityMask);
-                    CGEventSetIntegerValueField(proximityEvent, CGEventField.tabletProximityEventDeviceID, deviceId);
-                    CGEventSetIntegerValueField(proximityEvent, CGEventField.tabletProximityEventVendorPointerType, vendorPointerType);
-
-                    CGEventPost(CGEventTapLocation.kCGHIDEventTap, proximityEvent);
-                    CFRelease(proximityEvent);
+                    PostProximityEvent();
 
                     CGEventSetIntegerValueField(_mouseEvent, CGEventField.mouseEventSubtype, (long)CGMouseEventSubtype.TabletProximity);
                     CGEventSetIntegerValueField(_mouseEvent, CGEventField.tabletProximityEventEnterProximity, 1);
                     CGEventSetIntegerValueField(_mouseEvent, CGEventField.tabletProximityEventPointerType, (long)pointerType);
-                    CGEventSetIntegerValueField(_mouseEvent, CGEventField.tabletProximityEventCapabilityMask, (long)capabilityMask);
-                    CGEventSetIntegerValueField(_mouseEvent, CGEventField.tabletProximityEventDeviceID, deviceId);
-                    CGEventSetIntegerValueField(_mouseEvent, CGEventField.tabletProximityEventVendorPointerType, vendorPointerType);
+                    CGEventSetIntegerValueField(_mouseEvent, CGEventField.tabletProximityEventCapabilityMask, (long)TabletCapabilityMask);
+                    CGEventSetIntegerValueField(_mouseEvent, CGEventField.tabletProximityEventDeviceID, DeviceId);
+                    CGEventSetIntegerValueField(_mouseEvent, CGEventField.tabletProximityEventVendorPointerType, VendorPointerType);
 
                     return;
                 }
@@ -334,7 +351,7 @@ namespace OpenTabletDriver.Desktop.Interop.Input
             CGEventSetIntegerValueField(_mouseEvent, CGEventField.mouseEventSubtype, (long)CGMouseEventSubtype.TabletPoint);
             // The fields of tabletEvent can only be set after the subtype is defined.
             CGEventSetIntegerValueField(_mouseEvent, CGEventField.tabletEventPointButtons, buttons);
-            CGEventSetIntegerValueField(_mouseEvent, CGEventField.tabletEventDeviceID, deviceId);
+            CGEventSetIntegerValueField(_mouseEvent, CGEventField.tabletEventDeviceID, DeviceId);
             CGEventSetDoubleValueField(_mouseEvent, CGEventField.tabletEventPointPressure, _pressure ?? 1.0);
 
             if (_tilt != null)
