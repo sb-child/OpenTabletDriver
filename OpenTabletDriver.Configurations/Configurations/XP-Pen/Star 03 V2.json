@@ -1,36 +1,26 @@
 {
-  "Name": "XP-Pen Artist 24 Pro",
+  "Name": "XP-Pen Star 03 V2",
   "Specifications": {
     "Digitizer": {
-      "Width": 526.85,
-      "Height": 296.35,
-      "MaxX": 105370,
-      "MaxY": 59270
+      "Width": 254,
+      "Height": 152.4,
+      "MaxX": 50800,
+      "MaxY": 30480
     },
     "Pen": {
       "MaxPressure": 8191,
       "ButtonCount": 2
     },
     "AuxiliaryButtons": {
-      "ButtonCount": 20
-    },
-    "Wheels": [
-      {
-        "RelativeWheelSteps": 24,
-        "ButtonCount": 0
-      },
-      {
-        "RelativeWheelSteps": 24,
-        "ButtonCount": 0
-      }
-    ]
+      "ButtonCount": 8
+    }
   },
   "DigitizerIdentifiers": [
     {
       "VendorID": 10429,
-      "ProductID": 2349,
+      "ProductID": 2311,
       "InputReportLength": 12,
-      "OutputReportLength": 8,
+      "OutputReportLength": 20,
       "ReportParser": "OpenTabletDriver.Configurations.Parsers.XP_Pen.XP_PenReportParser",
       "OutputInitReport": [
         "ArAE"

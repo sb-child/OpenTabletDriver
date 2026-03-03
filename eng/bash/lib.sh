@@ -294,7 +294,6 @@ build() {
   local options=(
     --configuration "${CONFIG}"
     --runtime "${NET_RUNTIME}"
-    --self-contained "${SELF_CONTAINED}"
     --output "${OUTPUT}"
     -p:PublishTrimmed=false
     -p:DebugType=embedded
@@ -307,6 +306,11 @@ build() {
   fi
   if [ "${SINGLE_FILE}" == "true" ]; then
     options+=( -p:PublishSingleFile=true )
+  fi
+  if [ "${SELF_CONTAINED}" == "true" ]; then
+    options+=( --self-contained "${SELF_CONTAINED}" )
+  else
+    options+=( --no-self-contained )
   fi
 
   if [ ${#extra_options[@]} -gt 0 ]; then

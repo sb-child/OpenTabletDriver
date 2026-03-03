@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using OpenTabletDriver.Desktop.Diagnostics;
 using OpenTabletDriver.Desktop.Reflection.Metadata;
 using OpenTabletDriver.Desktop.RPC;
 using OpenTabletDriver.Desktop.Updater;
@@ -41,6 +42,7 @@ namespace OpenTabletDriver.Desktop.Contracts
         Task<string> RequestDeviceString(int vendorID, int productID, int index);
 
         Task<IEnumerable<LogMessage>> GetCurrentLog();
+        Task<DiagnosticInfo> GetDiagnosticInfo();
 
         Task<SerializedUpdateInfo?> CheckForUpdates();
         Task InstallUpdate();

@@ -37,6 +37,9 @@ dotnet_diagnostic.CA1822.severity = warning
 # use compile-time regex
 dotnet_diagnostic.SYSLIB1045.severity = warning
 
+# IDE-only inspections (Rider, etc.)
+resharper_can_simplify_dictionary_lookup_with_try_get_value_highlighting=warning
+
 [*.{sh,md,csproj,json,yml}]
 indent_size = 2
 

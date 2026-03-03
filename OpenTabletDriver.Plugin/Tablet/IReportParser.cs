@@ -9,7 +9,7 @@ namespace OpenTabletDriver.Plugin.Tablet
     /// Make sure you add the following attribute to the inheriting class:
     /// <c>[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]</c>
     /// </remarks>
-    public interface IReportParser<T> where T : IDeviceReport
+    public interface IReportParser<out T> where T : IDeviceReport
     {
         T Parse(byte[] report);
     }

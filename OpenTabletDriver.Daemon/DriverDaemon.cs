@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using OpenTabletDriver.Desktop;
 using OpenTabletDriver.Desktop.Binding;
 using OpenTabletDriver.Desktop.Contracts;
+using OpenTabletDriver.Desktop.Diagnostics;
 using OpenTabletDriver.Desktop.Interop;
 using OpenTabletDriver.Desktop.Profiles;
 using OpenTabletDriver.Desktop.Reflection;
@@ -358,6 +359,10 @@ namespace OpenTabletDriver.Daemon
                 appdataDir.Create();
                 Log.Write("Settings", $"Created OpenTabletDriver application data directory: {appdataDir.FullName}");
             }
+            else
+            {
+                Log.Write("Settings", $"Using OpenTabletDriver application data directory: {appdataDir.FullName}", LogLevel.Debug);
+            }
 
             var settingsFile = new FileInfo(AppInfo.Current.SettingsFile);
 
@@ -662,6 +667,12 @@ namespace OpenTabletDriver.Daemon
         public Task<IEnumerable<LogMessage>> GetCurrentLog()
         {
             return Task.FromResult(_logFile.Read());
+        }
+
+        public async Task<DiagnosticInfo> GetDiagnosticInfo()
+        {
+            var log = await GetCurrentLog();
+            return new DiagnosticInfo(log, await GetDevices());
         }
 
         private void PostDebugReport(TabletReference tablet, IDeviceReport report)

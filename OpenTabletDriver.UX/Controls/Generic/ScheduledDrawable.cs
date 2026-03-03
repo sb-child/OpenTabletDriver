@@ -12,13 +12,10 @@ namespace OpenTabletDriver.UX.Controls.Generic
             base.ParentWindow.Closing += (sender, e) => CompositionScheduler.Unregister(OnCompose);
             base.ParentWindow.WindowStateChanged += (sender, e) =>
             {
-                if (base.ParentWindow == null || base.ParentWindow.WindowState == WindowState.Minimized)
-                    CompositionScheduler.Unregister(OnCompose);
-                else
-                    CompositionScheduler.Register(OnCompose);
+                this.Enabled =
+                    base.ParentWindow != null &&
+                    base.ParentWindow.WindowState != WindowState.Minimized;
             };
-
-            CompositionScheduler.Register(OnCompose);
         }
 
         protected abstract void OnNextFrame(PaintEventArgs e);
@@ -32,6 +29,19 @@ namespace OpenTabletDriver.UX.Controls.Generic
         protected void OnCompose(object _, EventArgs a)
         {
             Invalidate();
+        }
+
+        public override bool Enabled
+        {
+            get => base.Enabled;
+            set
+            {
+                base.Enabled = value;
+                if (value)
+                    CompositionScheduler.Register(OnCompose);
+                else
+                    CompositionScheduler.Unregister(OnCompose);
+            }
         }
 
         protected override void Dispose(bool disposing)

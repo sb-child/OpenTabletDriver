@@ -20,6 +20,7 @@
 | Huion G930L                        |     Supported     |
 | Huion GT-191 V2                    |     Supported     |
 | Huion GT-220 V2                    |     Supported     |
+| Huion GT-220 V2 (2048)             |     Supported     |
 | Huion H1060P                       |     Supported     |
 | Huion H320M                        |     Supported     |
 | Huion H420X                        |     Supported     |
@@ -166,6 +167,7 @@
 | XP-Pen Artist 16 (2nd Gen)         |     Supported     |
 | XP-Pen Artist 22 (2nd Gen)         |     Supported     |
 | XP-Pen Artist 24                   |     Supported     |
+| XP-Pen Artist 24 Pro               |     Supported     |
 | XP-Pen Artist Pro 14 (Gen2)        |     Supported     |
 | XP-Pen Artist Pro 16 (Gen2)        |     Supported     |
 | XP-Pen Artist Pro 22 (Gen2)        |     Supported     |
@@ -190,6 +192,7 @@
 | XP-Pen Deco Pro XLW Gen2           |     Supported     |
 | XP-Pen Star 03                     |     Supported     | Older variants may use the same configuration as the UC-Logic 1060N.
 | XP-Pen Star 03 Pro                 |     Supported     |
+| XP-Pen Star 03 V2                  |     Supported     |
 | XP-Pen Star 05 V3                  |     Supported     |
 | XP-Pen Star G430S                  |     Supported     |
 | XP-Pen Star G430S V2               |     Supported     |
@@ -202,6 +205,7 @@
 | XP-Pen Star G960S                  |     Supported     |
 | XP-Pen Star G960S Plus             |     Supported     |
 | XP-Pen Deco 03                     |     Supported     |
+| Bosto BT-12HD                      |    Has Quirks     | Windows: Requires Zadig's WinUSB to be installed on interface 0.
 | FlooGoo FMA100                     |    Has Quirks     | Windows: Requires Zadig's WinUSB to be installed on interface 1. Might also need to change the configuration depending on the tablet used.
 | Gaomon S56K                        |    Has Quirks     | Windows: Might need Zadig's WinUSB to be installed on interface 0 or 1
 | Gaomon S630                        |    Has Quirks     | Windows: Requires Zadig's WinUSB to be installed on interface 0
@@ -267,6 +271,7 @@
 | Huion Kamvas Pro 20                |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 22 (2019)         |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 24                |  Missing Features | Touch bar is not yet supported.
+| Huion Kamvas Pro 24 (Gen 3)        |  Missing Features | Touch is not yet supported.
 | Huion Q620M                        |  Missing Features | Wheel is not yet supported.
 | Huion Q630M                        |  Missing Features | Dials/Wheels are not yet supported.
 | Huion RTM-500                      |  Missing Features | Touch bar is not yet supported.
@@ -286,6 +291,7 @@
 | VEIKK A50 (Variant 2)              |  Missing Features | Touchpad is not yet supported.
 | VEIKK Voila (VO1060)               |  Missing Features | Wheel is not yet supported.
 | VEIKK VK1060PRO                    |  Missing Features | Wheels not yet supported.
+| VEIKK VK2200PRO                    |  Missing Features | Wheels not yet supported, tablet buttons may be mapped incorrectly.
 | Wacom CTE-450                      |  Missing Features | Wheel is not yet supported.
 | Wacom CTE-650                      |  Missing Features | Wheel is not yet supported.
 | Wacom CTH-300                      |  Missing Features | Touch is not yet supported.
@@ -320,7 +326,6 @@
 | XP-Pen Artist 15.6 Pro             |  Missing Features | Tilt and wheel are not yet supported.
 | XP-Pen Artist 16 Pro               |  Missing Features | Wheel is not yet supported.
 | XP-Pen Artist 22R Pro              |  Missing Features | Wheel is not yet supported.
-| XP-Pen Artist 24 Pro               |  Missing Features | Wheel is not yet supported.
 | XP-Pen Artist Pro 16TP             |  Missing Features | Touch is not yet supported.
 | XP-Pen Artist Pro 19 (Gen2)        |  Missing Features | Scroll Wheel on Pen is not yet supported
 | XP-Pen Deco 02                     |  Missing Features | Wheel is not yet supported.

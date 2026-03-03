@@ -3,9 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 namespace OpenTabletDriver.Plugin.Tablet
 {
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
-    public class AuxReportParser : IReportParser<IDeviceReport>
+    public class AuxReportParser : IReportParser<IAuxReport>
     {
-        public IDeviceReport Parse(byte[] data)
+        public IAuxReport Parse(byte[] data)
         {
             return new AuxReport(data);
         }

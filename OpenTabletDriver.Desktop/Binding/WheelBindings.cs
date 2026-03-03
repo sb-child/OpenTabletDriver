@@ -25,7 +25,7 @@ namespace OpenTabletDriver.Desktop.Binding
             _wheelSteps = stepCount;
             _halfWheelSteps = stepCount / 2d;
             _threeHalfWheelSteps = _halfWheelSteps * 3d;
-            _stepsPerTick = 360d / (stepCount + 1);
+            _stepsPerTick = 360d / stepCount;
         }
 
         public Dictionary<int, BindingState?> WheelButtons { get; } = new();

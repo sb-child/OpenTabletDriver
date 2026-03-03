@@ -134,8 +134,10 @@ namespace OpenTabletDriver.UX.MacOS
         {
             static KillOnQuitHandler handler;
 
+#pragma warning disable CA1822
             [Export("handleQuitEvent:withReplyEvent:")]
             private void handleQuitEvent(NSAppleEventDescriptor evt, NSAppleEventDescriptor replyEvt)
+#pragma warning restore CA1822
             {
                 Process.GetCurrentProcess().Kill();
             }
@@ -171,8 +173,10 @@ namespace OpenTabletDriver.UX.MacOS
             {
             }
 
+#pragma warning disable CA1822
             [Export("onClick:")]
             private void onClick(NSObject target)
+#pragma warning restore CA1822
             {
                 Process.GetCurrentProcess().Kill();
             }

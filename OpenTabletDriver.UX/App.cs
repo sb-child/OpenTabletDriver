@@ -175,8 +175,8 @@ namespace OpenTabletDriver.UX
 
         private void HandleNotification(object sender, NotificationEventArgs e)
         {
-            if (NotificationHandlers.ContainsKey(e.ID))
-                NotificationHandlers[e.ID].Invoke();
+            if (NotificationHandlers.TryGetValue(e.ID, out var handler))
+                handler.Invoke();
         }
 
         private static void ShowUnhandledException(object sender, Eto.UnhandledExceptionEventArgs e)
