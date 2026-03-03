@@ -17,8 +17,7 @@ namespace OpenTabletDriver.Configurations.Parsers.Huion
                     // Group buttons, no way to use them properly for now
                     return new UCLogicAuxReport(data);
                 case 0xf1:
-                    // Wheel data, reported in data[5], ignoring
-                    return new DeviceReport(data);
+                    return new InspiroyRelWheelReport(data);
                 case 0x00:
                     return new OutOfRangeReport(data);
             }
