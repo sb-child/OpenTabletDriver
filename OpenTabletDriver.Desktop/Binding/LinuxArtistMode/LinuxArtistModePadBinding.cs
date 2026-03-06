@@ -1,8 +1,9 @@
 using System.Linq;
-using OpenTabletDriver.Desktop.Interop;
 using OpenTabletDriver.Desktop.Interop.Input.Exotic;
 using OpenTabletDriver.Plugin;
 using OpenTabletDriver.Plugin.Attributes;
+using OpenTabletDriver.Plugin.DependencyInjection;
+using OpenTabletDriver.Plugin.Platform.Keyboard;
 using OpenTabletDriver.Plugin.Tablet;
 
 namespace OpenTabletDriver.Desktop.Binding.LinuxArtistMode
@@ -10,7 +11,8 @@ namespace OpenTabletDriver.Desktop.Binding.LinuxArtistMode
     [PluginName("Linux Artist Mode Pad Bindings"), SupportedPlatform(PluginPlatform.Linux)]
     public class LinuxArtistModePadBinding : IStateBinding
     {
-        private readonly EvdevVirtualPad virtualPad = (EvdevVirtualPad)DesktopInterop.VirtualPad;
+        [Resolved]
+        public IVirtualPad VirtualPad;
 
         public static string[] ValidKeys => EvdevVirtualPad.ValidButtons.Keys.ToArray();
 
@@ -29,7 +31,7 @@ namespace OpenTabletDriver.Desktop.Binding.LinuxArtistMode
 
         private void SetState(bool isPress)
         {
-            virtualPad.KeyEvent(Button, isPress);
+            VirtualPad.KeyEvent(Button, isPress);
         }
     }
 }
