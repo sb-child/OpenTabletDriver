@@ -10,12 +10,12 @@ using OpenTabletDriver.Plugin.Tablet;
 
 namespace OpenTabletDriver.Desktop.Interop.Input.Exotic;
 
-public class EvdevVirtualPad : IVirtualPad, IDisposable
+public sealed class EvdevVirtualPad : IVirtualPad, IDisposable
 {
     // represents the report is coming from a pad (PAD_DEVICE_ID in wacom_wac.h)
-    private static readonly int _wacomMagicNumber = 0x0F;
+    private const int _WACOM_MAGIC_NUMBER = 0x0F;
 
-    public static readonly Dictionary<TabletPadEvent, EventCode> ValidButtons = new()
+    private static readonly Dictionary<TabletPadEvent, EventCode> s_ValidButtons = new()
     {
         { TabletPadEvent.BUTTON_1, EventCode.BTN_1 },
         { TabletPadEvent.BUTTON_2, EventCode.BTN_2 },
@@ -29,7 +29,7 @@ public class EvdevVirtualPad : IVirtualPad, IDisposable
         { TabletPadEvent.BUTTON_10, EventCode.BTN_0 },
     };
 
-    private static EventCode[] supportedEventCodes = ValidButtons.Values.ToArray();
+    private static readonly EventCode[] s_SupportedEventCodes = s_ValidButtons.Values.ToArray();
 
     public unsafe EvdevVirtualPad()
     {
@@ -59,7 +59,7 @@ public class EvdevVirtualPad : IVirtualPad, IDisposable
         input_absinfo* yPtr = &yAbs;
         Device.EnableCustomCode(EventType.EV_ABS, EventCode.ABS_Y, (IntPtr)yPtr);
 
-        Device.EnableTypeCodes(EventType.EV_KEY, supportedEventCodes);
+        Device.EnableTypeCodes(EventType.EV_KEY, s_SupportedEventCodes);
 
         var result = Device.Initialize();
         switch (result)
@@ -77,10 +77,10 @@ public class EvdevVirtualPad : IVirtualPad, IDisposable
 
     public void KeyEvent(TabletPadEvent key, bool isPress)
     {
-        var eventCode = ValidButtons[key];
+        var eventCode = s_ValidButtons[key];
 
         Device.Write(EventType.EV_KEY, eventCode, isPress ? 1 : 0);
-        Device.Write(EventType.EV_ABS, EventCode.ABS_MISC, isPress ? _wacomMagicNumber : 0);
+        Device.Write(EventType.EV_ABS, EventCode.ABS_MISC, isPress ? _WACOM_MAGIC_NUMBER : 0);
         Device.Sync();
     }
 
