@@ -33,5 +33,7 @@ namespace OpenTabletDriver.Desktop.Binding.LinuxArtistMode
         {
             VirtualPad.KeyEvent(Button, isPress);
         }
+
+        public override string ToString() => $"{nameof(LinuxArtistModePadBinding)}: {Button ?? "<button not set>"}";
     }
 }
