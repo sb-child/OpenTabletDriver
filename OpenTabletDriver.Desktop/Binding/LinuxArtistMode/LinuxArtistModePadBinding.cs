@@ -26,7 +26,7 @@ namespace OpenTabletDriver.Desktop.Binding.LinuxArtistMode
             { "Pad Button 7", TabletPadEvent.BUTTON_7 },
             { "Pad Button 8", TabletPadEvent.BUTTON_8 },
             { "Pad Button 9", TabletPadEvent.BUTTON_9 },
-            { "Pad Button 0", TabletPadEvent.BUTTON_10 },
+            { "Pad Button 10", TabletPadEvent.BUTTON_10 },
         };
 
 
