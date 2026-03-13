@@ -13,8 +13,7 @@ namespace OpenTabletDriver.Configurations.Parsers.Huion
             {
                 0x1 => 1,
                 0x2 => -1,
-                0 => 0,
-                _ => throw new ArgumentOutOfRangeException(nameof(wheelData)),
+                _ => 0,
             };
     }
 }
