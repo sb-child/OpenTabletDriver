@@ -213,6 +213,7 @@
 | XP-Pen Star G960                   |     Supported     |
 | XP-Pen Star G960S                  |     Supported     |
 | XP-Pen Star G960S Plus             |     Supported     |
+| XP-Pen Deco 03                     |     Supported     |
 | Bosto BT-12HD                      |    Has Quirks     | Windows: Requires Zadig's WinUSB to be installed on interface 0.
 | FlooGoo FMA100                     |    Has Quirks     | Windows: Requires Zadig's WinUSB to be installed on interface 1. Might also need to change the configuration depending on the tablet used.
 | Gaomon S56K                        |    Has Quirks     | Windows: Might need Zadig's WinUSB to be installed on interface 0 or 1
@@ -330,7 +331,6 @@
 | XP-Pen Artist Pro 16TP             |  Missing Features | Touch is not yet supported.
 | XP-Pen Artist Pro 19 (Gen2)        |  Missing Features | Scroll Wheel on Pen is not yet supported
 | XP-Pen Deco 02                     |  Missing Features | Wheel is not yet supported.
-| XP-Pen Deco 03                     |  Missing Features | Wheel is not yet supported.
 | XP-Pen Deco Pro Medium             |  Missing Features | Tilt and wheel are not yet supported.
 | XP-Pen Deco Pro Small              |  Missing Features | Tilt and wheel are not yet supported.
 | XP-Pen Deco Pro SW                 |  Missing Features | Wheel is not yet supported.
