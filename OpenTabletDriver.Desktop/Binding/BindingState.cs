@@ -9,11 +9,11 @@ namespace OpenTabletDriver.Desktop.Binding
 
         protected bool PreviousState { set; get; }
 
-        public bool RequiresPenPressure { set; get; } // "drag scrolling"
+        public bool RequiresPenPressure { set; get; } // "drag bindings"
 
         public virtual void Invoke(TabletReference tablet, IDeviceReport report, bool newState)
         {
-            // Check if drag scrolling is needed or unnecessary
+            // Check if drag binding is needed or unnecessary
             // NOTE: report _must_ include pressure to work properly
             // TODO: use relevant threshold instead of '0'
             bool pressureThresholdIsMetOrUnneeded =
