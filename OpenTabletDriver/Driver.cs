@@ -184,7 +184,7 @@ namespace OpenTabletDriver
                    select device;
         }
 
-        private static bool DeviceMatchesStrings(IDeviceEndpoint device, IDictionary<byte, string>? deviceStrings)
+        private static bool DeviceMatchesStrings(IDeviceEndpoint device, Dictionary<byte, string>? deviceStrings)
         {
             if (deviceStrings == null || deviceStrings.Count == 0)
                 return true;

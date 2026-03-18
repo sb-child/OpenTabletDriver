@@ -158,9 +158,9 @@ namespace OpenTabletDriver.Desktop.Binding
             MouseScrollUp?.Invoke(tablet, report, report.Scroll.Y > 0);
         }
 
-        private static void HandleBindingCollection(TabletReference tablet, IDeviceReport report, IDictionary<int, BindingState?> bindings, IList<bool> newStates)
+        private static void HandleBindingCollection(TabletReference tablet, IDeviceReport report, Dictionary<int, BindingState?> bindings, bool[] newStates)
         {
-            for (int i = 0; i < newStates.Count; i++)
+            for (int i = 0; i < newStates.Length; i++)
             {
                 if (bindings.TryGetValue(i, out var binding))
                     binding?.Invoke(tablet, report, newStates[i]);

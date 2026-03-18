@@ -8,7 +8,7 @@ namespace OpenTabletDriver.Desktop.Reflection
 {
     public class ServiceManager : IServiceManager
     {
-        private readonly IDictionary<Type, Func<object>> services = new Dictionary<Type, Func<object>>();
+        private readonly Dictionary<Type, Func<object>> services = new();
 
         /// <summary>
         /// Adds a retrieval method for a service type.

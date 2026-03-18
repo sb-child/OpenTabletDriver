@@ -51,12 +51,14 @@ namespace OpenTabletDriver.Desktop.Interop.Display
 
         public Vector2 Position { private set; get; } = new Vector2(0, 0);
 
-        private unsafe IEnumerable<XRRMonitorInfo> GetXRandrDisplays()
+        private unsafe XRRMonitorInfo[] GetXRandrDisplays()
         {
-            ICollection<XRRMonitorInfo> monitors = new List<XRRMonitorInfo>();
             var xRandrMonitors = XRRGetMonitors(Display, RootWindow, true, out var count);
+            var monitors = new XRRMonitorInfo[count];
+
             for (int i = 0; i < count; i++)
-                monitors.Add(xRandrMonitors[i]);
+                monitors[i] = xRandrMonitors[i];
+
             return monitors;
         }
 
