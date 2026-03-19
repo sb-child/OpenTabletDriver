@@ -12,6 +12,7 @@
 | Gaomon M106K                       |     Supported     |
 | Gaomon M106K Pro                   |     Supported     |
 | Gaomon PD1161                      |     Supported     |
+| Gaomon PD1320                      |     Supported     |
 | Gaomon PD1560                      |     Supported     |
 | Gaomon PD1561                      |     Supported     |
 | Gaomon PD2200                      |     Supported     |
