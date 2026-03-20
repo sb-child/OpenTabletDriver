@@ -1,0 +1,35 @@
+changelog:
+  categories:
+    - title: Regressions fixed
+      labels:
+        - 'regression'
+    - title: Major Features
+      labels:
+        - 'breaking'
+    - title: Bug Fixes
+      labels:
+        - 'bug'
+    - title: Performance Enhancements
+      labels:
+        - 'performance'
+    - title: Daemon Enhancements
+      labels:
+        - 'daemon'
+    - title: UI Enhancements
+      labels:
+        - 'gui'
+    - title: Console (CLI) Enhancements
+      labels:
+        - 'console'
+    - title: Documentation
+      labels:
+        - 'documentation'
+    - title: Unit Tests
+      labels:
+        - 'tests'
+    - title: Dependencies
+      labels:
+        - 'dependencies'
+    - title: Other Changes
+      labels:
+        - '*'
