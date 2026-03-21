@@ -6,6 +6,9 @@ changelog:
     - title: Major Features
       labels:
         - 'breaking'
+    - title: Tablet Configurations
+      labels:
+        - 'configuration'
     - title: Bug Fixes
       labels:
         - 'bug'
@@ -27,9 +30,15 @@ changelog:
     - title: Unit Tests
       labels:
         - 'tests'
+    - title: Build scripts
+      labels:
+        - 'packaging'
     - title: Dependencies
       labels:
         - 'dependencies'
+    - title: Other non-code changes
+      labels:
+        - 'meta'
     - title: Other Changes
       labels:
         - '*'
