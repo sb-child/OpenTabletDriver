@@ -10,7 +10,7 @@ namespace OpenTabletDriver.Desktop.Output
 {
     [PluginName("Artist Mode"), SupportedPlatform(PluginPlatform.Linux)]
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)]
-    public class LinuxArtistMode : AbsoluteOutputMode, IPointerProvider<IAbsolutePointer>
+    public class LinuxArtistMode : AbsoluteOutputMode
     {
         [Resolved]
         public IPressureHandler VirtualTablet { get; set; }
