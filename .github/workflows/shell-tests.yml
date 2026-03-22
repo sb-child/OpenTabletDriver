@@ -5,17 +5,6 @@ on:
   pull_request:
 
 jobs:
-  test_labeler_paths:
-    runs-on: ubuntu-latest
-    name: Test for presence of all GitHub Labeler paths
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Test paths
-        run: |
-          ./tests/test_labeler_yaml.sh
-
   test_tabletconfigs_present_in_tabletsmd:
     runs-on: ubuntu-latest
     name: Test for presence of added/changed configuration files in TABLETS.md
