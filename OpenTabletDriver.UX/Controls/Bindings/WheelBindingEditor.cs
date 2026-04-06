@@ -45,7 +45,7 @@ namespace OpenTabletDriver.UX.Controls.Bindings
                                         ExpandContent = false,
                                         Content = clockwiseButton = new BindingDisplay()
                                     },
-                                    new Group
+                                    new UnitGroup
                                     {
                                         Text = "Clockwise Rotation Threshold",
                                         ToolTip = "The minimum threshold in degrees in order for the assigned binding to activate.",
@@ -55,7 +55,8 @@ namespace OpenTabletDriver.UX.Controls.Bindings
                                             Minimum = 1,
                                             Maximum = 360,
                                             SnapToTick = true,
-                                        }
+                                        },
+                                        Unit = "°"
                                     }
                                 }
                             }
@@ -76,7 +77,7 @@ namespace OpenTabletDriver.UX.Controls.Bindings
                                         Orientation = Orientation.Horizontal,
                                         Content = counterClockwiseButton = new BindingDisplay()
                                     },
-                                    new Group
+                                    new UnitGroup
                                     {
                                         Text = "Counter-Clockwise Rotation Threshold",
                                         ToolTip = "The minimum threshold in degrees in order for the assigned binding to activate.",
@@ -86,7 +87,8 @@ namespace OpenTabletDriver.UX.Controls.Bindings
                                             Minimum = 1,
                                             Maximum = 360,
                                             SnapToTick = true,
-                                        }
+                                        },
+                                        Unit = "°"
                                     }
                                 }
                             }
