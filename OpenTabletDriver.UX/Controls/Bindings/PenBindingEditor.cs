@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Eto.Forms;
 using OpenTabletDriver.Desktop.Reflection;
 using OpenTabletDriver.UX.Controls.Generic;
+using OpenTabletDriver.UX.Controls.Output.Area;
 
 namespace OpenTabletDriver.UX.Controls.Bindings
 {
@@ -41,12 +42,13 @@ namespace OpenTabletDriver.UX.Controls.Bindings
                                                         ExpandContent = false,
                                                         Content = tipButton = new BindingDisplay()
                                                     },
-                                                    new Group
+                                                    new UnitGroup
                                                     {
                                                         Text = "Tip Threshold",
                                                         ToolTip = "The minimum threshold in order for the assigned binding to activate.",
                                                         Orientation = Orientation.Horizontal,
-                                                        Content = tipThreshold = new FloatSlider()
+                                                        Content = tipThreshold = new FloatSlider(),
+                                                        Unit = "%"
                                                     }
                                                 }
                                             }
@@ -67,12 +69,13 @@ namespace OpenTabletDriver.UX.Controls.Bindings
                                                         Orientation = Orientation.Horizontal,
                                                         Content = eraserButton = new BindingDisplay()
                                                     },
-                                                    new Group
+                                                    new UnitGroup
                                                     {
                                                         Text = "Eraser Threshold",
                                                         ToolTip = "The minimum threshold in order for the assigned binding to activate.",
                                                         Orientation = Orientation.Horizontal,
-                                                        Content = eraserThreshold = new FloatSlider()
+                                                        Content = eraserThreshold = new FloatSlider(),
+                                                        Unit = "%"
                                                     }
                                                 }
                                             }
