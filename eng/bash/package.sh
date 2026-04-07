@@ -78,8 +78,7 @@ if [[ "${NET_RUNTIME}" =~ ^win-.*$ ]]; then
 fi
 
 if [[ "${NET_RUNTIME}" =~ ^osx-.*$ ]]; then
-  # the following vars are imported from old packaging script
-  SINGLE_FILE="false"
+  SINGLE_FILE="true"
   SELF_CONTAINED="true"
 
   PACKAGE_GEN=${PACKAGE_GEN:-"macos"}
