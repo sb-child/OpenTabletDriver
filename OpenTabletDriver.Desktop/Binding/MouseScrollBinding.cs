@@ -41,6 +41,15 @@ namespace OpenTabletDriver.Desktop.Binding
             }
         }
 
+        [OnDependencyLoad]
+        public void VerifyInitialization()
+        {
+            if (Pointer == null)
+                Log.Write(PLUGIN_NAME,
+                    $"{nameof(IMouseScrollHandler)} unavailable. Your selected output mode is incompatible",
+                    LogLevel.Error);
+        }
+
         [Property("Direction"), DefaultPropertyValue("Vertical"), PropertyValidated(nameof(ValidDirections))]
         public string Direction
         {

@@ -22,6 +22,14 @@ namespace OpenTabletDriver.Desktop.Binding
         [Property("Key"), PropertyValidated(nameof(ValidKeys))]
         public string Key { set; get; }
 
+        [OnDependencyLoad]
+        public void VerifyInitialization()
+        {
+            if (Keyboard == null)
+                Log.Write(nameof(KeyBinding),
+                    $"{nameof(IVirtualKeyboard)} unavailable. {PLUGIN_NAME} will not work", LogLevel.Error);
+        }
+
         public void Press(TabletReference tablet, IDeviceReport report)
         {
             if (!string.IsNullOrWhiteSpace(Key))

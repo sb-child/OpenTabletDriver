@@ -17,6 +17,14 @@ namespace OpenTabletDriver.Desktop.Binding.LinuxArtistMode
         [Resolved]
         public IVirtualPad VirtualPad;
 
+        [OnDependencyLoad]
+        public void VerifyInitialization()
+        {
+            if (VirtualPad == null)
+                Log.Write(_PLUGIN_NAME,
+                    $"{nameof(IVirtualPad)} unavailable", LogLevel.Error);
+        }
+
         private static readonly Dictionary<string, TabletPadEvent> s_ValidButtons = new()
         {
             { "Pad Button 1", TabletPadEvent.BUTTON_1 },

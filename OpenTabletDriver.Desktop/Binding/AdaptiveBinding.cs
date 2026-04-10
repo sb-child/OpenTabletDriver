@@ -18,6 +18,15 @@ namespace OpenTabletDriver.Desktop.Binding
 
         [Resolved] public IMouseButtonHandler MouseButtonHandler { set; get; }
 
+        [OnDependencyLoad]
+        public void VerifyInitialization()
+        {
+            if (PenActionHandler == null && MouseButtonHandler == null)
+                Log.Write(PluginName,
+                    $"Neither {nameof(IPenActionHandler)} nor {nameof(IMouseButtonHandler)} is available. Your selected output mode is incompatible",
+                    LogLevel.Error);
+        }
+
         // ReSharper disable once UnusedMember.Global
         public AdaptiveBinding()
         {

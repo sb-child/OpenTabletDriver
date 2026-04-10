@@ -18,6 +18,15 @@ namespace OpenTabletDriver.Desktop.Binding
         [Resolved]
         public IMouseButtonHandler Pointer { set; get; }
 
+        [OnDependencyLoad]
+        public void VerifyInitialization()
+        {
+            if (Pointer == null)
+                Log.Write(PLUGIN_NAME,
+                    $"{nameof(IMouseButtonHandler)} unavailable. Your selected output mode is incompatible",
+                    LogLevel.Error);
+        }
+
         [Property("Button"), PropertyValidated(nameof(ValidButtons))]
         public string Button { set; get; }
 

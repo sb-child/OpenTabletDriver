@@ -21,6 +21,14 @@ namespace OpenTabletDriver.Desktop.Binding
         [Resolved]
         public IVirtualKeyboard Keyboard { set; get; }
 
+        [OnDependencyLoad]
+        public void VerifyInitialization()
+        {
+            if (Keyboard == null)
+                Log.Write(nameof(MultiKeyBinding),
+                    $"{nameof(IVirtualKeyboard)} unavailable. Keyboard buttons will not work", LogLevel.Error);
+        }
+
         [Property("Keys")]
         public string Keys
         {
