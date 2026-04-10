@@ -101,9 +101,6 @@ namespace OpenTabletDriver.Desktop.Binding
             if (Amount == 0)
                 throw new InvalidOperationException($"{nameof(Amount)} must be greater than zero");
 
-            if (Pointer == null)
-                throw new InvalidOperationException($"{nameof(Pointer)} was not injected by daemon");
-
             if (_direction == ScrollDirection.Vertical)
                 Pointer.ScrollVertically(-Amount);
             else
