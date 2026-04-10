@@ -63,12 +63,18 @@ namespace OpenTabletDriver.Desktop.Binding
             }
         }
 
+        private int _amount = 120;
+
         [Property("Amount"),
          DefaultPropertyValue(120),
          ToolTip("The amount to scroll. A negative value will scroll up or left " +
                  "and a positive value will scroll down or right.\n\n" +
                  "Note: A tick equals to 120 on Windows & Linux.")]
-        public int Amount { get; set; } = 120;
+        public int Amount
+        {
+            get => _amount;
+            set => _amount = value != 0 ? value : 1;
+        }
 
         [Property("Interval"),
          DefaultPropertyValue(300),
@@ -98,9 +104,6 @@ namespace OpenTabletDriver.Desktop.Binding
 
         public void Scroll()
         {
-            if (Amount == 0)
-                throw new InvalidOperationException($"{nameof(Amount)} must be greater than zero");
-
             if (_direction == ScrollDirection.Vertical)
                 Pointer.ScrollVertically(-Amount);
             else
