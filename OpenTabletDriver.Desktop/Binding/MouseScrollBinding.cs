@@ -8,6 +8,8 @@ using OpenTabletDriver.Plugin.Platform.Pointer;
 using OpenTabletDriver.Plugin.Tablet;
 using OpenTabletDriver.Plugin.Timers;
 
+#nullable enable
+
 namespace OpenTabletDriver.Desktop.Binding
 {
     [PluginName(PLUGIN_NAME)]
@@ -15,15 +17,15 @@ namespace OpenTabletDriver.Desktop.Binding
     {
         private const string PLUGIN_NAME = "Mouse Scroll Binding";
 
-        private ITimer _timer;
+        private ITimer? _timer;
         private ScrollDirection _direction;
         private int _interval = 1;
 
         [Resolved]
-        public IMouseScrollHandler Pointer { set; get; }
+        public IMouseScrollHandler? Pointer { set; get; }
 
         [Resolved]
-        public ITimer Timer
+        public ITimer? Timer
         {
             get => _timer;
             set
@@ -93,9 +95,6 @@ namespace OpenTabletDriver.Desktop.Binding
 
         public void Press(TabletReference tablet, IDeviceReport report)
         {
-            if (Timer == null)
-                Log.Write(nameof(MouseScrollBinding), $"{nameof(Timer)} not found, key repeat will not work", LogLevel.Warning);
-
             Scroll();
             Timer?.Start();
         }
@@ -105,17 +104,17 @@ namespace OpenTabletDriver.Desktop.Binding
         public void Scroll()
         {
             if (_direction == ScrollDirection.Vertical)
-                Pointer.ScrollVertically(-Amount);
+                Pointer?.ScrollVertically(-Amount);
             else
-                Pointer.ScrollHorizontally(-Amount);
+                Pointer?.ScrollHorizontally(-Amount);
 
             if (Pointer is ISynchronousPointer synchronousPointer)
                 synchronousPointer.Flush();
         }
 
-        private static IEnumerable<string> validDirections;
+        private static IEnumerable<string>? validDirections;
         public static IEnumerable<string> ValidDirections =>
-            validDirections ??= Enum.GetValues<ScrollDirection>().Select(Enum.GetName);
+            validDirections ??= Enum.GetValues<ScrollDirection>().Select(Enum.GetName)!;
 
         public override string ToString() => $"{PLUGIN_NAME}: Direction: {Direction}, Amount: {Amount}, Interval: {Interval}";
     }
