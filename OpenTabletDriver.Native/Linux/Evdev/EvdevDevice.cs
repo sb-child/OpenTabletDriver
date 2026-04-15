@@ -5,6 +5,9 @@ namespace OpenTabletDriver.Native.Linux.Evdev
 {
     using static Evdev;
 
+    /// <summary>
+    /// Managed public version of the <see cref="Evdev"/> class
+    /// </summary>
     public class EvdevDevice : IDisposable
     {
         public EvdevDevice(string deviceName)

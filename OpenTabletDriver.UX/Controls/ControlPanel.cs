@@ -182,7 +182,11 @@ namespace OpenTabletDriver.UX.Controls
                     wheelBindingEditor.ProfileBinding.Bind(ProfileBinding);
                     var pageIndex = tabControl.Pages.IndexOf(mouseBindingEditor.Parent as TabPage);
                     wheelBindingEditors.Add(wheelBindingEditor);
-                    tabControl.Pages.Insert(pageIndex, new TabPage(wheelBindingEditor) { Text = $"Wheel {i + 1} Bindings" });
+                    var wheelPage = new TabPage(wheelBindingEditor) { Text = $"Wheel {i + 1} Bindings" };
+                    if (pageIndex >= 0)
+                        tabControl.Pages.Insert(pageIndex, wheelPage);
+                    else
+                        tabControl.Pages.Add(wheelPage);
                 }
             }
         }

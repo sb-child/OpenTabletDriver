@@ -20,8 +20,7 @@ public struct KamvasRelWheelReport : IRelativeWheelReport
         {
             0x1 => 1,
             0x2 => -1,
-            0 => 0,
-            _ => throw new ArgumentOutOfRangeException(nameof(wheelData)),
+            _ => 0,
         };
 
     public byte[] Raw { get; set; }

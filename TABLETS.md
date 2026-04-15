@@ -3,6 +3,7 @@
 | Acepen AP906                       |     Supported     |
 | Acepen AP1060                      |     Supported     |
 | Adesso Cybertablet K8              |     Supported     |
+| Artisul D22S                       |     Supported     |
 | Gaomon 1060 Pro                    |     Supported     |
 | Gaomon GM116HD                     |     Supported     |
 | Gaomon GM156HD                     |     Supported     |
@@ -11,6 +12,7 @@
 | Gaomon M106K                       |     Supported     |
 | Gaomon M106K Pro                   |     Supported     |
 | Gaomon PD1161                      |     Supported     |
+| Gaomon PD1320                      |     Supported     |
 | Gaomon PD1560                      |     Supported     |
 | Gaomon PD1561                      |     Supported     |
 | Gaomon PD2200                      |     Supported     |
@@ -32,6 +34,7 @@
 | Huion H641P                        |     Supported     |
 | Huion H642                         |     Supported     |
 | Huion H950P                        |     Supported     |
+| Huion H951P                        |     Supported     | Group keys act like auxiliary buttons
 | Huion HS64                         |     Supported     |
 | Huion HS95                         |     Supported     |
 | Huion HS610                        |     Supported     |
@@ -135,13 +138,18 @@
 | Wacom GD-1212-U                    |     Supported     |
 | Wacom GD-1218-U                    |     Supported     |
 | Wacom Cintiq 18SX (PL-800-U)       |     Supported     |
+| Wacom PTH-450                      |     Supported     |
 | Wacom PTH-451                      |     Supported     |
+| Wacom PTH-650                      |     Supported     |
 | Wacom PTH-651                      |     Supported     |
+| Wacom PTH-850                      |     Supported     |
 | Wacom PTH-851                      |     Supported     |
 | Wacom PTK-440                      |     Supported     |
+| Wacom PTK-450                      |     Supported     |
 | Wacom PTK-470                      |     Supported     |
 | Wacom PTK-540WL                    |     Supported     |
 | Wacom PTK-640                      |     Supported     |
+| Wacom PTK-650                      |     Supported     |
 | Wacom PTK-670                      |     Supported     |
 | Wacom PTK-840                      |     Supported     |
 | Wacom PTK-870                      |     Supported     |
@@ -161,8 +169,10 @@
 | XP-Pen Artist 12 (2nd Gen)         |     Supported     |
 | XP-Pen Artist 13 (2nd Gen)         |     Supported     |
 | XP-Pen Artist 13.3                 |     Supported     |
+| XP-Pen Artist 13.3 Pro             |     Supported     |
 | XP-Pen Artist 13.3 Pro V2          |     Supported     |
 | XP-Pen Artist 15.6                 |     Supported     |
+| XP-Pen Artist 15.6 Pro             |     Supported     |
 | XP-Pen Artist 15.6 Pro V2          |     Supported     |
 | XP-Pen Artist 16 (2nd Gen)         |     Supported     |
 | XP-Pen Artist 22 (2nd Gen)         |     Supported     |
@@ -183,6 +193,7 @@
 | XP-Pen Deco Fun S (CT640)          |     Supported     |
 | XP-Pen Deco Fun XS (CT430)         |     Supported     |
 | XP-Pen Deco M                      |     Supported     |
+| XP-Pen Deco MW                     |     Supported     |
 | XP-Pen Deco L                      |     Supported     |
 | XP-Pen Deco LW                     |     Supported     |
 | XP-Pen Deco mini4                  |     Supported     |
@@ -205,6 +216,7 @@
 | XP-Pen Star G960                   |     Supported     |
 | XP-Pen Star G960S                  |     Supported     |
 | XP-Pen Star G960S Plus             |     Supported     |
+| XP-Pen Deco 03                     |     Supported     |
 | Bosto BT-12HD                      |    Has Quirks     | Windows: Requires Zadig's WinUSB to be installed on interface 0.
 | FlooGoo FMA100                     |    Has Quirks     | Windows: Requires Zadig's WinUSB to be installed on interface 1. Might also need to change the configuration depending on the tablet used.
 | Gaomon S56K                        |    Has Quirks     | Windows: Might need Zadig's WinUSB to be installed on interface 0 or 1
@@ -260,7 +272,6 @@
 | Huion H1061P                       |  Missing Features | Roller is not yet supported. Group keys act like auxiliary buttons.
 | Huion H1161                        |  Missing Features | Tablet buttons are not yet supported.
 | Huion H610 Pro V3                  |  Missing Features | Tablet buttons are not yet supported. Windows: Requires Zadig's WinUSB to be installed on interface 1. Current tablet configuration has very low resolution.
-| Huion H951P                        |  Missing Features | Tilt Y-axis is inverted. Wheel is not yet supported. Switching groups is not yet supported; group selectors are mapped as regular buttons.
 | Huion HC16                         |  Missing Features | Wheel is not yet supported.
 | Huion HC16 (Variant 2)             |  Missing Features | Wheel is not yet supported.
 | Huion HS611                        |  Missing Features | Touch bar is not yet supported.
@@ -272,7 +283,7 @@
 | Huion Kamvas Pro 22 (2019)         |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 24                |  Missing Features | Touch bar is not yet supported.
 | Huion Kamvas Pro 24 (Gen 3)        |  Missing Features | Touch is not yet supported.
-| Huion Q620M                        |  Missing Features | Wheel is not yet supported.
+| Huion Q620M                        |  Missing Features | Wheel button is not yet supported.
 | Huion Q630M                        |  Missing Features | Dials/Wheels are not yet supported.
 | Huion RTM-500                      |  Missing Features | Touch bar is not yet supported.
 | Huion RTP-700                      |  Missing Features | Touch bar is not yet supported.
@@ -282,6 +293,7 @@
 | Parblo A640                        |  Missing Features | Aux buttons are not yet supported.
 | Parblo Intangbo M                  |  Missing Features | Wheel is not yet supported.
 | Parblo Intangbo S                  |  Missing Features | Wheel is not yet supported.
+| Parblo Intangbo SW                 |  Missing Features | Wheel and wireless are not yet supported.
 | UGEE M908                          |  Missing Features | Wheel is not yet supported.
 | UGEE UE16                          |  Missing Features | Wheel is not yet supported.
 | VEIKK A15 Pro                      |  Missing Features | Wheel is not yet supported.
@@ -308,11 +320,6 @@
 | Wacom Cintiq 22HD (DTK-2200)       |  Missing Features | Touch Strips are not yet supported.
 | Wacom Cintiq 12WX (DTZ-1200W)      |  Missing Features | Touch bars and top side buttons are not yet supported.
 | Wacom MTE-450                      |  Missing Features | Wheel is not yet supported.
-| Wacom PTH-450                      |  Missing Features | Wheel is not yet supported.
-| Wacom PTH-650                      |  Missing Features | Wheel is not yet supported.
-| Wacom PTH-850                      |  Missing Features | Wheel is not yet supported.
-| Wacom PTK-450                      |  Missing Features | Wheel is not yet supported.
-| Wacom PTK-650                      |  Missing Features | Wheel is not yet supported.
 | Wacom PTZ-1230                     |  Missing Features | Touch bars are not yet supported.
 | Wacom PTZ-1231W                    |  Missing Features | Touch bars are not yet supported.
 | Wacom PTZ-431W                     |  Missing Features | Touch bars are not yet supported.
@@ -322,15 +329,13 @@
 | Wacom PTZ-930                      |  Missing Features | Touch bars are not yet supported.
 | XP-Pen Artist 12                   |  Missing Features | Touch bar is not yet supported
 | XP-Pen Artist 12 Pro               |  Missing Features | Tilt and wheel are not yet supported.
-| XP-Pen Artist 13.3 Pro             |  Missing Features | Wheel is not yet supported.
-| XP-Pen Artist 15.6 Pro             |  Missing Features | Tilt and wheel are not yet supported.
 | XP-Pen Artist 16 Pro               |  Missing Features | Wheel is not yet supported.
 | XP-Pen Artist Pro 16TP             |  Missing Features | Touch is not yet supported.
 | XP-Pen Artist Pro 19 (Gen2)        |  Missing Features | Scroll Wheel on Pen is not yet supported
 | XP-Pen Deco 02                     |  Missing Features | Wheel is not yet supported.
-| XP-Pen Deco 03                     |  Missing Features | Wheel is not yet supported.
+| XP-Pen Deco mini7W V2              |  Missing Features | Wireless is not yet supported.
 | XP-Pen Deco Pro Medium             |  Missing Features | Tilt and wheel are not yet supported.
-| XP-Pen Deco Pro Small              |  Missing Features | Tilt and wheel are not yet supported.
+| XP-Pen Deco Pro Small              |  Missing Features | Trackpad is not yet supported.
 | XP-Pen Deco Pro SW                 |  Missing Features | Wheel is not yet supported.
 | XP-Pen Innovator 16                |  Missing Features | Wheel is not yet supported.
 | XP-Pen Deco Pro MW                 |  Missing Features | Touch wheel and physical wheel are not yet supported.

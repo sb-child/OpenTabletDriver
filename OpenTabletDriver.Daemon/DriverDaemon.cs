@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using OpenTabletDriver.Desktop;
 using OpenTabletDriver.Desktop.Binding;
 using OpenTabletDriver.Desktop.Contracts;
+using OpenTabletDriver.Desktop.Diagnostics;
 using OpenTabletDriver.Desktop.Interop;
 using OpenTabletDriver.Desktop.Profiles;
 using OpenTabletDriver.Desktop.Reflection;
@@ -358,6 +359,10 @@ namespace OpenTabletDriver.Daemon
                 appdataDir.Create();
                 Log.Write("Settings", $"Created OpenTabletDriver application data directory: {appdataDir.FullName}");
             }
+            else
+            {
+                Log.Write("Settings", $"Using OpenTabletDriver application data directory: {appdataDir.FullName}", LogLevel.Debug);
+            }
 
             var settingsFile = new FileInfo(AppInfo.Current.SettingsFile);
 
@@ -513,8 +518,11 @@ namespace OpenTabletDriver.Daemon
 
             if (settings.PenButtons != null && settings.PenButtons.Any(b => b?.Path != null))
             {
-                SetBindingHandlerCollectionSettings(bindingServiceProvider, settings.PenButtons, bindingHandler.PenButtons, tabletReference);
+                SetBindingHandlerCollectionSettings(bindingServiceProvider, settings.PenButtons, bindingHandler.PenButtons, tabletReference, settings.EnableDragBindings);
                 Log.Write(group, $"Pen Bindings: " + string.Join(", ", bindingHandler.PenButtons.Select(b => b.Value?.Binding)));
+
+                if (settings.EnableDragBindings)
+                    Log.Write(group, "Pen Bindings are configured as drag-only (requires pen pressure to activate)");
             }
 
             if (settings.AuxButtons != null && settings.AuxButtons.Any(b => b?.Path != null))
@@ -586,14 +594,15 @@ namespace OpenTabletDriver.Daemon
             return bindingHandler;
         }
 
-        private static void SetBindingHandlerCollectionSettings(IServiceManager serviceManager, PluginSettingStoreCollection collection, Dictionary<int, BindingState?> targetDict, TabletReference tabletReference)
+        private static void SetBindingHandlerCollectionSettings(IServiceManager serviceManager, PluginSettingStoreCollection collection, Dictionary<int, BindingState?> targetDict, TabletReference tabletReference, bool bindingRequiresPressure = false)
         {
             for (int index = 0; index < collection.Count; index++)
             {
                 var binding = collection[index]?.Construct<IBinding>(serviceManager, tabletReference);
                 var state = binding == null ? null : new BindingState
                 {
-                    Binding = binding
+                    Binding = binding,
+                    RequiresPenPressure = bindingRequiresPressure,
                 };
 
                 if (!targetDict.TryAdd(index, state))
@@ -662,6 +671,12 @@ namespace OpenTabletDriver.Daemon
         public Task<IEnumerable<LogMessage>> GetCurrentLog()
         {
             return Task.FromResult(_logFile.Read());
+        }
+
+        public async Task<DiagnosticInfo> GetDiagnosticInfo()
+        {
+            var log = await GetCurrentLog();
+            return new DiagnosticInfo(log, await GetDevices());
         }
 
         private void PostDebugReport(TabletReference tablet, IDeviceReport report)

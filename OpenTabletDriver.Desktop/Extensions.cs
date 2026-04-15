@@ -82,8 +82,8 @@ namespace OpenTabletDriver.Desktop
             return libTypes ??=
                 new ReadOnlyCollection<Type>([
                     .. from type in typeof(IDriver).Assembly.GetExportedTypes()
-                    where type.IsAbstract || type.IsInterface
-                    select type
+                       where type.IsAbstract || type.IsInterface
+                       select type
                 ]);
         }
     }

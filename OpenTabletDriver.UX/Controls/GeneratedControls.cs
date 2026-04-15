@@ -12,8 +12,7 @@ namespace OpenTabletDriver.UX.Controls
 {
     public static class GeneratedControls
     {
-        private static readonly IReadOnlyDictionary<Type, Func<PropertyInfo, DirectBinding<PluginSetting>, Control>> genericControls
-            = new Dictionary<Type, Func<PropertyInfo, DirectBinding<PluginSetting>, Control>>
+        private static readonly Dictionary<Type, Func<PropertyInfo, DirectBinding<PluginSetting>, Control>> genericControls = new()
         {
             { typeof(sbyte), GetNumericMaskedTextBox<sbyte> },
             { typeof(byte), GetNumericMaskedTextBox<byte> },

@@ -37,7 +37,7 @@ namespace OpenTabletDriver.Devices.HidSharpBackend
         public IDeviceEndpointStream Open() => device.TryOpen(out var stream) ? new HidSharpEndpointStream(stream) : null;
         public string GetDeviceString(byte index) => device.GetDeviceString(index);
 
-        private static IDictionary<string, string> GetDeviceAttributes(string devicePath, Func<ReportDescriptor> reportDescriptorFunc)
+        private static Dictionary<string, string> GetDeviceAttributes(string devicePath, Func<ReportDescriptor> reportDescriptorFunc)
         {
             var deviceAttributes = new Dictionary<string, string>();
             switch (SystemInterop.CurrentPlatform)

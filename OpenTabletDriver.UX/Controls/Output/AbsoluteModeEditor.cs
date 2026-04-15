@@ -275,6 +275,8 @@ namespace OpenTabletDriver.UX.Controls.Output
             {
                 base.CreateMenu();
 
+                base.ContextMenu.Items.AddSeparator();
+
                 var subMenu = base.ContextMenu.Items.GetSubmenu("Set to display");
 
                 var displays = DesktopInterop.VirtualScreen.Displays.ToArray();

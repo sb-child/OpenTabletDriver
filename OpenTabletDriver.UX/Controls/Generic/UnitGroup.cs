@@ -1,8 +1,7 @@
 using System;
 using Eto.Forms;
-using OpenTabletDriver.UX.Controls.Generic;
 
-namespace OpenTabletDriver.UX.Controls.Output.Area
+namespace OpenTabletDriver.UX.Controls.Generic
 {
     public class UnitGroup : Group
     {

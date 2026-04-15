@@ -15,7 +15,7 @@ namespace OpenTabletDriver.Desktop.Updater
         private static readonly ImmutableArray<string> AppDataFiles =
         [
             "settings.json",
-                "Presets"
+            "Presets"
         ];
 
         protected static readonly Version AssemblyVersion = typeof(IUpdater).Assembly.GetName().Version!;

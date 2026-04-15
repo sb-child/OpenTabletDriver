@@ -103,11 +103,11 @@ namespace OpenTabletDriver.UX.Windows
             };
 
             deviceDropDown.SelectedItemBinding
-                .Convert(x => x?.VendorID.ToString())
+                .Convert(x => x?.VendorID.ToString() ?? vendorIdText.Text, _ => null)
                 .Bind(vendorIdText.TextBinding);
 
             deviceDropDown.SelectedItemBinding
-                .Convert(x => x?.ProductID.ToString())
+                .Convert(x => x?.ProductID.ToString() ?? productIdText.Text, _ => null)
                 .Bind(productIdText.TextBinding);
 
             this.deviceDropDown.DataStore =

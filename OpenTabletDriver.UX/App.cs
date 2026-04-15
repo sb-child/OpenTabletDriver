@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.CommandLine;
+using System.ComponentModel;
 using System.IO;
 using System.IO.Pipes;
 using System.Reflection;
@@ -72,6 +73,7 @@ namespace OpenTabletDriver.UX
             }
 
             mainForm.SkipUpdate = options.SkipUpdate;
+            mainForm.Closing += Current.HandleClosing;
 
             app.NotificationActivated += Current.HandleNotification;
             app.UnhandledException += ShowUnhandledException;
@@ -177,6 +179,16 @@ namespace OpenTabletDriver.UX
         {
             if (NotificationHandlers.TryGetValue(e.ID, out var handler))
                 handler.Invoke();
+        }
+
+        private void HandleClosing(object sender, CancelEventArgs args)
+        {
+            StartupGreeterWindow.Close();
+            PluginManagerWindow.Close();
+            DebuggerWindow.Close();
+            StringReaderWindow.Close();
+            UpdaterWindow.Close();
+            AboutWindow.Close();
         }
 
         private static void ShowUnhandledException(object sender, Eto.UnhandledExceptionEventArgs e)
