@@ -116,7 +116,7 @@ namespace OpenTabletDriver.UX.Dialogs
             public string InputText
             {
                 protected set => this.inputText = value;
-                get => this.inputText ?? DefaultInputText;
+                get => this.inputText == null || this.inputText?.Length == 0 ? DefaultInputText : this.inputText;
             }
 
             public string DefaultInputText { set; get; }
