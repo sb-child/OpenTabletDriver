@@ -65,14 +65,27 @@ namespace OpenTabletDriver.UX.Controls.Output
 
             displayWidth = SettingsBinding.Child(c => c.Display.Width);
             displayHeight = SettingsBinding.Child(c => c.Display.Height);
-            tabletWidth = SettingsBinding.Child(c => c.Tablet.Width);
-            tabletHeight = SettingsBinding.Child(c => c.Tablet.Height);
-            tabletWidth.DataValueChanged += HandleTabletAreaConstraint;
-            tabletHeight.DataValueChanged += HandleTabletAreaConstraint;
+            var displayX = SettingsBinding.Child(c => c.Display.X);
+            var displayY = SettingsBinding.Child(c => c.Display.Y);
             displayWidth.DataValueChanged += HandleDisplayAreaConstraint;
             displayHeight.DataValueChanged += HandleDisplayAreaConstraint;
+            displayX.DataValueChanged += HandleDisplayAreaConstraint;
+            displayY.DataValueChanged += HandleDisplayAreaConstraint;
+
+            tabletWidth = SettingsBinding.Child(c => c.Tablet.Width);
+            tabletHeight = SettingsBinding.Child(c => c.Tablet.Height);
+            var tabletX = SettingsBinding.Child(c => c.Tablet.X);
+            var tabletY = SettingsBinding.Child(c => c.Tablet.Y);
+            tabletWidth.DataValueChanged += HandleTabletAreaConstraint;
+            tabletHeight.DataValueChanged += HandleTabletAreaConstraint;
+            tabletX.DataValueChanged += HandleTabletAreaConstraint;
+            tabletY.DataValueChanged += HandleTabletAreaConstraint;
 
             tabletAreaEditor.LockAspectRatioChanged += HookAspectRatioLock;
+
+            tabletAreaEditor.LockToUsableAreaChanged += HandleTabletAreaConstraint;
+            displayAreaEditor.LockToUsableAreaChanged += HandleDisplayAreaConstraint;
+
             HookAspectRatioLock(tabletAreaEditor, EventArgs.Empty);
         }
 
