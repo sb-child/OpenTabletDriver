@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 using Eto.Drawing;
 using Eto.Forms;
 using OpenTabletDriver.Desktop.Profiles;
 using OpenTabletDriver.Interop;
 using OpenTabletDriver.Plugin;
-using OpenTabletDriver.UX.Controls.Generic;
 
 namespace OpenTabletDriver.UX.Controls.Output.Area
 {

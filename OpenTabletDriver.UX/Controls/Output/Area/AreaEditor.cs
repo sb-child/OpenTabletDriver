@@ -5,7 +5,6 @@ using System.Numerics;
 using Eto.Drawing;
 using Eto.Forms;
 using OpenTabletDriver.Desktop.Profiles;
-using OpenTabletDriver.Native.Linux.Evdev.Structs;
 using OpenTabletDriver.UX.Controls.Generic;
 using OpenTabletDriver.UX.Controls.Generic.Text;
 using OpenTabletDriver.UX.Controls.Utilities;

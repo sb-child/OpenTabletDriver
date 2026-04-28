@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using OpenTabletDriver.Desktop.Interop;
 using OpenTabletDriver.Desktop.Reflection.Metadata;
 using OpenTabletDriver.Interop;
 using OpenTabletDriver.Plugin;

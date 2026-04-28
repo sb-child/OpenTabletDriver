@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Eto.Forms;
 using OpenTabletDriver.Desktop.Interop;
 using OpenTabletDriver.Desktop.Profiles;

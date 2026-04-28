@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.CommandLine;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -11,9 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using OpenTabletDriver.Desktop;
-using OpenTabletDriver.Desktop.Interop;
 using OpenTabletDriver.Desktop.RPC;
-using OpenTabletDriver.Desktop.Updater;
 using OpenTabletDriver.Plugin;
 using OpenTabletDriver.Plugin.Components;
 

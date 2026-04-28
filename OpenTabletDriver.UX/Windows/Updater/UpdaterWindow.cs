@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Eto.Drawing;
 using Eto.Forms;
-using OpenTabletDriver.Desktop;
 using OpenTabletDriver.Desktop.Interop;
 using OpenTabletDriver.UX.Controls;
 using OpenTabletDriver.UX.Controls.Generic;
