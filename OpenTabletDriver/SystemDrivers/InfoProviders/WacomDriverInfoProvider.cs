@@ -1,5 +1,3 @@
-using System;
-
 namespace OpenTabletDriver.SystemDrivers.InfoProviders
 {
     internal class WacomDriverInfoProvider : ProcessModuleQueryableDriverInfoProvider

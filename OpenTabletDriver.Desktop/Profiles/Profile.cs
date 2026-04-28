@@ -1,6 +1,5 @@
 using System;
 using Newtonsoft.Json;
-using OpenTabletDriver.Desktop.Interop;
 using OpenTabletDriver.Desktop.Output;
 using OpenTabletDriver.Desktop.Reflection;
 using OpenTabletDriver.Interop;

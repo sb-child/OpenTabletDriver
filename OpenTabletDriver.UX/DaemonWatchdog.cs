@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using OpenTabletDriver.Desktop.Interop;
 using OpenTabletDriver.Interop;
 using OpenTabletDriver.Plugin;
 

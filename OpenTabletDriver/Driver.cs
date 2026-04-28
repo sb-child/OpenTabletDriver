@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-using System.Threading;
 using OpenTabletDriver.Devices.HidSharpBackend;
 using OpenTabletDriver.Interop;
 using OpenTabletDriver.Plugin;

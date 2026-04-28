@@ -1,6 +1,4 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Numerics;
 using Eto.Drawing;
 using Eto.Forms;
 using JetBrains.Annotations;

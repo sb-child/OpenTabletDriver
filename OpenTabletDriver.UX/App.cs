@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using Eto.Drawing;
 using Eto.Forms;
 using OpenTabletDriver.Desktop;
-using OpenTabletDriver.Desktop.Interop;
 using OpenTabletDriver.Interop;
 using OpenTabletDriver.Plugin;
 using OpenTabletDriver.UX.RPC;

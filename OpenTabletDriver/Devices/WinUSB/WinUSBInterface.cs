@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using HidSharp.Reports;
-using OpenTabletDriver.Devices.HidSharpBackend;
 using OpenTabletDriver.Native.Windows;
 using OpenTabletDriver.Native.Windows.USB;
 using OpenTabletDriver.Plugin.Devices;

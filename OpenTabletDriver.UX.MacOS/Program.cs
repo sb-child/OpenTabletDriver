@@ -1,5 +1,4 @@
 using System;
-using Eto.Forms;
 
 namespace OpenTabletDriver.UX.MacOS
 {

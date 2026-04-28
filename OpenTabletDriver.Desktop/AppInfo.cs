@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using OpenTabletDriver.Desktop.Reflection;
 using OpenTabletDriver.Interop;
 using OpenTabletDriver.Plugin;

@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
-using Microsoft.Win32.SafeHandles;
 using OpenTabletDriver.Native.Windows.Input;
 using OpenTabletDriver.Native.Windows.Timers;
 
