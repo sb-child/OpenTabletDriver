@@ -65,7 +65,7 @@ if [ -z "$VERSION_SUFFIX" ]; then
     fi
 
     describe_remainder="$(sed -E s/"${GIT_TAG_REGEX}"/\\9/ <<< "$GIT_DESCRIBE")"
-    if [[ $describe_remainder =~ ^*dirty*$ ]]; then
+    if [[ $describe_remainder =~ ^.*dirty.*$ ]]; then
       # tag dirty if dirty
       VERSION_SUFFIX="${VERSION_SUFFIX:-}"-dirty
     fi
